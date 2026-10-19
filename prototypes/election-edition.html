@@ -1,0 +1,1054 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>הדרך ל־61: מהדורת בחירות</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700;800&family=Heebo:wght@500;700;800;900&display=swap">
+<style>
+/* Layout: a quiet control strip on top, one live device screen below it; the directions carry all the colour. */
+:root {
+  --ground: #e8e9ee; --panel: #ffffff; --ink: #17181d; --muted: #5b5e6b; --line: #cfd2dc; --on: #17181d; --on-ink: #ffffff; --focus: #2f6fe0;
+  --f-ui: 'Assistant', 'Arial Hebrew', 'Segoe UI', system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --ground: #121318; --panel: #1c1e25; --ink: #eceef4; --muted: #a3a7b6; --line: #343846; --on: #eceef4; --on-ink: #121318; --focus: #8fb4ff; color-scheme: dark; } }
+:root[data-theme="dark"] { --ground: #121318; --panel: #1c1e25; --ink: #eceef4; --muted: #a3a7b6; --line: #343846; --on: #eceef4; --on-ink: #121318; --focus: #8fb4ff; color-scheme: dark; }
+body { background: var(--ground); color: var(--ink); font-family: var(--f-ui); }
+.r3 { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 18px 48px; display: grid; gap: 16px; }
+.r3 * { box-sizing: border-box; }
+.r3-head { max-width: 1100px; width: 100%; margin-inline: auto; display: grid; gap: 12px; }
+.r3-head h1 { margin: 0; font-size: clamp(20px, 4.6vw, 26px); font-weight: 800; text-wrap: balance; }
+.r3-head > p { margin: 0; color: var(--muted); font-size: 15px; line-height: 1.5; max-width: 70ch; }
+.r3-dirs { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr)); gap: 8px; }
+.r3-dirs[hidden] { display: none; }
+.r3-dir { font: inherit; text-align: start; display: grid; gap: 2px; padding: 10px 12px; min-height: 56px; border-radius: 12px; border: 1px solid var(--line); background: var(--panel); color: var(--ink); cursor: pointer; }
+.r3-dir b { font-size: 16px; font-weight: 800; }
+.r3-dir small { color: var(--muted); font-size: 13px; line-height: 1.35; }
+.r3-dir[aria-selected="true"] { background: var(--on); color: var(--on-ink); border-color: var(--on); }
+.r3-dir[aria-selected="true"] small { color: inherit; opacity: 0.8; }
+.r3-dir .rec { font-size: 11.5px; font-weight: 800; letter-spacing: 0.02em; }
+.r3-bar { display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: center; }
+.r3-seg { display: flex; flex-wrap: wrap; gap: 4px; padding: 4px; border-radius: 12px; background: var(--panel); border: 1px solid var(--line); }
+.r3-seg button { font: inherit; font-size: 14.5px; font-weight: 700; min-height: 40px; padding: 6px 12px; border-radius: 9px; border: 0; background: transparent; color: var(--muted); cursor: pointer; }
+.r3-seg button[aria-pressed="true"] { background: var(--on); color: var(--on-ink); }
+.r3-replay { font: inherit; font-size: 14.5px; font-weight: 800; min-height: 44px; padding: 6px 16px; border-radius: 12px; border: 2px solid var(--ink); background: transparent; color: var(--ink); cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
+.r3 button:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+.r3-pitch { margin: 0; font-size: 14.5px; line-height: 1.5; color: var(--muted); max-width: 75ch; }
+.r3-pitch b { color: var(--ink); }
+.r3-stage { display: flex; justify-content: center; min-width: 0; }
+.r3-device { width: 100%; position: relative; overflow: hidden; container-type: inline-size; container-name: scr; isolation: isolate; }
+.r3-device.phone { max-width: 390px; height: 800px; border-radius: 34px; box-shadow: 0 0 0 8px #0d0e12, 0 26px 60px rgba(0, 0, 0, 0.3); }
+.r3-device.desktop { max-width: 1100px; height: 680px; border-radius: 14px; box-shadow: 0 0 0 1px var(--line), 0 26px 60px rgba(0, 0, 0, 0.18); }
+.r3-device > .scr { position: absolute; inset: 0; overflow: auto; overscroll-behavior: contain; }
+.r3-note { max-width: 1100px; margin: 0 auto; color: var(--muted); font-size: 13px; line-height: 1.5; text-align: center; }
+@media (prefers-reduced-motion: reduce) { .r3 *, .r3 *::before, .r3 *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; } }
+
+/* ===== מהדורת בחירות: election-night TV graphics. Navy night sky, the Knesset lit at the bottom, white plates on gold rules, heavy numbers ===== */
+.d-news {
+  --night-0: #040a1c; --night-1: #0a1a3f; --night-2: #14306c; --navy-tab: #1d3a80;
+  --gold: #d9b45a; --gold-hi: #f6e19a; --gold-lo: #8f6a26;
+  --gold-grad: linear-gradient(180deg, #f6e19a, #d9b45a 45%, #8f6a26);
+  --gold-line: linear-gradient(90deg, #8f6a26, #d9b45a 28%, #f6e19a 58%, #d9b45a 84%, #8f6a26);
+  --paper: #ffffff; --paper-2: #e4e7ee; --slate: #6b6f8a;
+  --ink: #0c1f4d; --ink-2: #44506f;
+  --on-night: #ffffff; --muted: #b7c3e0;
+  --studio: #c8102e;
+  --win: #127a45; --lose: #b3261e; --win-night: #6be3a6; --lose-night: #ff8f87;
+  --f-num: 'Heebo', 'Assistant', 'Arial Hebrew', system-ui, sans-serif;
+  --f-body: 'Assistant', 'Heebo', 'Arial Hebrew', system-ui, sans-serif;
+  background: var(--night-0);
+  color: var(--on-night);
+  font-family: var(--f-body);
+  font-size: 15px;
+  color-scheme: dark;
+}
+.d-news h2, .d-news h3, .d-news p, .d-news ol, .d-news ul, .d-news dl, .d-news dd, .d-news blockquote { margin: 0; padding: 0; }
+.d-news ol, .d-news ul { list-style: none; }
+.d-news button { font: inherit; color: inherit; cursor: pointer; }
+.d-news button:focus-visible { outline: 3px solid var(--gold-hi); outline-offset: 3px; }
+.d-news .nw-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* ---- the stage: sky, Knesset, ticker ---- */
+.d-news .nw {
+  position: relative; isolation: isolate; min-height: 100%;
+  display: flex; flex-direction: column; gap: 14px;
+  padding: 16px 16px 0; overflow-x: clip;
+  background: linear-gradient(180deg, var(--night-0) 0%, var(--night-1) 50%, var(--night-2) 100%);
+}
+.d-news .nw > * { position: relative; z-index: 1; }
+.d-news .nw > .nw-sky { position: absolute; inset: 0; z-index: 0; pointer-events: none; overflow: hidden;
+  background:
+    radial-gradient(1.4px 1.4px at 7% 9%, rgba(255,255,255,.8), transparent),
+    radial-gradient(1.2px 1.2px at 23% 4%, rgba(255,255,255,.6), transparent),
+    radial-gradient(1.6px 1.6px at 41% 14%, rgba(255,255,255,.7), transparent),
+    radial-gradient(1.2px 1.2px at 63% 6%, rgba(255,255,255,.55), transparent),
+    radial-gradient(1.5px 1.5px at 81% 11%, rgba(255,255,255,.75), transparent),
+    radial-gradient(1.2px 1.2px at 93% 3%, rgba(255,255,255,.5), transparent),
+    radial-gradient(circle at 6% 88%, rgba(255,206,130,.38) 0 5px, transparent 9px),
+    radial-gradient(circle at 15% 93%, rgba(170,200,255,.3) 0 7px, transparent 12px),
+    radial-gradient(circle at 27% 85%, rgba(255,214,150,.3) 0 4px, transparent 8px),
+    radial-gradient(circle at 72% 87%, rgba(255,214,150,.32) 0 5px, transparent 9px),
+    radial-gradient(circle at 84% 92%, rgba(170,200,255,.28) 0 8px, transparent 13px),
+    radial-gradient(circle at 95% 84%, rgba(255,206,130,.35) 0 4px, transparent 8px),
+    radial-gradient(70% 20% at 50% 100%, rgba(255,188,96,.24), transparent 72%),
+    radial-gradient(120% 34% at 50% 100%, rgba(52,104,214,.42), transparent 70%);
+}
+.d-news .nw-sky::before { content: ''; position: absolute; inset: -20% -60%; background: linear-gradient(112deg, transparent 42%, rgba(130,170,255,.09) 49%, rgba(130,170,255,.02) 55%, transparent 60%); animation: nwBeam 9s ease-in-out infinite alternate; }
+.d-news .nw-sky::after { content: ''; position: absolute; inset: 0;
+  background:
+    radial-gradient(circle at 11% 90%, rgba(255,230,180,.7) 0 2px, transparent 4px),
+    radial-gradient(circle at 34% 94%, rgba(255,230,180,.6) 0 2px, transparent 4px),
+    radial-gradient(circle at 58% 90%, rgba(200,220,255,.6) 0 2px, transparent 4px),
+    radial-gradient(circle at 78% 95%, rgba(255,230,180,.7) 0 2px, transparent 4px),
+    radial-gradient(1.4px 1.4px at 52% 8%, #fff, transparent),
+    radial-gradient(1.4px 1.4px at 33% 18%, #fff, transparent);
+  animation: nwTwinkle 2.8s ease-in-out infinite alternate; }
+.d-news .nw > .nw-knesset { position: absolute; z-index: 0; left: 50%; bottom: 36px; width: min(100%, 620px); height: auto; transform: translateX(-50%); pointer-events: none; }
+.d-news .nw-knesset .tw { animation: nwTwinkle 3.4s ease-in-out infinite alternate; }
+.d-news .nw-knesset .tw2 { animation: nwTwinkle 2.6s ease-in-out infinite alternate-reverse; }
+.d-news .nw-spacer { flex: 1 0 84px; z-index: 0; }
+.d-news .nw > .nw-ticker {
+  position: sticky; bottom: 0; z-index: 6; margin-inline: -16px;
+  display: flex; align-items: stretch; height: 36px;
+  background: linear-gradient(180deg, #13306c, #081638);
+  border-top: 2px solid; border-image: var(--gold-line) 1;
+  overflow: hidden; box-shadow: 0 -8px 20px rgba(0,0,0,.35);
+}
+.d-news .nw-ticker .nw-tag { flex: none; padding-inline: 12px; z-index: 1; box-shadow: -8px 0 14px rgba(0,0,0,.45); }
+.d-news .nw-crawl { flex: 1; min-width: 0; overflow: hidden; display: flex; align-items: center; -webkit-mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent); mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent); }
+.d-news .nw-crawl-in { display: flex; flex: none; white-space: nowrap; animation: nwCrawl 30s linear infinite; }
+.d-news .nw-crawl-in > span { display: flex; align-items: center; gap: 20px; padding-inline-end: 20px; font: 700 14.5px/1 var(--f-body); color: #fff; }
+.d-news .nw-crawl-in i { color: var(--gold); font-style: normal; font-size: 9px; }
+
+/* ---- shared parts ---- */
+.d-news .nw-tag { display: inline-flex; align-items: center; gap: 6px; padding: 3px 10px; background: var(--studio); color: #fff; font: 800 13px/1.2 var(--f-num); letter-spacing: .02em; }
+.d-news .nw-tag::before { content: ''; width: 7px; height: 7px; border-radius: 50%; background: #fff; animation: nwPulse 1.3s ease-in-out infinite; }
+.d-news .nw-head { display: grid; justify-items: center; gap: 8px; text-align: center; }
+.d-news .nw-head::before { content: ''; width: min(94%, 560px); height: 1px; background: linear-gradient(90deg, transparent, rgba(183,195,224,.55), transparent); animation: nwRule .8s both .1s; }
+.d-news .nw-kicker { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 8px; color: var(--muted); font: 600 13.5px/1.3 var(--f-body); animation: nwFade .5s both; }
+.d-news .nw-title { font: 900 clamp(30px, 9cqi, 46px)/1.05 var(--f-num); letter-spacing: -.01em; color: #fff; text-shadow: 0 2px 18px rgba(0,0,0,.6), 0 0 34px rgba(120,160,255,.28); text-wrap: balance; animation: nwDrop .65s cubic-bezier(.2,.9,.3,1.25) both .1s; }
+.d-news .nw-rule { position: relative; display: block; width: min(94%, 560px); height: 2px; background: linear-gradient(90deg, transparent, var(--gold) 16%, var(--gold-hi) 50%, var(--gold) 84%, transparent); box-shadow: 0 0 14px 2px rgba(246,225,154,.42); animation: nwRule .8s cubic-bezier(.2,.8,.2,1) both .3s; }
+.d-news .nw-rule::after { content: ''; position: absolute; top: -4px; inset-inline-start: 0; width: 70px; height: 10px; border-radius: 50%; background: radial-gradient(closest-side, #fff, rgba(255,240,200,.55) 45%, transparent); animation: nwSpark 3.6s ease-in-out infinite 1.1s; opacity: 0; }
+.d-news .nw-source { color: var(--muted); font: 600 12.5px/1.45 var(--f-body); max-width: 48ch; text-wrap: balance; animation: nwFade .6s both .6s; }
+.d-news .nw-plate { position: relative; overflow: hidden; background: var(--paper); color: #000; padding: 2px 18px 4px; font: 800 clamp(19px, 5.6cqi, 27px)/1.25 var(--f-num); box-shadow: 0 8px 22px rgba(0,0,0,.45); animation: nwPlate .55s cubic-bezier(.2,.8,.2,1) both .45s; }
+.d-news .nw-plate::after { content: ''; position: absolute; inset: 0; background: linear-gradient(105deg, transparent 36%, rgba(217,180,90,.5) 47%, rgba(255,255,255,.95) 50%, rgba(217,180,90,.5) 53%, transparent 64%); transform: translateX(130%); animation: nwShine 5.5s ease-in-out infinite 1.1s; }
+.d-news .nw-sub { display: grid; justify-items: start; gap: 6px; font: 900 21px/1.1 var(--f-num); color: #fff; text-shadow: 0 2px 10px rgba(0,0,0,.5); }
+.d-news .nw-dash { display: block; width: 34px; height: 6px; background: #fff; }
+.d-news .nw-note { color: var(--muted); font: 600 12.5px/1.4 var(--f-body); }
+.d-news .nw-btn { min-height: 48px; padding: 8px 18px; border: 2px solid rgba(255,255,255,.85); background: rgba(255,255,255,.05); color: #fff; font: 800 16px/1.1 var(--f-num); transition: transform .2s, box-shadow .2s, background .2s; }
+.d-news .nw-btn:hover:not(:disabled) { transform: translateY(-2px); background: rgba(255,255,255,.12); }
+.d-news .nw-btn.is-primary { position: relative; overflow: hidden; background: var(--gold-grad); color: #241a00; border-color: var(--gold-hi); box-shadow: 0 6px 20px rgba(217,180,90,.35); }
+.d-news .nw-btn.is-primary::after { content: ''; position: absolute; inset: 0; background: linear-gradient(105deg, transparent 38%, rgba(255,255,255,.75) 50%, transparent 62%); transform: translateX(130%); animation: nwShine 4s ease-in-out infinite 1.5s; }
+.d-news .nw-btn:disabled { opacity: .38; cursor: not-allowed; }
+
+/* photo tile: a placeholder silhouette until the leaders' photos are allowed in */
+.d-news .nw-ph { position: relative; display: block; aspect-ratio: 1; overflow: hidden; border: 2px solid rgba(255,255,255,.88);
+  background: radial-gradient(circle at 50% 30%, color-mix(in srgb, var(--pc) 58%, transparent), transparent 64%), linear-gradient(180deg, #23458f, #0a1a3f); }
+.d-news .nw-fig { position: absolute; left: 0; bottom: 0; width: 100%; height: 92%; }
+.d-news .nw-fig .h { fill: #9fabc9; } .d-news .nw-fig .k { fill: #8592b4; } .d-news .nw-fig .s { fill: #111a33; } .d-news .nw-fig .l { fill: #1f2b4d; } .d-news .nw-fig .c { fill: #eef2f8; } .d-news .nw-fig .t { fill: var(--pc); }
+.d-news .nw-ph i { position: absolute; inset-inline-end: 3px; bottom: 3px; font: 800 10px/1 var(--f-num); font-style: normal; color: #fff; background: rgba(4,10,28,.78); border-inline-start: 3px solid var(--pc); padding: 3px 4px; letter-spacing: .02em; }
+
+/* ---- scene: action ---- */
+.d-news .nw-hud { display: grid; grid-template-columns: 52px 1fr; grid-template-areas: "ph who" "st st"; align-items: center; gap: 8px 10px; padding: 8px 10px 10px;
+  background: linear-gradient(90deg, rgba(20,48,108,.94), rgba(10,26,63,.94)); border-top: 3px solid; border-image: var(--gold-line) 1; box-shadow: 0 10px 24px rgba(0,0,0,.35); animation: nwSlideIn .6s cubic-bezier(.2,.8,.2,1) both .55s; }
+.d-news .nw-hud .nw-ph { grid-area: ph; }
+.d-news .nw-who { grid-area: who; display: grid; gap: 1px; min-width: 0; }
+.d-news .nw-who b { font: 800 19px/1.15 var(--f-num); }
+.d-news .nw-who small { color: var(--muted); font-size: 13.5px; }
+.d-news .nw-stats { grid-area: st; display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid rgba(183,195,224,.25); padding-top: 6px; }
+.d-news .nw-stats > div { display: grid; justify-items: center; gap: 0; }
+.d-news .nw-stats > div + div { border-inline-start: 1px solid rgba(183,195,224,.25); }
+.d-news .nw-stats dt { color: var(--muted); font: 700 12px/1.2 var(--f-body); }
+.d-news .nw-stats dd { font: 900 24px/1.15 var(--f-num); }
+.d-news .nw-stats dd small { font-size: 14px; color: var(--muted); font-weight: 700; }
+.d-news .nw-stats .is-seats dd { font-size: 30px; color: var(--gold-hi); text-shadow: 0 0 14px rgba(246,225,154,.4); }
+.d-news .nw-stats .is-seats.is-bump dd { animation: nwBump .7s cubic-bezier(.3,1.6,.5,1); }
+.d-news .nw-acts { display: grid; gap: 18px; padding-top: 8px; }
+.d-news .nw-acts > li { animation: nwSweep .6s cubic-bezier(.2,.8,.2,1) both; animation-delay: calc(.75s + var(--i) * .13s); }
+.d-news .nw-act { position: relative; width: 100%; display: grid; gap: 3px; text-align: start; padding: 22px 14px 12px; background: var(--paper); color: var(--ink); border-style: solid; border-width: 0 0 5px; border-image: var(--gold-line) 1; box-shadow: 0 10px 26px rgba(0,0,0,.42); transition: transform .2s, box-shadow .2s; overflow: visible; }
+.d-news .nw-act:hover { transform: translateY(-3px); box-shadow: 0 14px 30px rgba(0,0,0,.5), 0 0 0 2px var(--gold-hi); }
+.d-news .nw-act::after { content: ''; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(105deg, transparent 38%, rgba(217,180,90,.35) 48%, rgba(255,255,255,.8) 50%, rgba(217,180,90,.35) 52%, transparent 62%); transform: translateX(130%); animation: nwShineOnce 1.1s ease-in-out both; animation-delay: calc(1.2s + var(--i) * .13s); }
+.d-news .nw-cat { position: absolute; top: -13px; inset-inline-start: 12px; background: linear-gradient(180deg, var(--navy-tab), var(--night-1)); color: #fff; font: 800 13px/1 var(--f-num); padding: 6px 10px; box-shadow: 0 4px 12px rgba(0,0,0,.4); border-top: 2px solid var(--gold); }
+.d-news .nw-act-t { font: 900 20px/1.15 var(--f-num); }
+.d-news .nw-act-s { color: var(--ink-2); font: 600 14px/1.35 var(--f-body); }
+.d-news .nw-odds { display: grid; grid-template-columns: auto 1fr; gap: 14px; align-items: end; margin-top: 6px; padding-top: 8px; border-top: 1px solid #d3d9e6; }
+.d-news .nw-chance { display: grid; gap: 3px; min-width: 92px; }
+.d-news .nw-chance b { font: 900 42px/.9 var(--f-num); letter-spacing: -.02em; }
+.d-news .nw-chance small { font: 700 12px/1.1 var(--f-body); color: var(--ink-2); }
+.d-news .nw-meter { display: block; height: 6px; background: #dde2ee; overflow: hidden; }
+.d-news .nw-meter i { display: block; height: 100%; width: calc(var(--c) * 100%); background: linear-gradient(90deg, #f6e19a, #d9b45a 60%, #8f6a26); animation: nwGrowW .9s cubic-bezier(.2,.8,.2,1) both; animation-delay: calc(1.1s + var(--i) * .13s); }
+.d-news .nw-vals { display: grid; gap: 1px; font: 700 13.5px/1.3 var(--f-body); color: var(--ink-2); }
+.d-news .nw-vals b { font: 900 19px/1.1 var(--f-num); }
+.d-news .nw-vals .v-win b { color: var(--win); }
+.d-news .nw-vals .v-lose b { color: var(--lose); }
+.d-news .nw-seatline { margin-top: 4px; font: 700 12.5px/1.35 var(--f-body); color: var(--ink-2); }
+.d-news .nw-seatline b { color: var(--ink); }
+.d-news .nw-act.is-done { opacity: .55; }
+.d-news .nw-act.is-done .nw-cat::after { content: ' · שוחק'; }
+
+.d-news .nw-flash { display: grid; gap: 16px; padding-top: 4px; }
+.d-news .nw-flash-band { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; background: linear-gradient(90deg, var(--night-2), var(--night-1)); border-inline-start: 6px solid var(--gold); padding: 10px 12px; box-shadow: 0 10px 24px rgba(0,0,0,.4); animation: nwSlideIn .5s cubic-bezier(.2,.8,.2,1) both; }
+.d-news .nw-flash-band b { font: 900 21px/1.15 var(--f-num); }
+.d-news .nw-flash.is-lose .nw-flash-band { border-color: var(--studio); }
+.d-news .nw-flash-main { display: grid; grid-template-columns: auto 1fr; gap: 18px; align-items: center; }
+.d-news .nw-seatbox { position: relative; width: 128px; aspect-ratio: 1; display: grid; place-items: center; align-content: center; gap: 2px; background: var(--paper); color: var(--ink); border-style: solid; border-width: 0 0 6px; border-image: var(--gold-line) 1; box-shadow: 0 12px 30px rgba(0,0,0,.5); animation: nwPop .55s cubic-bezier(.3,1.6,.5,1) both .25s; }
+.d-news .nw-rays { position: absolute; inset: -38%; z-index: -1; border-radius: 50%; background: repeating-conic-gradient(from 0deg, rgba(246,225,154,.4) 0 7deg, transparent 7deg 18deg); -webkit-mask-image: radial-gradient(closest-side, #000 35%, transparent); mask-image: radial-gradient(closest-side, #000 35%, transparent); opacity: 0; }
+.d-news .nw-seatbox.is-go .nw-rays { animation: nwSpin 14s linear infinite, nwFadeIn .5s both; }
+.d-news .nw-flash.is-lose .nw-rays { background: repeating-conic-gradient(from 0deg, rgba(200,16,46,.35) 0 7deg, transparent 7deg 18deg); }
+.d-news .nw-seatnum { display: grid; height: 1em; overflow: hidden; font: 900 80px/1 var(--f-num); }
+.d-news .nw-seatnum b { grid-area: 1 / 1; text-align: center; transition: transform .65s cubic-bezier(.5,0,.2,1.3); }
+.d-news .nw-seatnum .js-to { transform: translateY(105%); }
+.d-news .nw-seatbox.is-go .js-from { transform: translateY(-105%); }
+.d-news .nw-seatbox.is-go .js-to { transform: none; }
+.d-news .nw-seatbox.is-same.is-go .js-from { transform: none; animation: nwBump .7s cubic-bezier(.3,1.6,.5,1); }
+.d-news .nw-seatbox small { font: 800 13px/1 var(--f-num); color: var(--ink-2); }
+.d-news .nw-facts { display: grid; gap: 6px; min-width: 0; }
+.d-news .nw-delta { font: 900 30px/1.05 var(--f-num); color: var(--win-night); opacity: 0; transform: translateY(8px); transition: opacity .4s, transform .4s; }
+.d-news .nw-flash.is-lose .nw-delta { color: var(--lose-night); }
+.d-news .nw-flash.is-same .nw-delta { color: #fff; }
+.d-news .nw-pts { font: 800 16px/1.2 var(--f-num); color: var(--gold-hi); opacity: 0; transition: opacity .4s .15s; }
+.d-news .nw-cap { color: var(--muted); font: 600 14.5px/1.5 var(--f-body); opacity: 0; transition: opacity .4s .3s; }
+.d-news .nw-flash.is-shown .nw-delta, .d-news .nw-flash.is-shown .nw-pts, .d-news .nw-flash.is-shown .nw-cap { opacity: 1; transform: none; }
+.d-news .nw-flash .nw-btn { justify-self: start; }
+
+/* ---- scene: poll ---- */
+.d-news .nw-views { align-self: center; display: flex; border: 2px solid var(--gold); background: rgba(4,10,28,.5); animation: nwFade .4s both .7s; }
+.d-news .nw-views button { min-height: 44px; padding: 6px 16px; border: 0; background: transparent; font: 800 15px/1 var(--f-num); color: #fff; }
+.d-news .nw-views button[aria-pressed="true"] { background: var(--paper); color: var(--ink); }
+.d-news .nw-pollgrid { display: grid; gap: 22px; align-items: start; }
+.d-news .nw-pollgrid[data-view="party"] .nw-pane-bloc, .d-news .nw-pollgrid[data-view="bloc"] .nw-pane-party { display: none; }
+.d-news .nw-pane { display: grid; gap: 12px; min-width: 0; }
+.d-news .nw-bars { display: grid; gap: 9px; }
+.d-news .nw-row { display: grid; grid-template-columns: 46px minmax(0, 1fr); grid-template-areas: "ph name" "ph bar"; align-items: end; row-gap: 2px; animation: nwFade .35s both; animation-delay: calc(var(--d0, .6s) + var(--i) * .08s); }
+.d-news .nw-row .nw-ph { grid-area: ph; width: 46px; border-width: 1.5px 1.5px 0; }
+.d-news .nw-row .nw-bar { grid-area: bar; }
+.d-news .nw-row-name { grid-area: name; min-width: 0; padding-inline-start: 8px; font: 800 14.5px/1.2 var(--f-num); color: #fff; text-shadow: 0 1px 4px rgba(0,0,0,.7); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.d-news .nw-row-name small { color: var(--muted); font: 600 12px var(--f-body); }
+.d-news .nw-bar { display: flex; align-items: center; justify-content: flex-end; height: 28px; width: calc(48px + (100% - 48px) * var(--w)); padding-inline: 8px; background: linear-gradient(180deg, #ffffff, #e6eaf3); color: var(--ink); font: 900 25px/1 var(--f-num); box-shadow: 0 4px 10px rgba(0,0,0,.35); animation: nwGrowW .95s cubic-bezier(.2,.8,.2,1) both; animation-delay: calc(var(--d0, .6s) + .1s + var(--i) * .08s); overflow: hidden; }
+.d-news .nw-row::after { content: ''; grid-column: 1 / -1; grid-row: 3; justify-self: start; width: calc(94px + (100% - 94px) * var(--w)); height: 4px; background: var(--gold-line); box-shadow: 0 2px 6px rgba(0,0,0,.4); animation: nwGrowW .95s cubic-bezier(.2,.8,.2,1) both; animation-delay: calc(var(--d0, .6s) + .1s + var(--i) * .08s); }
+.d-news .nw-piebox { display: grid; justify-items: center; gap: 10px; }
+.d-news .nw-pane-bloc .nw-sub { justify-self: start; }
+.d-news .nw-pie { width: min(100%, 300px); height: auto; overflow: visible; filter: drop-shadow(0 14px 26px rgba(0,0,0,.55)); }
+.d-news .nw-slice { transition: transform .6s cubic-bezier(.3,1.5,.5,1); }
+.d-news .nw-slab { opacity: 0; transition: opacity .45s, transform .6s cubic-bezier(.3,1.5,.5,1); }
+.d-news .nw-slab.is-on { opacity: 1; }
+.d-news .nw-slab text { font-family: var(--f-num); }
+.d-news .nw-slab .l { font-size: 15px; font-weight: 800; }
+.d-news .nw-slab .n { font-size: 50px; font-weight: 900; }
+.d-news .nw-slab.is-small .l { font-size: 11.5px; }
+.d-news .nw-slab.is-small .n { font-size: 32px; }
+.d-news .nw-legend { display: grid; gap: 4px; width: min(100%, 320px); }
+.d-news .nw-legend li { display: grid; grid-template-columns: 14px 1fr auto; gap: 8px; align-items: center; font: 700 14px var(--f-num); border-bottom: 1px solid rgba(183,195,224,.2); padding-block: 4px; }
+.d-news .nw-legend i { width: 14px; height: 14px; border: 2px solid var(--gold); }
+.d-news .nw-legend b { font: 900 18px var(--f-num); }
+
+/* ---- scene: election night ---- */
+.d-news .nw-studio { position: relative; padding: 6px 0 26px; perspective: 900px; perspective-origin: 50% -30%; }
+.d-news .nw-floorplane { position: absolute; z-index: 0; left: -30%; right: -30%; top: 48%; bottom: -40px; transform: rotateX(64deg); transform-origin: 50% 0;
+  background: repeating-linear-gradient(90deg, rgba(255,255,255,.07) 0 3px, transparent 3px 12.5%), linear-gradient(180deg, rgba(40,80,170,.55), rgba(10,26,63,.85) 60%, rgba(4,10,28,.0));
+  border-top: 2px solid rgba(217,180,90,.5); animation: nwFade .8s both .3s; }
+.d-news .nw-floor { position: relative; z-index: 1; display: grid; grid-template-columns: repeat(var(--n), minmax(0, 1fr)); gap: 10px; align-items: end; transform-style: preserve-3d; transform: rotateX(14deg); transform-origin: 50% 100%; }
+.d-news .nw-tile { position: relative; display: grid; transform-origin: 50% 100%; animation: nwRise .85s cubic-bezier(.2,.9,.3,1.15) both; animation-delay: calc(.6s + var(--i) * .24s); }
+.d-news .nw-tile::after { content: ''; position: absolute; left: -6%; right: -6%; bottom: -16px; height: 16px; background: radial-gradient(closest-side, rgba(246,225,154,.28), transparent); pointer-events: none; }
+.d-news .nw-you { justify-self: center; margin-bottom: 6px; padding: 3px 10px; background: var(--gold-grad); color: #241a00; font: 900 12.5px/1 var(--f-num); box-shadow: 0 0 16px rgba(246,225,154,.55); }
+.d-news .nw-tabn { display: grid; place-items: center; margin-inline: 7%; background: linear-gradient(180deg, var(--navy-tab), var(--night-1) 75%); border-top: 2px solid rgba(255,255,255,.3); color: #fff; font: 900 clamp(28px, 8.6cqi, 52px)/1.15 var(--f-num); box-shadow: 0 -4px 14px rgba(0,0,0,.35); }
+.d-news .nw-tile .nw-ph { aspect-ratio: 4 / 5; border-width: 0; }
+.d-news .nw-np { display: grid; place-items: center; min-height: 2.5em; padding: 4px 3px; background: var(--paper); color: var(--ink); font: 800 clamp(12px, 3.3cqi, 17px)/1.15 var(--f-num); text-align: center; text-wrap: balance; border-top: 4px solid; border-image: var(--gold-line) 1; }
+.d-news .nw-tile.is-me { filter: drop-shadow(0 0 12px rgba(246,225,154,.55)); }
+.d-news .nw-tile.is-me .nw-np { background: #fff4cf; }
+.d-news .nw-rest { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px 10px; }
+.d-news .nw-rest li { display: grid; grid-template-columns: 30px 1fr auto; align-items: center; gap: 8px; padding: 3px 8px 3px 3px; background: rgba(255,255,255,.08); border-bottom: 2px solid; border-image: var(--gold-line) 1; animation: nwSweep .5s both; animation-delay: calc(1.9s + var(--i) * .08s); }
+.d-news .nw-rest .nw-ph { width: 30px; border-width: 1px; }
+.d-news .nw-rest .nw-ph i { display: none; }
+.d-news .nw-rest span { font: 700 13.5px/1.15 var(--f-num); min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.d-news .nw-rest b { font: 900 21px/1 var(--f-num); }
+.d-news .nw-race { display: grid; gap: 10px; animation: nwFade .4s both 2.5s; }
+.d-news .nw-racebox { padding: 3px; background: var(--gold-line); box-shadow: 0 10px 24px rgba(0,0,0,.45); }
+.d-news .nw-racebar { position: relative; height: 48px; background: rgba(4,10,28,.92); }
+.d-news .nw-seg { position: absolute; top: 0; bottom: 0; display: flex; align-items: center; gap: 6px; padding-inline: 10px; overflow: hidden; white-space: nowrap; font: 800 14px/1 var(--f-num); width: calc(var(--w) / 120 * 100%); animation: nwGrowW 1.1s cubic-bezier(.2,.8,.2,1) both; }
+.d-news .nw-seg b { font: 900 25px/1 var(--f-num); }
+.d-news .nw-seg.s-r { inset-inline-start: 0; background: var(--paper); color: var(--ink); animation-delay: 2.7s; }
+.d-news .nw-seg.s-l { inset-inline-end: 0; background: var(--slate); color: #fff; justify-content: flex-end; animation-delay: 3s; }
+.d-news .nw-seg.s-m { inset-inline-start: calc(var(--at) / 120 * 100%); background: var(--paper-2); color: var(--ink); justify-content: center; padding-inline: 2px; animation-delay: 3.3s; border-inline: 2px solid var(--night-0); }
+.d-news .nw-mid { position: absolute; z-index: 2; top: -9px; bottom: -9px; inset-inline-start: 50%; border-inline-start: 3px dashed var(--gold-hi); }
+.d-news .nw-racebar.is-cross .nw-mid { animation: nwFlash .55s ease-in-out 3; }
+.d-news .nw-racehead { display: flex; justify-content: space-between; align-items: end; gap: 10px; flex-wrap: wrap; }
+.d-news .nw-61 { font: 800 13px/1.2 var(--f-num); color: var(--gold-hi); }
+.d-news .nw-race-cap { min-height: 1.5em; font: 700 15px/1.45 var(--f-body); opacity: 0; transform: translateY(6px); transition: opacity .4s, transform .4s; }
+.d-news .nw-race-cap.is-on { opacity: 1; transform: none; }
+.d-news .nw-race-cap b { color: var(--gold-hi); font-family: var(--f-num); }
+.d-news .nw-nightlow { display: grid; gap: 18px; }
+
+/* ---- scene: deal ---- */
+.d-news .nw-dealgrid { display: grid; gap: 18px; align-items: start; }
+.d-news .nw-meet, .d-news .nw-gov { display: grid; gap: 10px; min-width: 0; }
+.d-news .nw-l3 { display: grid; grid-template-columns: 56px 1fr auto; gap: 10px; align-items: center; padding: 8px 10px; background: linear-gradient(90deg, rgba(20,48,108,.96), rgba(10,26,63,.96)); border-bottom: 3px solid; border-image: var(--gold-line) 1; box-shadow: 0 10px 24px rgba(0,0,0,.4); animation: nwSlideIn .6s cubic-bezier(.2,.8,.2,1) both .5s; }
+.d-news .nw-l3 > div { display: grid; min-width: 0; }
+.d-news .nw-l3 b { font: 800 19px/1.15 var(--f-num); }
+.d-news .nw-l3 small { color: var(--muted); font-size: 13.5px; }
+.d-news .nw-pat { display: grid; justify-items: center; gap: 4px; }
+.d-news .nw-pat span { display: flex; gap: 5px; }
+.d-news .nw-pat i { width: 12px; height: 12px; border-radius: 50%; background: var(--gold-grad); box-shadow: 0 0 8px rgba(246,225,154,.6); transition: opacity .4s, transform .4s, box-shadow .4s; }
+.d-news .nw-pat i.is-used { opacity: .2; transform: scale(.65); box-shadow: none; }
+.d-news .nw-pat small { font-size: 11.5px; }
+.d-news .nw-quote { position: relative; display: grid; gap: 4px; padding: 10px 14px 12px; background: var(--paper); color: var(--ink); box-shadow: 0 10px 24px rgba(0,0,0,.4); animation: nwPlate .5s both .8s; }
+.d-news .nw-quote::before { content: ''; position: absolute; top: -9px; inset-inline-start: 22px; border: 9px solid transparent; border-top: 0; border-bottom-color: var(--paper); }
+.d-news .nw-sim { justify-self: start; font: 700 11px/1.2 var(--f-body); color: var(--ink-2); background: var(--paper-2); padding: 2px 6px; }
+.d-news .nw-say { min-height: 2.8em; font: 700 17px/1.4 var(--f-body); }
+.d-news .nw-say.is-typing::after { content: ''; display: inline-block; width: 2px; height: 1em; margin-inline-start: 2px; vertical-align: -2px; background: var(--ink); animation: nwBlink .8s steps(2) infinite; }
+.d-news .nw-offer { display: grid; gap: 7px; }
+.d-news .nw-oi { display: grid; grid-template-columns: 36px 1fr; gap: 1px 10px; align-items: center; padding: 7px 10px; background: var(--paper); color: var(--ink); border-bottom: 3px solid; border-image: var(--gold-line) 1; animation: nwSweep .5s cubic-bezier(.2,.8,.2,1) both; animation-delay: calc(1.2s + var(--i) * .1s); }
+.d-news .nw-oi-ic { grid-row: span 2; width: 36px; height: 36px; display: grid; place-items: center; background: linear-gradient(180deg, var(--navy-tab), var(--night-1)); color: #fff; }
+.d-news .nw-oi b { font: 800 15.5px/1.2 var(--f-num); }
+.d-news .nw-oi small { font: 600 12.5px/1.25 var(--f-body); color: var(--ink-2); }
+.d-news .nw-oi.is-new { background: #fff4cf; animation: nwFlip .75s cubic-bezier(.2,.8,.2,1) both; }
+.d-news .nw-why { display: grid; gap: 3px; padding: 9px 12px; background: rgba(255,255,255,.08); border-inline-start: 4px solid var(--gold); font: 600 14.5px/1.5 var(--f-body); animation: nwFade .45s both; }
+.d-news .nw-why b { color: var(--gold-hi); font: 800 13px/1.2 var(--f-num); }
+.d-news .nw-why.is-bad { border-color: var(--studio); }
+.d-news .nw-btns { display: flex; flex-wrap: wrap; gap: 8px; animation: nwFade .4s both 1.6s; }
+.d-news .nw-stamp { justify-self: start; font: 900 26px/1 var(--f-num); color: var(--gold-hi); border: 3px solid var(--gold-hi); padding: 6px 16px; transform: rotate(-6deg); box-shadow: 0 0 22px rgba(246,225,154,.4); animation: nwStamp .5s cubic-bezier(.2,1.6,.4,1) both; }
+.d-news .nw-coal { display: grid; gap: 8px; }
+.d-news .nw-coalbox { padding: 3px; background: var(--gold-line); }
+.d-news .nw-coalbar { position: relative; height: 34px; display: flex; background: rgba(4,10,28,.92); }
+.d-news .nw-coalbar > span { display: grid; place-items: center; height: 100%; width: calc(var(--s) / 120 * 100%); background: var(--pc); color: #fff; font: 800 13px/1 var(--f-num); text-shadow: 0 1px 3px rgba(0,0,0,.6); overflow: hidden; animation: nwGrowW .8s cubic-bezier(.2,.8,.2,1) both; animation-delay: calc(1.3s + var(--i) * .2s); border-inline-end: 2px solid var(--night-0); transition: background .5s; }
+.d-news .nw-coalbar > span.is-pend { background: repeating-linear-gradient(45deg, var(--pc) 0 6px, rgba(4,10,28,.3) 6px 12px); }
+.d-news .nw-c61 { position: absolute; z-index: 2; top: -9px; bottom: -9px; inset-inline-start: calc(61 / 120 * 100%); border-inline-start: 3px dashed var(--gold-hi); }
+.d-news .nw-coalbar.is-61 .nw-c61 { animation: nwFlash .55s ease-in-out 3; }
+.d-news .nw-coalcap { font: 700 14.5px/1.4 var(--f-body); }
+.d-news .nw-coalcap b { color: var(--gold-hi); font-family: var(--f-num); }
+.d-news .nw-board { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 7px; }
+.d-news .nw-post { display: grid; transform-origin: 50% 100%; animation: nwRise .6s cubic-bezier(.2,.9,.3,1.15) both; animation-delay: calc(1s + var(--i) * .06s); }
+.d-news .nw-post-n { padding: 6px 4px 5px; background: linear-gradient(180deg, var(--navy-tab), var(--night-1)); color: #fff; font: 800 13.5px/1.15 var(--f-num); text-align: center; }
+.d-news .nw-post-o { display: grid; place-items: center; min-height: 28px; padding: 3px 4px; background: var(--paper); color: var(--ink); font: 700 12px/1.15 var(--f-body); text-align: center; border-top: 4px solid var(--pc, var(--paper-2)); transition: background .4s, color .4s; }
+.d-news .nw-post.is-offer .nw-post-o { background: #fff4cf; color: #5a3d00; font-weight: 800; outline: 2px dashed var(--gold-lo); outline-offset: -5px; border-top-color: var(--gold); animation: nwGlow 1.6s ease-in-out infinite; }
+.d-news .nw-post.is-free .nw-post-o { background: rgba(255,255,255,.14); color: var(--muted); border-top-color: rgba(255,255,255,.3); }
+.d-news .nw-post.is-mine .nw-post-o { background: var(--mc); color: #fff; font-weight: 800; border-top-color: var(--gold-hi); animation: nwFlip .7s cubic-bezier(.2,.8,.2,1) both; }
+
+/* ---- the wipe between steps ---- */
+.d-news .nw > .nw-wipe { position: absolute; inset: 0; z-index: 9; pointer-events: none; background: linear-gradient(90deg, var(--night-1), var(--night-2) 55%, var(--navy-tab)); border-inline: 6px solid var(--gold); box-shadow: 0 0 40px rgba(246,225,154,.45); animation: nwWipe .82s cubic-bezier(.7,0,.3,1) both; }
+
+/* ---- wider screens ---- */
+@container scr (min-width: 720px) {
+  .d-news .nw { padding: 20px 28px 0; gap: 16px; }
+  .d-news .nw > .nw-ticker { margin-inline: -28px; height: 38px; }
+  .d-news .nw-spacer { flex-basis: 110px; }
+  .d-news .nw > .nw-knesset { width: min(100%, 700px); bottom: 38px; }
+  .d-news .nw-hud { grid-template-columns: 56px 1fr auto; grid-template-areas: "ph who st"; max-width: 760px; width: 100%; align-self: center; }
+  .d-news .nw-stats { border-top: 0; padding-top: 0; gap: 0; min-width: 330px; }
+  .d-news .nw-acts { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+  .d-news .nw-views { display: none; }
+  .d-news .nw-pollgrid { grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr); gap: 36px; }
+  .d-news .nw-pollgrid[data-view] .nw-pane { display: grid; }
+  .d-news .nw-bars { gap: 5px; }
+  .d-news .nw-row { grid-template-columns: 190px 34px minmax(0, 1fr); grid-template-areas: "name ph bar"; align-items: center; }
+  .d-news .nw-row .nw-ph { width: 34px; border-width: 1.5px; }
+  .d-news .nw-row .nw-ph i { display: none; }
+  .d-news .nw-row::after { grid-column: 2 / -1; grid-row: 2; width: calc(82px + (100% - 82px) * var(--w)); height: 3px; }
+  .d-news .nw-bar { height: 30px; font-size: 23px; }
+  .d-news .nw-row-name { padding-inline: 0 10px; text-align: start; font-size: 15px; }
+  .d-news .nw-row-name small { display: block; font-size: 12px; }
+  .d-news .nw-tile .nw-ph { aspect-ratio: 1; }
+  .d-news .nw-tabn { font-size: 44px; }
+  .d-news .nw-studio { padding-bottom: 18px; }
+  .d-news .nw-offer { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .d-news .nw-say { min-height: 1.5em; }
+  .d-news .nw-plate { font-size: 24px; }
+  .d-news .nw-pie { width: min(100%, 290px); }
+  .d-news .nw-floor { gap: 16px; padding-inline: 5%; }
+  .d-news .nw-nightlow { grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr); gap: 32px; align-items: end; }
+  .d-news .nw-dealgrid { grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: 28px; }
+  .d-news .nw-board { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .d-news .nw-head { gap: 6px; }
+}
+
+@keyframes nwFade { from { opacity: 0; } }
+@keyframes nwFadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes nwDrop { from { opacity: 0; transform: translateY(-14px) scale(1.04); letter-spacing: .06em; } }
+@keyframes nwRule { from { transform: scaleX(0); opacity: 0; } }
+@keyframes nwSpark { 0% { inset-inline-start: 0%; opacity: 0; } 12%, 80% { opacity: 1; } 100% { inset-inline-start: calc(100% - 70px); opacity: 0; } }
+@keyframes nwPlate { from { clip-path: inset(0 50%); } to { clip-path: inset(0 0); } }
+@keyframes nwShine { 0% { transform: translateX(130%); } 28%, 100% { transform: translateX(-130%); } }
+@keyframes nwShineOnce { from { transform: translateX(130%); } to { transform: translateX(-130%); } }
+@keyframes nwSweep { from { transform: translateX(70px); opacity: 0; } }
+@keyframes nwSlideIn { from { transform: translateX(110%); } }
+@keyframes nwGrowW { from { width: 0; } }
+@keyframes nwPop { from { transform: scale(.4) rotate(-8deg); opacity: 0; } }
+@keyframes nwSpin { to { transform: rotate(360deg); } }
+@keyframes nwRise { from { transform: translateY(60px) rotateX(-80deg); opacity: 0; } to { transform: none; opacity: 1; } }
+@keyframes nwFlip { from { transform: rotateX(90deg); } to { transform: none; } }
+@keyframes nwGlow { 50% { box-shadow: 0 0 16px rgba(246,225,154,.75); } }
+@keyframes nwPulse { 50% { opacity: .25; } }
+@keyframes nwCrawl { from { transform: translateX(0); } to { transform: translateX(50%); } }
+@keyframes nwWipe { 0% { transform: translateX(108%); } 44%, 56% { transform: translateX(0); } 100% { transform: translateX(-108%); } }
+@keyframes nwTwinkle { from { opacity: .35; } to { opacity: 1; } }
+@keyframes nwBeam { from { transform: translateX(-12%); } to { transform: translateX(12%); } }
+@keyframes nwFlash { 50% { border-color: #fff; box-shadow: 0 0 22px 6px rgba(246,225,154,.9); } }
+@keyframes nwStamp { from { transform: rotate(-6deg) scale(2.4); opacity: 0; } }
+@keyframes nwBump { 40% { transform: scale(1.35); } }
+@keyframes nwBlink { 50% { opacity: 0; } }
+
+</style>
+<main class="r3" id="r3" data-rec="news">
+  <header class="r3-head">
+    <h1>מהדורת בחירות: העיצוב החדש</h1>
+    <p>המשחק כגרפיקה של מהדורת בחירות, לפי צילומי המסך ששלחת: שמי לילה כחולים, הכנסת מוארת למטה, לוחות לבנים עם קו זהב ומספרים גדולים. ארבעה רגעים מהמשחק, ואפשר ללחוץ בתוכם. אמיתיים: ממוצע הסקרים של 2026 שהמשחק פותח ממנו ותוצאות 2022 הרשמיות. דוגמה בלבד: הפעולות, הסיכויים, הערכים וההצעה במו״מ. במקום תמונות המנהיגים יש צלליות, עד שתיפתח הגישה לוויקימדיה.</p>
+    <div class="r3-dirs" id="r3-dirs" role="tablist" aria-label="כיוון עיצוב"></div>
+    <div class="r3-bar">
+      <div class="r3-seg" id="r3-scenes" role="group" aria-label="מסך"></div>
+      <div class="r3-seg" role="group" aria-label="מכשיר"><button type="button" data-device="phone">טלפון</button><button type="button" data-device="desktop">מחשב</button></div>
+      <button type="button" id="r3-replay" class="r3-replay"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.34-5.66"/><path d="M20 4v4h-4"/></svg>להפעיל שוב</button>
+    </div>
+    <p class="r3-pitch" id="r3-pitch"></p>
+  </header>
+  <div class="r3-stage"><div class="r3-device" id="r3-device"></div></div>
+  <p class="r3-note">הדגמה בלבד: המסכים לא מחוברים למשחק. כשתאשר את הסגנון, אחיל אותו על כל מסכי המשחק בלי לשנות את החוקים.</p>
+</main>
+<script>
+// Round 3 demo shell: shared example data, the direction registry and the controls.
+// Every direction registers { id, nameHe, taglineHe, pitchHe, scenes: { action, night, deal } };
+// a scene is a function (root, ctx) that fills `root` and wires its own events.
+(function () {
+  'use strict';
+
+  // Example content. Seats and blocs of 2022 are the official results and poll26 is the game's real 2026 opening average; actions, chances, values and the offer are illustrative.
+  const DATA = {
+    year: 2022,
+    me: { id: 'nu', nameHe: 'המחנה הממלכתי', leaderHe: 'בני גנץ', initials: 'ב.ג', color: '#6aa8ff', ink: '#22489c' },
+    hud: { week: 2, weeks: 5, seats: 12, budgetHe: '9.4 מ׳ ₪', actionHe: 'פעולה 1 מתוך 2' },
+    actions: [
+      { id: 'iv', catHe: 'ריאיון טלוויזיוני', titleHe: 'ריאיון במהדורת הערב', subHe: 'שאלה קשה על הגיוס, שידור חי', chance: 64, win: 0.6, lose: 0.4, seatsWin: 1, seatsLose: 0 },
+      { id: 'field', catHe: 'פעילות שטח', titleHe: 'סיור בשוק בבאר שבע', subHe: 'מצלמות, לחיצות ידיים, בלי נאום', chance: 78, win: 0.3, lose: 0.1, seatsWin: 0, seatsLose: 0 },
+      { id: 'debate', catHe: 'עימות פוליטי', titleHe: 'עימות מול יש עתיד', subHe: 'מי מוביל את הגוש? שאלת הנהגה', chance: 41, win: 1.1, lose: 0.9, seatsWin: 1, seatsLose: -1 },
+    ],
+    // Official 2022 results (Central Elections Committee), the parties that passed the threshold.
+    night: [
+      { id: 'likud', nameHe: 'הליכוד', leaderHe: 'בנימין נתניהו', seats: 32, bloc: 'right', color: '#d62839' },
+      { id: 'ya', nameHe: 'יש עתיד', leaderHe: 'יאיר לפיד', seats: 24, bloc: 'change', color: '#1e56d6' },
+      { id: 'rz', nameHe: 'הציונות הדתית', leaderHe: "בצלאל סמוטריץ'", seats: 14, bloc: 'right', color: '#f08a24' },
+      { id: 'nu', nameHe: 'המחנה הממלכתי', leaderHe: 'בני גנץ', seats: 12, bloc: 'change', color: '#6aa8ff', me: true },
+      { id: 'shas', nameHe: 'ש״ס', leaderHe: 'אריה דרעי', seats: 11, bloc: 'right', color: '#b8461b' },
+      { id: 'utj', nameHe: 'יהדות התורה', leaderHe: 'יצחק גולדקנופף', seats: 7, bloc: 'right', color: '#ffb347' },
+      { id: 'yb', nameHe: 'ישראל ביתנו', leaderHe: 'אביגדור ליברמן', seats: 6, bloc: 'change', color: '#19a7c4' },
+      { id: 'raam', nameHe: 'רע״ם', leaderHe: 'מנסור עבאס', seats: 5, bloc: 'arab', color: '#84cc16' },
+      { id: 'hadash', nameHe: 'חד״ש–תע״ל', leaderHe: 'איימן עודה', seats: 5, bloc: 'arab', color: '#1f9d55' },
+      { id: 'labor', nameHe: 'העבודה', leaderHe: 'מרב מיכאלי', seats: 4, bloc: 'change', color: '#0d2b6e' },
+    ],
+    blocs: [
+      { id: 'right', nameHe: 'גוש נתניהו', seats: 64, color: '#d62839' },
+      { id: 'change', nameHe: 'גוש השינוי', seats: 46, color: '#2f6fe0' },
+      { id: 'arab', nameHe: 'המפלגות הערביות', seats: 10, color: '#1f9d55' },
+    ],
+    // The game's 2026 opening poll average (POLLS-2026-MODEL: the last poll of 7 institutes, 12–16.10.2026) and its bloc mapping.
+    poll26: {
+      sourceHe: 'ממוצע הסקרים שהמשחק פותח ממנו, 7 מכונים, 12–16.10.2026',
+      parties: [
+        { id: 'p01', nameHe: 'ישר!', leaderHe: 'גדי איזנקוט', seats: 23, bloc: 'change', color: '#1e56d6' },
+        { id: 'p02', nameHe: 'הליכוד', leaderHe: 'בנימין נתניהו', seats: 23, bloc: 'right', color: '#d62839' },
+        { id: 'p03', nameHe: 'ביחד', leaderHe: 'נפתלי בנט', seats: 13, bloc: 'change', color: '#6aa8ff' },
+        { id: 'p04', nameHe: 'הדמוקרטים', leaderHe: 'יאיר גולן', seats: 9, bloc: 'change', color: '#0d2b6e' },
+        { id: 'p05', nameHe: 'הרשימה המשותפת', leaderHe: "יוסף ג'בארין", seats: 9, bloc: 'arab', color: '#1f9d55' },
+        { id: 'p06', nameHe: 'עוצמה יהודית', leaderHe: 'איתמר בן גביר', seats: 8, bloc: 'right', color: '#e45b9a' },
+        { id: 'p07', nameHe: 'ישראל ביתנו', leaderHe: 'אביגדור ליברמן', seats: 8, bloc: 'change', color: '#19a7c4' },
+        { id: 'p08', nameHe: 'יהדות התורה', leaderHe: 'יעקב אשר', seats: 8, bloc: 'right', color: '#ffb347' },
+        { id: 'p09', nameHe: 'ש״ס', leaderHe: 'אריה דרעי', seats: 8, bloc: 'right', color: '#b8461b' },
+        { id: 'p10', nameHe: 'הציונות הדתית וזהות', leaderHe: "בצלאל סמוטריץ'", seats: 6, bloc: 'right', color: '#f08a24' },
+        { id: 'p11', nameHe: 'רע״ם', leaderHe: 'מנסור עבאס', seats: 5, bloc: 'arab', color: '#84cc16' },
+      ],
+      blocs: [
+        { id: 'arab', nameHe: 'המפלגות הערביות', seats: 14 },
+        { id: 'change', nameHe: 'גוש השינוי', seats: 53 },
+        { id: 'right', nameHe: 'גוש נתניהו', seats: 53 },
+      ],
+    },
+    deal: {
+      holder: { id: 'likud', nameHe: 'הליכוד', leaderHe: 'בנימין נתניהו', initials: 'ב.נ', color: '#d62839', recs: 64 },
+      dayHe: 'יום 6 מתוך 28',
+      keyHe: 'לפי המפתח מגיעים לכם 2 תיקים',
+      patience: 3,
+      offer: [
+        { kind: 'portfolio', labelHe: 'משרד הביטחון', tagHe: 'תיק בכיר' },
+        { kind: 'portfolio', labelHe: 'משרד הכלכלה', tagHe: 'תיק בינוני' },
+        { kind: 'clause', labelHe: 'יעדי גיוס הדרגתיים בלי סנקציות', tagHe: 'פשרה על הסעיף שדרשתם' },
+        { kind: 'committee', labelHe: 'ועדת החוץ והביטחון', tagHe: 'ראשות ועדה' },
+      ],
+      improved: { replaceIndex: 1, labelHe: 'משרד החינוך', tagHe: 'תיק בינוני' },
+      // Illustrative split of the 11 ministries by the proportional key: Likud 5, Shas 2, UTJ 1, you 2 (offered), 1 free.
+      board: [
+        { id: 'DEF', nameHe: 'הביטחון', owner: 'offer' },
+        { id: 'FOR', nameHe: 'החוץ', owner: 'likud' },
+        { id: 'FIN', nameHe: 'האוצר', owner: 'likud' },
+        { id: 'JUS', nameHe: 'המשפטים', owner: 'likud' },
+        { id: 'EDU', nameHe: 'החינוך', owner: null },
+        { id: 'POL', nameHe: 'ביטחון לאומי', owner: 'likud' },
+        { id: 'TRA', nameHe: 'התחבורה', owner: 'likud' },
+        { id: 'ECO', nameHe: 'הכלכלה', owner: 'offer' },
+        { id: 'INT', nameHe: 'הפנים', owner: 'shas' },
+        { id: 'HOU', nameHe: 'הבינוי והשיכון', owner: 'utj' },
+        { id: 'COM', nameHe: 'התקשורת', owner: 'shas' },
+      ],
+      swap: { from: 'ECO', to: 'EDU' },
+      signed: [{ id: 'likud', seats: 32 }, { id: 'shas', seats: 11 }, { id: 'utj', seats: 7 }],
+      linesHe: {
+        open: 'אנחנו רוצים אתכם בממשלה. זו הצעה רצינית.',
+        improve: 'נחליף את הכלכלה בחינוך. זו ההצעה האחרונה שלנו.',
+        final: 'אין לנו יותר מה להציע. קבלו או לכו.',
+        accept: 'סגרנו. נחתום עוד הערב.',
+        reject: 'חבל. נמשיך בלעדיכם.',
+      },
+    },
+  };
+
+  const dirs = [];
+  const R3 = { DATA, dirs, register: (d) => dirs.push(d) };
+  window.R3 = R3;
+
+  const SCENES = [
+    { id: 'action', nameHe: 'בחירת פעולה' },
+    { id: 'poll', nameHe: 'סקר שבועי' },
+    { id: 'night', nameHe: 'ערב הבחירות' },
+    { id: 'deal', nameHe: 'פגישת מו״מ' },
+  ];
+  const reduced = () => window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  let cleanups = [];
+  const state = { dir: null, scene: 'action', device: null };
+
+  function makeCtx(rootEl) {
+    let alive = true;
+    const ctx = {
+      data: DATA,
+      device: state.device,
+      reduced: reduced(),
+      later(fn, ms) { const t = setTimeout(() => { if (alive) fn(); }, ctx.reduced ? Math.min(ms, 60) : ms); cleanups.push(() => clearTimeout(t)); return t; },
+      every(fn, ms) { const t = setInterval(() => { if (alive) fn(); }, ms); cleanups.push(() => clearInterval(t)); return t; },
+      frame(fn) {
+        let id = 0; const t0 = performance.now();
+        const step = (now) => { if (!alive) return; if (fn(now - t0) !== false) id = requestAnimationFrame(step); };
+        id = requestAnimationFrame(step); cleanups.push(() => cancelAnimationFrame(id));
+      },
+      replay() { render(); },
+      root: rootEl,
+    };
+    cleanups.push(() => { alive = false; });
+    return ctx;
+  }
+
+  function render() {
+    cleanups.forEach((f) => { try { f(); } catch (e) { /* ignore */ } });
+    cleanups = [];
+    const d = dirs.find((x) => x.id === state.dir) || dirs[0];
+    if (!d) return;
+    const dev = document.getElementById('r3-device');
+    dev.className = 'r3-device ' + state.device;
+    dev.innerHTML = '';
+    const scr = document.createElement('div');
+    scr.className = 'scr d-' + d.id + ' dev-' + state.device;
+    scr.setAttribute('dir', 'rtl');
+    dev.appendChild(scr);
+    try { d.scenes[state.scene](scr, makeCtx(scr)); } catch (e) { scr.textContent = 'שגיאה בהדגמה: ' + e.message; console.error(e); }
+    document.querySelectorAll('.r3-dir').forEach((b) => b.setAttribute('aria-selected', String(b.dataset.id === d.id)));
+    document.querySelectorAll('[data-scene]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.scene === state.scene)));
+    document.querySelectorAll('[data-device]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.device === state.device)));
+    document.getElementById('r3-pitch').innerHTML = '<b>' + d.nameHe + ':</b> ' + d.pitchHe;
+    try { localStorage.setItem('r3', JSON.stringify(state)); } catch (e) { /* ignore */ }
+  }
+
+  function boot() {
+    const app = document.getElementById('r3');
+    const rec = app.dataset.rec;
+    const dirBox = document.getElementById('r3-dirs');
+    dirBox.hidden = dirs.length < 2;
+    dirBox.innerHTML = dirs.map((d) => '<button type="button" role="tab" class="r3-dir" data-id="' + d.id + '"><b>' + d.nameHe + '</b><small>' + d.taglineHe + '</small>' + (d.id === rec ? '<small class="rec">ההמלצה שלי</small>' : '') + '</button>').join('');
+    document.getElementById('r3-scenes').innerHTML = SCENES.map((s) => '<button type="button" data-scene="' + s.id + '">' + s.nameHe + '</button>').join('');
+    let saved = {};
+    try { saved = JSON.parse(localStorage.getItem('r3') || '{}') || {}; } catch (e) { saved = {}; }
+    const hash = (location.hash || '').slice(1);
+    state.dir = dirs.some((d) => d.id === hash) ? hash : dirs.some((d) => d.id === saved.dir) ? saved.dir : (rec || dirs[0].id);
+    state.scene = SCENES.some((s) => s.id === saved.scene) ? saved.scene : 'action';
+    state.device = saved.device === 'desktop' || saved.device === 'phone' ? saved.device : (window.innerWidth >= 900 ? 'desktop' : 'phone');
+    app.addEventListener('click', (e) => {
+      const b = e.target.closest('button');
+      if (!b || !app.contains(b) || b.closest('#r3-device')) return;
+      if (b.dataset.id) state.dir = b.dataset.id;
+      else if (b.dataset.scene) state.scene = b.dataset.scene;
+      else if (b.dataset.device) state.device = b.dataset.device;
+      else if (b.id !== 'r3-replay') return;
+      render();
+    });
+    render();
+  }
+  R3.boot = boot;
+})();
+
+// ===== מהדורת בחירות =====
+(function () {
+  'use strict';
+  const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  const MINUS = '−';
+  const num1 = (n) => Number(n).toFixed(1);
+  const ltr = (t) => '<bdi dir="ltr">' + t + '</bdi>';
+  const initials = (name) => {
+    const w = String(name || '').replace(/["'׳״]/g, '').split(/\s+/).filter(Boolean);
+    return w.length > 1 ? w[0][0] + '.' + w[w.length - 1][0] : (w[0] || '').slice(0, 1);
+  };
+  let uid = 0;
+
+  // ---- drawn pieces ----
+  const FIG = '<svg class="nw-fig" viewBox="0 0 60 64" preserveAspectRatio="xMidYMax meet" aria-hidden="true">' +
+    '<path class="s" d="M3 64c1.6-12.5 10.5-19 27-19s25.4 6.5 27 19z"/>' +
+    '<path class="l" d="M23.4 45.6 30 56.5 24.6 64H17zM36.6 45.6 30 56.5 35.4 64H43z"/>' +
+    '<path class="k" d="M25 35.5h10V46l-5 3.2-5-3.2z"/>' +
+    '<path class="c" d="M24.2 45.2 30 55.5l5.8-10.3-2.6-1.2L30 47.6 26.8 44z"/>' +
+    '<path class="t" d="M28.7 47.6h2.6l1.4 9.6L30 61l-2.7-3.8z"/>' +
+    '<ellipse class="h" cx="30" cy="24.5" rx="10.2" ry="12.2"/>' +
+    '</svg>';
+  const photo = (p, cls) => '<span class="nw-ph ' + (cls || '') + '" style="--pc:' + p.color + '">' + FIG + '<i>' + esc(initials(p.leaderHe)) + '</i></span>';
+
+  function knesset() {
+    const n = 20, x0 = 66, w = 268, step = w / n;
+    let cols = '', wins = '', refl = '';
+    for (let i = 0; i < n; i++) {
+      const x = x0 + i * step + 2.4;
+      const o = (0.5 + ((i * 7) % 5) / 10).toFixed(2);
+      const tw = i % 6 === 2 ? ' class="tw"' : i % 7 === 4 ? ' class="tw2"' : '';
+      wins += '<rect' + tw + ' x="' + x.toFixed(1) + '" y="35" width="' + (step - 4.8).toFixed(1) + '" height="36" opacity="' + o + '"/>';
+      refl += '<rect x="' + x.toFixed(1) + '" y="86" width="' + (step - 4.8).toFixed(1) + '" height="12" opacity="' + (o * 0.35).toFixed(2) + '"/>';
+    }
+    for (let i = 0; i <= n; i++) {
+      const x = x0 + i * step;
+      cols += '<rect x="' + (x - 2.4).toFixed(1) + '" y="31" width="4.8" height="43"/>';
+    }
+    let flags = '';
+    [14, 24, 34].forEach((fx, i) => {
+      flags += '<rect x="' + fx + '" y="' + (16 + i * 3) + '" width="1.1" height="' + (62 - i * 3) + '" fill="#6a7aa3"/>' +
+        '<g transform="translate(' + (fx + 1.1) + ' ' + (17 + i * 3) + ')"><rect width="11" height="7.5" fill="#eef3fb" opacity=".88"/><rect y="1" width="11" height=".9" fill="#2f63c9"/><rect y="5.6" width="11" height=".9" fill="#2f63c9"/></g>';
+    });
+    return '<svg class="nw-knesset" viewBox="0 0 400 100" aria-hidden="true">' +
+      '<defs><radialGradient id="nwKg" cx=".5" cy=".75" r=".6"><stop offset="0" stop-color="#ffcf7d" stop-opacity=".45"/><stop offset="1" stop-color="#ffcf7d" stop-opacity="0"/></radialGradient>' +
+      '<linearGradient id="nwKp" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3a4f86"/><stop offset="1" stop-color="#16244a"/></linearGradient></defs>' +
+      '<ellipse cx="200" cy="72" rx="210" ry="34" fill="url(#nwKg)"/>' +
+      flags +
+      '<rect x="58" y="31" width="284" height="43" fill="#0a1532"/>' +
+      '<g fill="#ffcb72">' + wins + '</g>' +
+      '<g fill="url(#nwKp)">' + cols + '</g>' +
+      '<rect x="44" y="22" width="312" height="10" fill="#0e1b40"/>' +
+      '<rect x="44" y="22" width="312" height="1.5" fill="#d9b45a" opacity=".7"/>' +
+      '<rect x="44" y="31" width="312" height="1.2" fill="#000" opacity=".5"/>' +
+      '<rect x="40" y="74" width="320" height="5" fill="#0d1838"/>' +
+      '<rect x="26" y="79" width="348" height="4" fill="#09122b"/>' +
+      '<rect x="14" y="83" width="372" height="3" fill="#071027"/>' +
+      '<g fill="#ffcb72">' + refl + '</g>' +
+      '</svg>';
+  }
+
+  function ticker(items) {
+    const run = items.map((t) => '<b style="font-weight:700">' + esc(t) + '</b>').join('<i aria-hidden="true">◆</i>') + '<i aria-hidden="true">◆</i>';
+    return '<div class="nw-ticker"><span class="nw-tag">מבזק</span><div class="nw-crawl"><div class="nw-crawl-in"><span>' + run + '</span><span aria-hidden="true">' + run + '</span></div></div></div>';
+  }
+
+  function head(o) {
+    return '<header class="nw-head">' +
+      '<p class="nw-kicker"><span class="nw-tag">' + esc(o.tag || 'מהדורת הבחירות') + '</span><span>' + esc(o.kicker) + '</span></p>' +
+      '<h2 class="nw-title">' + esc(o.title) + '</h2><i class="nw-rule" aria-hidden="true"></i>' +
+      (o.plate ? '<p class="nw-plate"><span>' + esc(o.plate) + '</span></p>' : '') +
+      (o.source ? '<p class="nw-source">' + esc(o.source) + '</p>' : '') +
+      '</header>';
+  }
+
+  function shell(root, inner, tick) {
+    root.innerHTML = '<div class="nw"><div class="nw-sky" aria-hidden="true"></div>' + knesset() + inner + '<div class="nw-spacer" aria-hidden="true"></div>' + ticker(tick) + '</div>';
+    return root.firstElementChild;
+  }
+
+  function setTicker(nw, items) {
+    const t = nw.querySelector('.nw-ticker');
+    if (t) t.outerHTML = ticker(items);
+  }
+
+  function countUp(ctx, el, from, to, ms, fmt) {
+    if (!el) return;
+    const f = fmt || ((v) => String(Math.round(v)));
+    if (ctx.reduced) { el.textContent = f(to); return; }
+    el.textContent = f(from);
+    ctx.frame((t) => {
+      const k = Math.min(1, t / ms);
+      el.textContent = f(from + (to - from) * (1 - Math.pow(1 - k, 3)));
+      return k < 1;
+    });
+  }
+
+  // The navy-and-gold wipe between steps; `mid` swaps the content while the screen is covered.
+  function wipe(nw, ctx, mid) {
+    if (ctx.reduced) { if (mid) mid(); return; }
+    const w = document.createElement('div');
+    w.className = 'nw-wipe';
+    w.setAttribute('aria-hidden', 'true');
+    nw.appendChild(w);
+    ctx.later(() => { if (mid) mid(); }, 370);
+    ctx.later(() => w.remove(), 840);
+  }
+
+  // ---- pie: slices drawn clockwise from the top, gold rims, then pushed apart ----
+  function pieSvg(slices, total) {
+    const gid = 'nwG' + (++uid);
+    let a = -Math.PI / 2 - (2 * Math.PI * slices[0].seats / total) / 2;
+    const geo = slices.map((s) => {
+      const span = 2 * Math.PI * s.seats / total;
+      const g = { a0: a, a1: a + span, mid: a + span / 2, share: s.seats / total };
+      a += span;
+      return g;
+    });
+    const label = (s, g) => {
+      const small = g.share < 0.2;
+      const r = small ? 74 : 50;
+      const x = Math.cos(g.mid) * r, y = Math.sin(g.mid) * r;
+      const lines = s.labelLines;
+      const ly = small ? [-30, -17] : [-44, -26];
+      return '<g class="nw-slab' + (small ? ' is-small' : '') + '" data-dx="' + (Math.cos(g.mid) * 9).toFixed(2) + '" data-dy="' + (Math.sin(g.mid) * 9).toFixed(2) + '" transform="translate(' + x.toFixed(1) + ' ' + y.toFixed(1) + ')" fill="' + s.ink + '">' +
+        lines.map((t, i) => '<text class="l" x="0" y="' + ly[i] + '" text-anchor="middle">' + esc(t) + '</text>').join('') +
+        '<text class="n" x="0" y="' + (small ? 12 : 22) + '" text-anchor="middle" data-to="' + s.seats + '">0</text></g>';
+    };
+    return {
+      geo,
+      html: '<svg class="nw-pie" viewBox="-128 -128 256 256" role="img" aria-label="' + esc(slices.map((s) => s.nameHe + ' ' + s.seats).join(', ')) + '">' +
+        '<defs><linearGradient id="' + gid + '" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f6e19a"/><stop offset=".45" stop-color="#d9b45a"/><stop offset="1" stop-color="#8f6a26"/></linearGradient></defs>' +
+        slices.map((s, i) => '<g class="nw-slice" data-i="' + i + '"><path fill="' + s.fill + '" stroke="url(#' + gid + ')" stroke-width="5" stroke-linejoin="round" d=""/></g>').join('') +
+        slices.map((s, i) => label(s, geo[i])).join('') +
+        '</svg>',
+    };
+  }
+  function playPie(ctx, svg, geo, delay) {
+    const R = 112;
+    const paths = svg.querySelectorAll('.nw-slice path');
+    const start = geo[0].a0, end = geo[geo.length - 1].a1;
+    const arc = (a0, a1) => {
+      if (a1 - a0 < 0.0005) return '';
+      const p0 = [Math.cos(a0) * R, Math.sin(a0) * R], p1 = [Math.cos(a1) * R, Math.sin(a1) * R];
+      return 'M0 0L' + p0[0].toFixed(2) + ' ' + p0[1].toFixed(2) + 'A' + R + ' ' + R + ' 0 ' + (a1 - a0 > Math.PI ? 1 : 0) + ' 1 ' + p1[0].toFixed(2) + ' ' + p1[1].toFixed(2) + 'Z';
+    };
+    const drawTo = (k) => {
+      const lim = start + (end - start) * k;
+      geo.forEach((g, i) => paths[i].setAttribute('d', arc(g.a0, Math.min(g.a1, lim))));
+    };
+    const burst = () => {
+      svg.querySelectorAll('.nw-slice').forEach((el, i) => {
+        const g = geo[i];
+        el.style.transform = 'translate(' + (Math.cos(g.mid) * 9).toFixed(2) + 'px,' + (Math.sin(g.mid) * 9).toFixed(2) + 'px)';
+      });
+      svg.querySelectorAll('.nw-slab').forEach((el, i) => {
+        ctx.later(() => {
+          el.classList.add('is-on');
+          const n = el.querySelector('.n');
+          countUp(ctx, n, 0, Number(n.dataset.to), 800);
+        }, ctx.reduced ? 0 : 120 + i * 160);
+      });
+    };
+    drawTo(0);
+    if (ctx.reduced) { drawTo(1); burst(); return; }
+    ctx.later(() => {
+      ctx.frame((t) => {
+        const k = Math.min(1, t / 1100);
+        drawTo(1 - Math.pow(1 - k, 2.4));
+        if (k >= 1) { burst(); return false; }
+        return true;
+      });
+    }, delay);
+  }
+
+  // ================= scene: choosing the week's action =================
+  const ICONS = {
+    portfolio: '<path d="M4 8h16v11H4z"/><path d="M9 8V6a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2M4 13h16"/>',
+    clause: '<path d="M7 3h8l4 4v14H7z"/><path d="M15 3v4h4M10 12h6M10 16h6"/>',
+    committee: '<path d="M3 9l9-5 9 5M5 10v8M10 10v8M14 10v8M19 10v8M3 20h18"/>',
+  };
+  const icon = (k) => '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + ICONS[k] + '</svg>';
+
+  const seatWord = (d) => d > 0 ? ltr('+' + d) + ' מנדט' : d < 0 ? ltr(MINUS + Math.abs(d)) + ' מנדט' : 'בלי שינוי';
+
+  function hud(D) {
+    return '<section class="nw-hud" aria-label="המצב שלכם">' + photo({ color: D.me.color, leaderHe: D.me.leaderHe }) +
+      '<div class="nw-who"><b>' + esc(D.me.nameHe) + '</b><small>' + esc(D.me.leaderHe) + '</small></div>' +
+      '<dl class="nw-stats"><div class="is-seats js-seats-box"><dt>מנדטים</dt><dd class="js-seats">' + D.hud.seats + '</dd></div>' +
+      '<div><dt>שבוע</dt><dd>' + D.hud.week + '<small> מתוך ' + D.hud.weeks + '</small></dd></div>' +
+      '<div><dt>תקציב</dt><dd style="font-size:20px">' + esc(D.hud.budgetHe) + '</dd></div></dl></section>';
+  }
+
+  function actsHtml(D, done) {
+    return '<ol class="nw-acts">' + D.actions.map((a, i) =>
+      '<li style="--i:' + i + '"><button type="button" class="nw-act' + (done && done.has(a.id) ? ' is-done' : '') + '" data-act="' + a.id + '" style="--i:' + i + '" aria-label="' + esc(a.catHe + ': ' + a.titleHe + '. סיכוי ' + a.chance + '%. בהצלחה +' + num1(a.win) + ' נקודות אחוז, בכישלון ' + MINUS + num1(a.lose) + '.') + '">' +
+        '<span class="nw-cat">' + esc(a.catHe) + '</span>' +
+        '<b class="nw-act-t">' + esc(a.titleHe) + '</b>' +
+        '<small class="nw-act-s">' + esc(a.subHe) + '</small>' +
+        '<span class="nw-odds">' +
+          '<span class="nw-chance"><b>' + a.chance + '%</b><span class="nw-meter" style="--c:' + (a.chance / 100) + '"><i></i></span><small>סיכוי להצליח</small></span>' +
+          '<span class="nw-vals"><span class="v-win">בהצלחה <b dir="ltr">+' + num1(a.win) + '</b></span><span class="v-lose">בכישלון <b dir="ltr">' + MINUS + num1(a.lose) + '</b></span><small>נקודות אחוז</small></span>' +
+        '</span>' +
+        '<span class="nw-seatline">במנדטים: <b>' + seatWord(a.seatsWin) + '</b> בהצלחה, <b>' + seatWord(a.seatsLose) + '</b> בכישלון</span>' +
+      '</button></li>').join('') + '</ol>';
+  }
+
+  function action(root, ctx) {
+    const D = ctx.data;
+    let seats = D.hud.seats;
+    const done = new Set();
+    const baseTick = ['שבוע ' + D.hud.week + ' מתוך ' + D.hud.weeks + ' בקמפיין', 'העימות של הערב: ' + D.me.nameHe + ' מול יש עתיד', 'התקציב שנשאר למטה: ' + D.hud.budgetHe, 'הסקר השבועי יתפרסם בסוף השבוע'];
+    const nw = shell(root,
+      head({ kicker: 'שבוע ' + D.hud.week + ' מתוך ' + D.hud.weeks, title: 'מה עושים השבוע?', plate: D.hud.actionHe }) +
+      hud(D) +
+      '<div class="nw-stage js-stage" aria-live="polite">' + actsHtml(D, done) + '</div>' +
+      '<p class="nw-note">דוגמה להמחשה: הפעולות, הסיכויים והערכים.</p>',
+      baseTick);
+    const stage = nw.querySelector('.js-stage');
+    const seatsEl = nw.querySelector('.js-seats');
+    const seatsBox = nw.querySelector('.js-seats-box');
+
+    function play(a) {
+      const win = Math.random() < a.chance / 100;
+      const d = win ? a.seatsWin : a.seatsLose;
+      const from = seats, to = seats + d;
+      seats = to;
+      done.add(a.id);
+      const word = win ? 'הצלחה' : 'כישלון';
+      const cls = d === 0 ? ' is-same' : '';
+      const cap = 'הסיכוי היה ' + a.chance + '%. ' + (win ? 'הפעולה הצליחה' : 'הפעולה נכשלה') + (d > 0 ? ', ו' + D.me.nameHe + ' עולה ל־' + to + ' מנדטים.' : d < 0 ? ', ו' + D.me.nameHe + ' יורדת ל־' + to + ' מנדטים.' : ', והמנדטים נשארים ' + to + '.');
+      wipe(nw, ctx, () => {
+        stage.innerHTML = '<section class="nw-flash ' + (win ? 'is-win' : 'is-lose') + cls + '">' +
+          '<div class="nw-flash-band"><span class="nw-tag">מבזק</span><b>' + word + ': ' + esc(a.titleHe) + '</b></div>' +
+          '<div class="nw-flash-main">' +
+            '<div class="nw-seatbox' + cls + '"><span class="nw-rays" aria-hidden="true"></span><span class="nw-seatnum" aria-hidden="true"><b class="js-from">' + from + '</b>' + (d !== 0 ? '<b class="js-to">' + to + '</b>' : '') + '</span><small>מנדטים</small><span class="nw-sr">' + to + ' מנדטים</span></div>' +
+            '<div class="nw-facts"><p class="nw-delta">' + (d === 0 ? 'בלי שינוי במנדטים' : seatWord(d)) + '</p>' +
+            '<p class="nw-pts">' + ltr(win ? '+' + num1(a.win) : MINUS + num1(a.lose)) + ' נקודות אחוז</p>' +
+            '<p class="nw-cap">' + esc(cap) + '</p></div>' +
+          '</div>' +
+          '<button type="button" class="nw-btn" data-back>חזרה לפעולות</button>' +
+        '</section>';
+        const box = stage.querySelector('.nw-seatbox');
+        const flash = stage.querySelector('.nw-flash');
+        ctx.later(() => {
+          box.classList.add('is-go');
+          if (d !== 0) { seatsBox.classList.remove('is-bump'); void seatsBox.offsetWidth; seatsBox.classList.add('is-bump'); }
+          countUp(ctx, seatsEl, from, to, 500);
+        }, 750);
+        ctx.later(() => flash.classList.add('is-shown'), 1150);
+        setTicker(nw, [word + ': ' + a.titleHe + '. ' + (d === 0 ? 'המנדטים נשארים ' + to : D.me.nameHe + ' ב־' + to + ' מנדטים')].concat(baseTick.slice(1)));
+      });
+    }
+
+    nw.addEventListener('click', (e) => {
+      const b = e.target.closest('[data-act]');
+      if (b) { play(D.actions.find((x) => x.id === b.dataset.act)); return; }
+      if (e.target.closest('[data-back]')) wipe(nw, ctx, () => { stage.innerHTML = actsHtml(D, done); });
+    });
+  }
+
+  // ================= scene: the weekly poll =================
+  function poll(root, ctx) {
+    const P = ctx.data.poll26;
+    const parties = P.parties.slice().sort((a, b) => b.seats - a.seats);
+    const max = parties[0].seats;
+    const BLOC_STYLE = { right: { fill: '#ffffff', ink: '#0c1f4d', lines: ['גוש', 'נתניהו'] }, change: { fill: '#6b6f8a', ink: '#ffffff', lines: ['גוש', 'השינוי'] }, arab: { fill: '#e4e7ee', ink: '#0c1f4d', lines: ['המפלגות', 'הערביות'] } };
+    const slices = P.blocs.map((b) => ({ nameHe: b.nameHe, seats: b.seats, fill: BLOC_STYLE[b.id].fill, ink: BLOC_STYLE[b.id].ink, labelLines: BLOC_STYLE[b.id].lines }));
+    const pie = pieSvg(slices, 120);
+    const bars = () => '<ol class="nw-bars">' + parties.map((p, i) =>
+      '<li class="nw-row" style="--i:' + i + ';--w:' + (p.seats / max).toFixed(3) + '"><span class="nw-row-name">' + esc(p.nameHe) + ' <small>' + esc(p.leaderHe) + '</small></span>' + photo(p) +
+      '<span class="nw-bar"><b class="js-n" data-to="' + p.seats + '" data-i="' + i + '">0</b></span></li>').join('') + '</ol>';
+    const nw = shell(root,
+      head({ tag: 'סקר שבועי', kicker: 'פתיחת הקמפיין, בחירות 2026', title: 'סקר שבועי', source: P.sourceHe }) +
+      '<div class="nw-views" role="group" aria-label="תצוגה"><button type="button" data-view="party" aria-pressed="true">לפי מפלגות</button><button type="button" data-view="bloc" aria-pressed="false">לפי גושים</button></div>' +
+      '<div class="nw-pollgrid" data-view="party">' +
+        '<section class="nw-pane nw-pane-party" aria-label="מנדטים לפי מפלגה"><div class="js-bars">' + bars() + '</div></section>' +
+        '<section class="nw-pane nw-pane-bloc" aria-label="חלוקה לגושים"><h3 class="nw-sub"><i class="nw-dash" aria-hidden="true"></i>חלוקה לגושים</h3>' +
+          '<div class="nw-piebox js-pie">' + pie.html + '</div>' +
+          '<p class="nw-note">שיוך הגושים לפי המשחק. 61 מנדטים לרוב.</p></section>' +
+      '</div>',
+      ['ממוצע הסקרים: ישר! והליכוד עם 23 מנדטים כל אחת', 'גוש נתניהו 53, גוש השינוי 53, המפלגות הערביות 14', 'אף גוש לא מגיע ל־61', 'הנתונים: הסקר האחרון של 7 מכונים, 12–16.10.2026']);
+    const grid = nw.querySelector('.nw-pollgrid');
+    const runBars = (delay) => {
+      nw.querySelectorAll('.js-bars .js-n').forEach((el) => {
+        ctx.later(() => countUp(ctx, el, 0, Number(el.dataset.to), 850), delay + Number(el.dataset.i) * 80);
+      });
+    };
+    const runPie = (delay) => playPie(ctx, nw.querySelector('.js-pie svg'), pie.geo, delay);
+    const wide = () => root.clientWidth >= 720;
+    runBars(750);
+    if (wide()) runPie(1700);
+    nw.addEventListener('click', (e) => {
+      const b = e.target.closest('button[data-view]');
+      if (!b || b.getAttribute('aria-pressed') === 'true') return;
+      const v = b.dataset.view;
+      wipe(nw, ctx, () => {
+        grid.dataset.view = v;
+        nw.querySelectorAll('[data-view]').forEach((x) => { if (x.tagName === 'BUTTON') x.setAttribute('aria-pressed', String(x.dataset.view === v)); });
+        if (v === 'bloc') {
+          nw.querySelector('.js-pie').innerHTML = pie.html;
+          runPie(150);
+        } else {
+          grid.style.setProperty('--d0', '.05s');
+          nw.querySelector('.js-bars').innerHTML = bars();
+          runBars(150);
+        }
+      });
+    });
+  }
+
+  // ================= scene: election night =================
+  function night(root, ctx) {
+    const D = ctx.data;
+    const parties = D.night.slice().sort((a, b) => b.seats - a.seats);
+    const wide = root.clientWidth >= 720;
+    const nTop = wide ? 6 : 4;
+    const top = parties.slice(0, nTop), rest = parties.slice(nTop);
+    const bloc = (id) => D.blocs.find((b) => b.id === id);
+    const R = bloc('right'), C = bloc('change'), A = bloc('arab');
+    const me = parties.find((p) => p.me);
+    const floor = '<div class="nw-studio"><div class="nw-floorplane" aria-hidden="true"></div><ol class="nw-floor" style="--n:' + nTop + '">' + top.map((p, i) =>
+      '<li class="nw-tile' + (p.me ? ' is-me' : '') + '" style="--i:' + i + '">' + (p.me ? '<span class="nw-you">אתם</span>' : '') +
+      '<span class="nw-tabn"><b class="js-n" data-to="' + p.seats + '" data-i="' + i + '">0</b></span>' + photo(p) +
+      '<span class="nw-np">' + esc(p.nameHe) + '</span></li>').join('') + '</ol></div>';
+    const restHtml = '<ul class="nw-rest" aria-label="שאר המפלגות">' + rest.map((p, i) =>
+      '<li style="--i:' + i + '">' + photo(p) + '<span>' + esc(p.nameHe) + '</span><b>' + p.seats + '</b></li>').join('') + '</ul>';
+    const race = '<section class="nw-race" aria-label="המרוץ ל־61">' +
+      '<div class="nw-racehead"><h3 class="nw-sub"><i class="nw-dash" aria-hidden="true"></i>המרוץ ל־61</h3><span class="nw-61">הקו המקווקו: 61, רוב בכנסת</span></div>' +
+      '<div class="nw-racebox"><div class="nw-racebar js-race">' +
+        '<span class="nw-seg s-r" style="--w:' + R.seats + '">' + esc(R.nameHe) + ' <b>' + R.seats + '</b></span>' +
+        '<span class="nw-seg s-m" style="--w:' + A.seats + ';--at:' + R.seats + '"><b style="font-size:16px">' + A.seats + '</b></span>' +
+        '<span class="nw-seg s-l" style="--w:' + C.seats + '"><b>' + C.seats + '</b> ' + esc(C.nameHe) + '</span>' +
+        '<i class="nw-mid" aria-hidden="true"></i></div></div>' +
+      '<p class="nw-race-cap js-cap">' + esc(R.nameHe) + ' עובר את <b>61</b> עם <b>' + R.seats + '</b> מנדטים. ' + esc(me.nameHe) + ' בגוש השינוי, שמגיע ל־' + C.seats + '.</p>' +
+      '</section>';
+    const nw = shell(root,
+      head({ tag: 'ערב הבחירות', kicker: 'הכנסת ה־25 · 1.11.2022', title: 'התוצאות הרשמיות', plate: 'כך הצביעה ישראל' }) +
+      floor + '<div class="nw-nightlow">' + restHtml + race + '</div>',
+      ['התוצאות הרשמיות של ועדת הבחירות המרכזית, הכנסת ה־25', 'הליכוד המפלגה הגדולה: ' + parties[0].seats + ' מנדטים', R.nameHe + ': ' + R.seats + ' מנדטים', me.nameHe + ': ' + me.seats + ' מנדטים']);
+    nw.querySelectorAll('.nw-floor .js-n').forEach((el) => {
+      ctx.later(() => countUp(ctx, el, 0, Number(el.dataset.to), 900), 1100 + Number(el.dataset.i) * 240);
+    });
+    ctx.later(() => nw.querySelector('.js-race').classList.add('is-cross'), 3900);
+    ctx.later(() => nw.querySelector('.js-cap').classList.add('is-on'), 4100);
+  }
+
+  // ================= scene: the negotiation meeting =================
+  function deal(root, ctx) {
+    const D = ctx.data, X = D.deal, H = X.holder, me = D.me;
+    const byId = (id) => D.night.find((p) => p.id === id);
+    const holder = { color: H.color, leaderHe: H.leaderHe };
+    const board = X.board.map((b) => ({ ...b }));
+    const offer = X.offer.slice();
+    const signed = X.signed.map((s) => ({ ...s, p: byId(s.id) }));
+    const signedSeats = signed.reduce((a, s) => a + s.seats, 0);
+    const mySeats = D.night.find((p) => p.me).seats;
+    let patience = X.patience, improved = false, over = false;
+
+    const postHtml = (b, i) => {
+      const own = b.owner === 'offer' ? null : b.owner === 'me' ? null : b.owner ? byId(b.owner) : null;
+      const cls = b.owner === 'offer' ? ' is-offer' : b.owner === 'me' ? ' is-mine' : !b.owner ? ' is-free' : '';
+      const text = b.owner === 'offer' ? 'מוצע לכם' : b.owner === 'me' ? me.nameHe : own ? own.nameHe : 'פנוי';
+      return '<li class="nw-post' + cls + '" data-post="' + b.id + '" style="--i:' + i + ';' + (own ? '--pc:' + own.color + ';' : '') + '--mc:' + me.ink + '"><span class="nw-post-n">' + esc(b.nameHe) + '</span><span class="nw-post-o">' + esc(text) + '</span></li>';
+    };
+    const offerHtml = (o, i, isNew) => '<li class="nw-oi' + (isNew ? ' is-new' : '') + '" style="--i:' + i + '"><span class="nw-oi-ic">' + icon(o.kind) + '</span><b>' + esc(o.labelHe) + '</b><small>' + esc(o.tagHe) + '</small></li>';
+    const patHtml = () => '<span>' + Array.from({ length: X.patience }, (_, i) => '<i class="' + (i >= patience ? 'is-used' : '') + '"></i>').join('') + '</span><small>סבלנות</small>';
+
+    const nw = shell(root,
+      head({ tag: 'המו״מ הקואליציוני', kicker: X.dayHe, title: 'הצעה מ' + H.nameHe, plate: X.keyHe, source: 'דוגמה להמחשה: ההצעה, חלוקת התיקים והשותפות שחתמו' }) +
+      '<div class="nw-dealgrid">' +
+        '<section class="nw-meet" aria-label="הפגישה">' +
+          '<div class="nw-l3">' + photo(holder) + '<div><b>' + esc(H.leaderHe) + '</b><small>' + esc(H.nameHe) + ' · מחזיק במנדט, ' + H.recs + ' ממליצים</small></div><div class="nw-pat js-pat" aria-label="סבלנות">' + patHtml() + '</div></div>' +
+          '<blockquote class="nw-quote"><span class="nw-sim">ציטוט מדומה</span><p class="nw-say js-say" aria-live="polite"></p></blockquote>' +
+          '<ol class="nw-offer js-offer" aria-label="ההצעה">' + offer.map((o, i) => offerHtml(o, i)).join('') + '</ol>' +
+          '<div class="js-why"></div>' +
+          '<div class="nw-btns js-btns"><button type="button" class="nw-btn" data-deal="improve">לבקש שיפור</button><button type="button" class="nw-btn is-primary" data-deal="accept">לחתום</button><button type="button" class="nw-btn" data-deal="reject">לסרב</button></div>' +
+        '</section>' +
+        '<section class="nw-gov" aria-label="הממשלה המתגבשת">' +
+          '<h3 class="nw-sub"><i class="nw-dash" aria-hidden="true"></i>הממשלה המתגבשת</h3>' +
+          '<div class="nw-coal"><div class="nw-coalbox"><div class="nw-coalbar js-coal" role="img" aria-label="' + signedSeats + ' מנדטים חתמו, ' + (signedSeats + mySeats) + ' איתכם">' +
+            signed.map((s, i) => '<span style="--s:' + s.seats + ';--pc:' + s.p.color + ';--i:' + i + '">' + s.seats + '</span>').join('') +
+            '<span class="is-pend js-mine" style="--s:' + mySeats + ';--pc:' + me.ink + ';--i:' + signed.length + '">' + mySeats + '</span><i class="nw-c61" aria-hidden="true"></i></div></div>' +
+            '<p class="nw-coalcap js-coalcap">חתמו <b>' + signedSeats + '</b> מנדטים: ' + signed.map((s) => esc(s.p.nameHe)).join(', ') + '. איתכם: <b>' + (signedSeats + mySeats) + '</b>, מעל 61.</p></div>' +
+          '<ol class="nw-board js-board">' + board.map(postHtml).join('') + '</ol>' +
+        '</section>' +
+      '</div>',
+      [X.dayHe + ' לגיבוש הממשלה', H.nameHe + ' מחזיק במנדט עם ' + H.recs + ' ממליצים', X.keyHe, 'דוגמה להמחשה']);
+
+    const sayEl = nw.querySelector('.js-say');
+    const whyEl = nw.querySelector('.js-why');
+    function say(text, delay) {
+      const full = text;
+      if (ctx.reduced) { sayEl.textContent = full; return; }
+      sayEl.textContent = '';
+      sayEl.classList.add('is-typing');
+      ctx.later(() => {
+        ctx.frame((t) => {
+          const n = Math.min(full.length, Math.floor(t / 26));
+          sayEl.textContent = full.slice(0, n);
+          if (n >= full.length) { sayEl.classList.remove('is-typing'); return false; }
+          return true;
+        });
+      }, delay || 0);
+    }
+    function why(title, text, bad, delay) {
+      ctx.later(() => { whyEl.innerHTML = '<div class="nw-why' + (bad ? ' is-bad' : '') + '"><b>' + esc(title) + '</b><span>' + esc(text) + '</span></div>'; }, ctx.reduced ? 0 : delay || 0);
+    }
+    const renderBoard = () => { nw.querySelector('.js-board').innerHTML = board.map(postHtml).join(''); nw.querySelectorAll('.js-board .nw-post').forEach((el) => { el.style.animation = 'none'; }); };
+    const setPat = () => { nw.querySelector('.js-pat').innerHTML = patHtml(); };
+
+    say(X.linesHe.open, 1300);
+    why('למה ההצעה הזו', 'לפי המפתח מגיעים לכם 2 תיקים. הליכוד מציע את הביטחון, שביקשתם ראשון, ותיק בינוני שעוד פנוי. את האוצר הוא שומר לעצמו.', false, 2900);
+
+    nw.addEventListener('click', (e) => {
+      const b = e.target.closest('[data-deal]');
+      if (!b || over) return;
+      const k = b.dataset.deal;
+      if (k === 'improve' && !improved) {
+        improved = true;
+        patience = Math.max(1, patience - 2);
+        setPat();
+        const i = X.improved.replaceIndex;
+        offer[i] = { kind: 'portfolio', labelHe: X.improved.labelHe, tagHe: X.improved.tagHe };
+        const items = nw.querySelectorAll('.js-offer .nw-oi');
+        items[i].outerHTML = offerHtml(offer[i], i, true);
+        board.find((x) => x.id === X.swap.from).owner = null;
+        board.find((x) => x.id === X.swap.to).owner = 'offer';
+        renderBoard();
+        b.disabled = true;
+        say(X.linesHe.improve);
+        why('למה הסכימו להחליף', 'החינוך והכלכלה באותה דרגה, והחינוך עוד פנוי, אז ההחלפה כמעט לא עולה להם. יותר מזה לא יתנו: נשארה להם סבלנות להצעה אחת לפני שיפנו לשותפה אחרת.', false, 900);
+        return;
+      }
+      if (k === 'accept') {
+        over = true;
+        board.forEach((x) => { if (x.owner === 'offer') x.owner = 'me'; });
+        renderBoard();
+        nw.querySelector('.js-btns').innerHTML = '<span class="nw-stamp">נחתם</span>';
+        nw.querySelector('.js-mine').classList.remove('is-pend');
+        const coal = nw.querySelector('.js-coal');
+        coal.classList.add('is-61');
+        nw.querySelector('.js-coalcap').innerHTML = 'יש רוב: <b>' + (signedSeats + mySeats) + '</b> מנדטים. ' + esc(me.nameHe) + ' מעבירה את הקואליציה את 61.';
+        say(X.linesHe.accept);
+        why('למה זה נסגר', 'קיבלתם 2 תיקים לפי המפתח, ' + (improved ? 'כולל החינוך שביקשתם, ' : '') + 'פשרה על הגיוס וראשות ועדה. בלי 12 המנדטים שלכם לליכוד אין 61, ולכן ההצעה הייתה רצינית.', false, 700);
+        if (root.clientWidth < 720) ctx.later(() => { const g = nw.querySelector('.nw-gov'); root.scrollTo({ top: g.offsetTop - 8, behavior: ctx.reduced ? 'auto' : 'smooth' }); }, 1500);
+        setTicker(nw, ['נחתם: ' + me.nameHe + ' מצטרפת לממשלה', 'הקואליציה: ' + (signedSeats + mySeats) + ' מנדטים', 'דוגמה להמחשה']);
+        return;
+      }
+      if (k === 'reject') {
+        over = true;
+        board.forEach((x) => { if (x.owner === 'offer') x.owner = null; });
+        renderBoard();
+        nw.querySelector('.js-btns').innerHTML = '';
+        say(X.linesHe.reject);
+        why('מה קורה עכשיו', 'דחיתם את ההצעה. בלי 12 המנדטים שלכם לליכוד יש ' + signedSeats + ', והוא יפנה עכשיו לשותפה אחרת. התיקים שהוצעו לכם חוזרים לשולחן.', true, 700);
+      }
+    });
+  }
+
+  window.R3.register({
+    id: 'news',
+    nameHe: 'מהדורת בחירות',
+    taglineHe: 'גרפיקה של מהדורת חדשות: כחול לילי, זהב ומספרים גדולים',
+    pitchHe: 'כל מסך הוא גרפיקה מהמהדורה: הסקר כפסים לבנים עם קו זהב, ערב הבחירות כרצפת אולפן, הגושים כעוגה מפורקת, ומבזק על כל תוצאה. לחצו על פעולה, על "לפי גושים" בסקר ועל הכפתורים במו״מ.',
+    scenes: { action, poll, night, deal },
+  });
+})();
+
+window.R3.boot();
+</script>
+
+</body></html>

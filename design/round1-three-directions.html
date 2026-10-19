@@ -1,0 +1,693 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>כיווני עיצוב: הדרך ל־61</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;800&amp;family=Frank+Ruhl+Libre:wght@500;700;900&amp;display=swap">
+<style>
+body{margin:0;background:#070d19}
+a{color:#f0cc76}a:hover{color:#ffe2a0}
+.demo{--bg:#0a1120;--s1:#121d33;--s2:#17243e;--s3:#1e2d4b;--line:rgba(220,230,255,.1);--line2:rgba(220,230,255,.2);--text:#eef2f9;--muted:#a7b1c6;--faint:#8792aa;--gold:#e4b84e;--gold-ink:#f0cc76;--green:#3ccf7e;--red:#ff6b5e;--me:#7c8cff;--brand:#3346a8;font-family:'Heebo',system-ui,sans-serif;color:var(--text);background:#070d19;min-height:100vh;box-sizing:border-box;padding:20px 16px 60px}
+.demo *{box-sizing:border-box}
+.disp{font-family:'Frank Ruhl Libre',serif}
+.ctl{max-width:1100px;margin:0 auto 18px;display:flex;flex-wrap:wrap;gap:14px 22px;align-items:flex-end;justify-content:space-between}
+.ctl h1{margin:0;font-size:22px;font-weight:800}
+.ctl p{margin:4px 0 0;color:var(--muted);font-size:14px}
+.groups{display:flex;flex-wrap:wrap;gap:12px 18px}
+.group{display:grid;gap:6px}
+.group > span{font-size:12px;font-weight:700;color:var(--faint)}
+.seg{display:flex;flex-wrap:wrap;gap:4px;padding:4px;border-radius:12px;background:var(--s1);border:1px solid var(--line)}
+.seg button{font:inherit;font-size:14px;font-weight:700;min-height:40px;padding:6px 14px;border-radius:9px;border:0;background:transparent;color:var(--muted);cursor:pointer}
+.seg button.on{background:var(--gold);color:#1a1406}
+.stage{display:flex;justify-content:center}
+.screen{container-type:inline-size;width:100%;background:var(--bg);border:1px solid var(--line2);border-radius:26px;overflow:hidden;position:relative}
+.stage.phone .screen{max-width:390px}
+.stage.desk .screen{max-width:1100px;border-radius:16px}
+.pad{padding:16px}
+@container (min-width:700px){.pad{padding:24px 32px}}
+.btn-gold{font:inherit;font-weight:800;font-size:16px;min-height:50px;padding:10px 26px;border-radius:999px;border:0;background:var(--gold);color:#1a1406;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px}
+.up{color:var(--green)}.down{color:var(--red)}
+.dot{width:10px;height:10px;border-radius:50%;display:inline-block;flex:none}
+.blocbar{position:relative;display:flex;height:16px;border-radius:8px;overflow:hidden;background:rgba(220,230,255,.12)}
+.blocbar span{height:100%}
+.mark61{position:absolute;top:-4px;bottom:-4px;width:2px;background:#fff;opacity:.9}
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:13px;color:var(--muted)}
+.legend b{color:var(--text);font-size:15px;margin-inline-start:4px}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.letter{width:34px;height:34px;border-radius:9px;background:var(--brand);color:#fff;font-weight:800;display:grid;place-items:center;font-size:18px;flex:none}
+
+/* ---- A: one focus ---- */
+.a-bar{display:flex;align-items:center;gap:10px;padding:10px 16px;border-bottom:1px solid var(--line);background:var(--s1)}
+.a-bar .who{display:grid;line-height:1.2;min-width:0;flex:1}
+.a-bar .who b{font-size:16px}
+.a-bar .who small{color:var(--muted);font-size:12px}
+.a-pill{font-size:13px;font-weight:700;padding:5px 10px;border-radius:999px;background:var(--s2);border:1px solid var(--line);white-space:nowrap}
+.a-menu{width:44px;height:44px;border-radius:12px;border:1px solid var(--line);background:transparent;color:var(--text);display:grid;place-items:center;cursor:pointer}
+.a-body{display:grid;gap:14px}
+@container (min-width:700px){.a-body{grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);align-items:start}.a-body > .wide{grid-column:1 / -1}}
+.a-eyebrow{margin:0;font-size:13px;font-weight:700;color:var(--gold-ink)}
+.a-title{margin:2px 0 0;font-size:28px;font-weight:700;line-height:1.15}
+.a-hero{padding:18px;border-radius:18px;background:linear-gradient(160deg,rgba(124,140,255,.18),var(--s1) 60%);border:1px solid var(--line2);display:grid;gap:8px}
+.a-big{display:flex;align-items:baseline;gap:10px}
+.a-big b{font-family:'Frank Ruhl Libre',serif;font-size:76px;line-height:.9;font-weight:900}
+.a-big span{font-size:20px;font-weight:700;color:var(--muted)}
+.a-sub{margin:0;font-size:16px;color:var(--text)}
+.a-line{margin:0;font-size:15px;color:var(--muted);line-height:1.5}
+.a-card{padding:14px 16px;border-radius:16px;background:var(--s1);border:1px solid var(--line);display:grid;gap:10px}
+.a-card h3{margin:0;font-size:15px;font-weight:800}
+.a-card p{margin:0;color:var(--muted);font-size:15px;line-height:1.5}
+.a-rows{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.a-rows li{display:flex;align-items:center;gap:10px;font-size:15px}
+.a-rows li .grow{flex:1;min-width:0}
+.a-rows li b{font-variant-numeric:tabular-nums}
+.a-ic{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;flex:none}
+.a-ic.ok{background:rgba(60,207,126,.18);color:var(--green)}
+.a-ic.bad{background:rgba(255,107,94,.18);color:var(--red)}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:999px;background:var(--s2);border:1px solid var(--line);font-size:14px;font-weight:700}
+.a-more{border-radius:14px;background:var(--s1);border:1px solid var(--line)}
+.a-more summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;min-height:50px;padding:0 16px;font-weight:700;font-size:15px}
+.a-more summary::-webkit-details-marker{display:none}
+.a-more summary small{color:var(--faint);font-weight:500}
+.a-more[open] summary{border-bottom:1px solid var(--line)}
+.a-more .in{padding:10px 16px 14px}
+.mini{width:100%;border-collapse:collapse;font-size:14px}
+.mini td{padding:7px 0;border-bottom:1px solid var(--line)}
+.mini td.n{text-align:left;font-variant-numeric:tabular-nums;font-weight:700;width:56px}
+.mini tr.me td{color:var(--gold-ink)}
+.a-cta{position:sticky;bottom:0;padding:12px 16px 16px;background:linear-gradient(0deg,var(--bg) 70%,rgba(10,17,32,0));display:flex;align-items:center;justify-content:space-between;gap:12px}
+.a-cta small{color:var(--muted);font-size:13px}
+.a-cta .btn-gold{flex:1}
+@container (min-width:700px){.a-cta{justify-content:flex-start}.a-cta .btn-gold{flex:none;min-width:240px}}
+.flow{display:grid;grid-template-columns:minmax(0,1fr) 120px 64px;gap:8px;align-items:center;font-size:14px}
+.flow .track{height:8px;border-radius:4px;background:rgba(220,230,255,.1);overflow:hidden}
+.flow .track span{display:block;height:100%;border-radius:4px}
+.flow b{text-align:left;font-variant-numeric:tabular-nums}
+.quote{margin:0;font-size:14px;color:var(--muted);line-height:1.55}
+
+/* ---- B: broadcast ---- */
+.b-strip{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;padding:10px 16px;background:#0d1426;border-bottom:3px solid #d62839}
+.b-live{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:4px;background:#d62839;color:#fff;font-weight:800;font-size:13px}
+.b-strip b{font-size:14px}
+.b-strip small{color:var(--muted);font-size:13px;margin-inline-start:auto}
+.b-tick{display:flex;gap:10px;align-items:center;padding:8px 16px;background:var(--gold);color:#1a1406;font-weight:700;font-size:14px;overflow:hidden;white-space:nowrap}
+.b-tick span{font-weight:900}
+.b-head{margin:0;font-family:'Frank Ruhl Libre',serif;font-weight:900;font-size:34px;line-height:1.1}
+@container (min-width:700px){.b-head{font-size:46px}}
+.b-deck{margin:8px 0 0;font-size:17px;color:var(--muted)}
+.b-boxes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.b-box{padding:12px;border-radius:6px;background:var(--s2);border-top:4px solid var(--me);display:grid;gap:2px}
+.b-box small{font-size:12px;font-weight:700;color:var(--muted)}
+.b-box b{font-family:'Frank Ruhl Libre',serif;font-size:34px;line-height:1;font-weight:900}
+@container (min-width:700px){.b-box b{font-size:46px}}
+.b-section{display:grid;gap:10px}
+.b-label{margin:0;font-size:13px;font-weight:800;letter-spacing:.02em;color:var(--gold-ink)}
+.b-blocs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+@container (min-width:700px){.b-blocs{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.b-bloc{padding:12px;border-radius:6px;background:var(--s1);display:grid;gap:2px;border-inline-start:6px solid var(--line2)}
+.b-bloc b{font-family:'Frank Ruhl Libre',serif;font-size:38px;line-height:1;font-weight:900}
+.b-bloc small{font-size:13px;color:var(--muted)}
+.b-anchor{display:grid;grid-template-columns:52px minmax(0,1fr);gap:12px;align-items:start;padding:14px;border-radius:6px;background:var(--s1);border:1px solid var(--line)}
+.b-anchor .face{width:52px;height:52px;border-radius:50%;background:var(--gold);color:#1a1406;display:grid;place-items:center;font-weight:900;font-size:20px}
+.b-anchor p{margin:4px 0 0;font-size:16px;line-height:1.5}
+.b-anchor small{color:var(--muted);font-size:12px}
+.b-quotes{display:grid;gap:8px}
+@container (min-width:700px){.b-quotes{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.b-q{padding:14px;border-radius:6px;background:var(--s1);display:grid;gap:8px;border-top:4px solid var(--line2)}
+.b-q.ok{border-top-color:var(--green)}.b-q.bad{border-top-color:var(--red)}
+.b-q p{margin:0;font-size:17px;line-height:1.45;font-family:'Frank Ruhl Libre',serif}
+.b-q footer{display:flex;justify-content:space-between;font-weight:800;font-size:14px}
+.b-movers{display:grid;gap:8px;grid-template-columns:repeat(2,minmax(0,1fr))}
+.b-mover{display:flex;align-items:center;gap:8px;padding:12px;border-radius:6px;background:var(--s1);font-weight:800;font-size:16px}
+.b-mover b{margin-inline-start:auto;font-family:'Frank Ruhl Libre',serif;font-size:26px}
+.b-cta{display:flex;justify-content:center;padding:6px 0 4px}
+
+/* ---- C: tidy board ---- */
+.c-strip{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1px;background:var(--line);border-bottom:1px solid var(--line)}
+@container (min-width:700px){.c-strip{grid-template-columns:minmax(0,1.6fr) repeat(4,minmax(0,1fr))}}
+.c-strip > div{background:var(--s1);padding:10px 14px;display:grid;gap:1px;min-width:0}
+.c-strip .party{grid-column:1 / -1;display:flex;align-items:center;gap:10px}
+@container (min-width:700px){.c-strip .party{grid-column:auto}}
+.c-strip small{font-size:12px;color:var(--muted);font-weight:700}
+.c-strip b{font-size:20px;font-weight:800;font-variant-numeric:tabular-nums}
+.c-strip .party b{font-size:16px}
+.c-tabs{display:flex;gap:2px;padding:0 12px;border-bottom:1px solid var(--line);overflow-x:auto}
+.c-tabs button{font:inherit;font-weight:700;font-size:14px;min-height:46px;padding:0 14px;border:0;border-bottom:3px solid transparent;background:transparent;color:var(--muted);cursor:pointer;white-space:nowrap}
+.c-tabs button.on{color:var(--text);border-bottom-color:var(--gold)}
+.c-grid{display:grid;gap:12px}
+@container (min-width:700px){.c-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.c-grid > .wide{grid-column:1 / -1}}
+.c-card{border-radius:10px;background:var(--s1);border:1px solid var(--line);overflow:hidden}
+.c-card > h3{margin:0;padding:10px 14px;font-size:13px;font-weight:800;color:var(--muted);border-bottom:1px solid var(--line);display:flex;justify-content:space-between}
+.c-card > .in{padding:12px 14px;display:grid;gap:10px}
+.c-table{width:100%;border-collapse:collapse;font-size:14px}
+.c-table th{font-size:12px;color:var(--faint);font-weight:700;text-align:right;padding:8px 14px;border-bottom:1px solid var(--line)}
+.c-table th.n,.c-table td.n{text-align:left;font-variant-numeric:tabular-nums;width:64px}
+.c-table td{padding:8px 14px;border-bottom:1px solid var(--line)}
+.c-table tr:last-child td{border-bottom:0}
+.c-table tr.me td{background:rgba(124,140,255,.1)}
+.c-name{display:inline-flex;align-items:center;gap:8px}
+.c-list{list-style:none;margin:0;padding:0;display:grid;gap:8px;font-size:14px;color:var(--muted);line-height:1.45}
+.c-list li{display:grid;grid-template-columns:18px minmax(0,1fr);gap:8px}
+.c-list li::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--gold);margin-top:8px}
+.c-kv{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px 12px;font-size:14px}
+.c-kv span{color:var(--muted)}
+.c-kv b{text-align:left;font-variant-numeric:tabular-nums}
+.c-foot{display:flex;flex-wrap:wrap;gap:10px;justify-content:space-between;align-items:center;padding:12px 16px;border-top:1px solid var(--line);background:var(--s1)}
+.c-foot small{color:var(--faint);font-size:12px}
+.c-foot .btn-gold{min-height:46px;font-size:15px}
+.c-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:6px 12px}
+.c-head h2{margin:0;font-size:20px;font-weight:800}
+.c-head small{color:var(--muted);font-size:13px}
+</style>
+</helmet>
+<div class="demo" dir="rtl">
+  <header class="ctl">
+    <div>
+      <h1>שלושה כיווני עיצוב, אותם מסכים</h1>
+      <p>הנתונים מתוך משחק בדיקה: תקווה חדשה, בחירות 2021, שבוע 1.</p>
+    </div>
+    <div class="groups">
+      <div class="group">
+        <span>כיוון</span>
+        <div class="seg" role="group" aria-label="כיוון עיצוב">
+          <button type="button" class="{{dirA}}" aria-pressed="{{pA}}" onClick="{{setA}}">א · מוקד אחד</button>
+          <button type="button" class="{{dirB}}" aria-pressed="{{pB}}" onClick="{{setB}}">ב · מהדורת חדשות</button>
+          <button type="button" class="{{dirC}}" aria-pressed="{{pC}}" onClick="{{setC}}">ג · לוח מסודר</button>
+        </div>
+      </div>
+      <div class="group">
+        <span>מסך</span>
+        <div class="seg" role="group" aria-label="מסך">
+          <button type="button" class="{{scrRoom}}" aria-pressed="{{pRoom}}" onClick="{{setRoom}}">חדר המצב</button>
+          <button type="button" class="{{scrResult}}" aria-pressed="{{pResult}}" onClick="{{setResult}}">תוצאת פעולה</button>
+          <button type="button" class="{{scrWeek}}" aria-pressed="{{pWeek}}" onClick="{{setWeek}}">סיכום שבוע</button>
+        </div>
+      </div>
+      <div class="group">
+        <span>תצוגה</span>
+        <div class="seg" role="group" aria-label="תצוגה">
+          <button type="button" class="{{devPhone}}" aria-pressed="{{pPhone}}" onClick="{{setPhone}}">טלפון</button>
+          <button type="button" class="{{devDesk}}" aria-pressed="{{pDesk}}" onClick="{{setDesk}}">מחשב</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="stage {{deviceClass}}">
+    <div class="screen">
+
+      <!-- ============ A: one focus ============ -->
+      <sc-if value="{{isA}}" hint-placeholder-val="{{ true }}">
+        <div class="a-bar">
+          <span class="letter" aria-hidden="true">ת</span>
+          <div class="who"><b>תקווה חדשה</b><small>בראשות גדעון סער</small></div>
+          <span class="a-pill">שבוע 1/5</span>
+          <span class="a-pill">{{budget}}</span>
+          <button type="button" class="a-menu" aria-label="תפריט">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+          </button>
+        </div>
+
+        <sc-if value="{{isRoom}}" hint-placeholder-val="{{ true }}">
+          <div class="pad a-body">
+            <div class="wide">
+              <p class="a-eyebrow">חדר המצב · פתיחת הקמפיין</p>
+              <h2 class="a-title disp">איפה אתם עומדים</h2>
+            </div>
+            <div class="a-hero">
+              <div class="a-big"><b>6</b><span>מנדטים</span></div>
+              <p class="a-sub">4.7% תמיכה · מעל אחוז החסימה</p>
+              <p class="a-line">הבסיס שלכם: 115 אלף מצביעים. בגוש שלכם יש עוד 413 אלף שאפשר לשכנע.</p>
+            </div>
+            <div class="a-card">
+              <h3>מי קרוב ל־61</h3>
+              <div class="blocbar" role="img" aria-label="גוש נתניהו 52, גוש השינוי 51, המפלגות הערביות 10, לא משויכת 7">
+                <sc-for list="{{blocs}}" as="b" hint-placeholder-count="4"><span style="{{b.seg}}"></span></sc-for>
+                <i class="mark61" style="right: 50.8%"></i>
+              </div>
+              <div class="legend">
+                <sc-for list="{{blocs}}" as="b" hint-placeholder-count="4"><span><i class="dot" style="{{b.bg}}"></i>{{b.n}}<b>{{b.s}}</b></span></sc-for>
+              </div>
+            </div>
+            <div class="a-card">
+              <h3>השבוע</h3>
+              <p>שתי פעולות. הראשונה היא ריאיון טלוויזיוני, חובה בפתיחת הקמפיין.</p>
+            </div>
+            <div class="wide" style="display: grid; gap: 8px">
+              <details class="a-more">
+                <summary>כל הרשימות <small>13 מעל החסימה</small></summary>
+                <div class="in">
+                  <table class="mini"><tbody>
+                    <sc-for list="{{roomParties}}" as="p" hint-placeholder-count="13">
+                      <tr class="{{p.row}}"><td><span class="c-name"><i class="dot" style="{{p.bg}}"></i>{{p.n}}</span></td><td class="n">{{p.s}}</td></tr>
+                    </sc-for>
+                  </tbody></table>
+                </div>
+              </details>
+              <details class="a-more">
+                <summary>סקרים <small>3 מכונים בדיוניים</small></summary>
+                <div class="in">
+                  <table class="mini"><tbody>
+                    <tr><td>פאנל רקע</td><td class="n">6.9%</td></tr>
+                    <tr><td>סקרי מגדלור</td><td class="n">4.3%</td></tr>
+                    <tr><td>מכון אלומה</td><td class="n">5.1%</td></tr>
+                  </tbody></table>
+                </div>
+              </details>
+              <details class="a-more">
+                <summary>תיק המפלגה <small>יריבות ושותפות</small></summary>
+                <div class="in">
+                  <table class="mini"><tbody>
+                    <tr><td>היריבה המרכזית</td><td class="n" style="width: auto">הליכוד</td></tr>
+                    <tr><td>המתחרה על המצביעים</td><td class="n" style="width: auto">יש עתיד</td></tr>
+                    <tr><td>השותפה הקרובה</td><td class="n" style="width: auto">ישראל ביתנו</td></tr>
+                    <tr><td>הסכם עודפים</td><td class="n" style="width: auto">ימינה</td></tr>
+                  </tbody></table>
+                </div>
+              </details>
+            </div>
+          </div>
+          <div class="a-cta"><button type="button" class="btn-gold">להתחיל את השבוע</button></div>
+        </sc-if>
+
+        <sc-if value="{{isResult}}" hint-placeholder-val="{{ false }}">
+          <div class="pad a-body">
+            <div class="wide">
+              <p class="a-eyebrow">פעולה 1 מתוך 2 · ריאיון טלוויזיוני</p>
+              <h2 class="a-title disp">ריאיון בערוץ 20</h2>
+            </div>
+            <div class="a-hero">
+              <div class="a-big"><b class="down">−0.2%</b><span>תמיכה</span></div>
+              <p class="a-sub">מ־4.7% ל־4.5%. נשארתם על 6 מנדטים.</p>
+            </div>
+            <div class="a-card">
+              <h3>מה קרה בריאיון</h3>
+              <ul class="a-rows">
+                <li><span class="a-ic ok"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.2 4.2L19 7"/></svg></span><span class="grow">התשובה הראשונה הצליחה</span><b class="up">+0.5</b></li>
+                <li><span class="a-ic bad"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></span><span class="grow">שאלת ההמשך נכשלה</span><b class="down">−0.7</b></li>
+              </ul>
+              <details class="a-more" style="background: var(--s2)">
+                <summary>מה אמרתם</summary>
+                <div class="in" style="display: grid; gap: 10px">
+                  <p class="quote">"הבוחרים שלנו יודעים טוב מאוד בעד מה: התוכנית שלנו מפורסמת ומדברים עליה בכל כנס. אם התקשורת מעדיפה לדבר על בנימין נתניהו, זו בחירה שלה."</p>
+                  <p class="quote">"אנחנו לא מחכים להצעות מהליכוד. הבוחרים שלנו יודעים לאיזה גוש אנחנו שייכים, ושם נישאר גם ביום שאחרי."</p>
+                </div>
+              </details>
+            </div>
+            <div class="a-card">
+              <h3>לאן הלכו המצביעים</h3>
+              <sc-for list="{{flows}}" as="f" hint-placeholder-count="3">
+                <div class="flow"><span>{{f.n}}</span><span class="track"><span style="{{f.bar}}"></span></span><b class="{{f.cls}}">{{f.v}}</b></div>
+              </sc-for>
+            </div>
+          </div>
+          <div class="a-cta"><small>נותרו ₪9 מ׳</small><button type="button" class="btn-gold">לפעולה השנייה</button></div>
+        </sc-if>
+
+        <sc-if value="{{isWeek}}" hint-placeholder-val="{{ false }}">
+          <div class="pad a-body">
+            <div class="wide">
+              <p class="a-eyebrow">סיכום שבוע 1 מתוך 5</p>
+              <h2 class="a-title disp">שבוע של עלייה</h2>
+            </div>
+            <div class="a-hero">
+              <div class="a-big"><b class="up">+0.3%</b><span>השבוע</span></div>
+              <p class="a-sub">5.0% תמיכה · 6 מנדטים</p>
+              <p class="a-line">הצירוף לרשימה עשה את ההבדל, והריאיון עלה לכם מעט.</p>
+            </div>
+            <div class="a-card">
+              <h3>הפעולות שלכם</h3>
+              <ul class="a-rows">
+                <li><span class="grow">צירוף טליה וקנין</span><b class="up">+0.6</b></li>
+                <li><span class="grow">ריאיון בערוץ 20</span><b class="down">−0.2</b></li>
+              </ul>
+            </div>
+            <div class="a-card">
+              <h3>מי זז השבוע</h3>
+              <div class="chips">
+                <span class="chip"><i class="dot" style="background: #1e56d6"></i>יש עתיד <b class="up">+1</b></span>
+                <span class="chip"><i class="dot" style="background: #84cc16"></i>רע״ם <b class="up">+1</b></span>
+                <span class="chip"><i class="dot" style="background: #19a7c4"></i>ישראל ביתנו <b class="down">−1</b></span>
+                <span class="chip"><i class="dot" style="background: #1f9d55"></i>הרשימה המשותפת <b class="down">−1</b></span>
+              </div>
+            </div>
+            <div class="a-card">
+              <h3>מי קרוב ל־61</h3>
+              <div class="blocbar" role="img" aria-label="גוש נתניהו 52, גוש השינוי 51, המפלגות הערביות 10, לא משויכת 7">
+                <sc-for list="{{blocs}}" as="b" hint-placeholder-count="4"><span style="{{b.seg}}"></span></sc-for>
+                <i class="mark61" style="right: 50.8%"></i>
+              </div>
+              <div class="legend">
+                <sc-for list="{{blocs}}" as="b" hint-placeholder-count="4"><span><i class="dot" style="{{b.bg}}"></i>{{b.n}}<b>{{b.s}}</b></span></sc-for>
+              </div>
+            </div>
+            <div class="wide" style="display: grid; gap: 8px">
+              <details class="a-more">
+                <summary>כל הרשימות <small>מנדטים ושינוי</small></summary>
+                <div class="in">
+                  <table class="mini"><tbody>
+                    <sc-for list="{{weekParties}}" as="p" hint-placeholder-count="13">
+                      <tr class="{{p.row}}"><td><span class="c-name"><i class="dot" style="{{p.bg}}"></i>{{p.n}}</span></td><td class="n {{p.dcls}}">{{p.dtxt}}</td><td class="n">{{p.s}}</td></tr>
+                    </sc-for>
+                  </tbody></table>
+                </div>
+              </details>
+              <details class="a-more">
+                <summary>למה זה קרה <small>3 הסברים</small></summary>
+                <div class="in">
+                  <ul class="c-list">
+                    <li>המומנטום לצידכם: הסיכויים בפעולות הבאות גבוהים יותר.</li>
+                    <li>מצביעים עזבו רשימות מתחת לחסימה מחשש לבזבוז קול: 374 מהכלכלית החדשה ו־309 מרפא.</li>
+                    <li>נרשמה הצהרה אחת שלכם. היא יכולה לחזור אליכם בראיונות ובעימותים.</li>
+                  </ul>
+                </div>
+              </details>
+            </div>
+          </div>
+          <div class="a-cta"><button type="button" class="btn-gold">לשבוע 2</button></div>
+        </sc-if>
+      </sc-if>
+
+      <!-- ============ B: broadcast ============ -->
+      <sc-if value="{{isB}}" hint-placeholder-val="{{ false }}">
+        <div class="b-strip">
+          <span class="b-live"><i class="dot" style="background: #fff; width: 8px; height: 8px"></i>שידור חי</span>
+          <b>מערכת הבחירות לכנסת ה־24 · שבוע 1 מתוך 5</b>
+          <small>תקווה חדשה · {{budget}}</small>
+        </div>
+
+        <sc-if value="{{isRoom}}" hint-placeholder-val="{{ false }}">
+          <div class="b-tick"><span>מבזק</span> שלושה סקרים פורסמו הבוקר · הליכוד מוביל עם 30 מנדטים</div>
+          <div class="pad" style="display: grid; gap: 18px">
+            <div>
+              <h2 class="b-head">תקווה חדשה פותחת את הקמפיין ב־6 מנדטים</h2>
+              <p class="b-deck">4.7% בסקרים. הגושים כמעט שווים, ואף אחד לא מגיע ל־61.</p>
+            </div>
+            <div class="b-boxes">
+              <div class="b-box"><small>מנדטים</small><b>6</b></div>
+              <div class="b-box"><small>תמיכה</small><b>4.7%</b></div>
+              <div class="b-box"><small>תקציב</small><b>12 מ׳</b></div>
+            </div>
+            <div class="b-section">
+              <p class="b-label">הגושים</p>
+              <div class="b-blocs">
+                <sc-for list="{{blocs}}" as="b" hint-placeholder-count="4"><div class="b-bloc" style="{{b.edge}}"><b>{{b.s}}</b><small>{{b.n}}</small></div></sc-for>
+              </div>
+            </div>
+            <div class="b-anchor">
+              <span class="face" aria-hidden="true">מ</span>
+              <div><small>מגיש המהדורה · דיאלוג מדומה</small><p>הקמפיין יצא לדרך: חמישה שבועות, שתי פעולות בכל שבוע. הפעולה הראשונה שלכם היא ריאיון בטלוויזיה.</p></div>
+            </div>
+            <div class="b-section">
+              <p class="b-label">בסקרים</p>
+              <div class="chips">
+                <span class="chip">פאנל רקע <b>6.9%</b></span>
+                <span class="chip">סקרי מגדלור <b>4.3%</b></span>
+                <span class="chip">מכון אלומה <b>5.1%</b></span>
+              </div>
+            </div>
+            <div class="b-cta"><button type="button" class="btn-gold">לאולפן: להתחיל את השבוע</button></div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{isResult}}" hint-placeholder-val="{{ false }}">
+          <div class="b-tick"><span>ריאיון</span> ערוץ 20 · תשובה ראשונה חזקה, שאלת המשך שהסתבכה</div>
+          <div class="pad" style="display: grid; gap: 18px">
+            <div>
+              <h2 class="b-head">פתיחה חזקה, סיום שעלה ביוקר</h2>
+              <p class="b-deck">הריאיון בערוץ 20 הוריד את תקווה חדשה ב־0.2%. המנדטים לא זזו.</p>
+            </div>
+            <div class="b-quotes">
+              <div class="b-q ok"><p>"הבוחרים שלנו יודעים טוב מאוד בעד מה: התוכנית שלנו מפורסמת ומדברים עליה בכל כנס."</p><footer><span class="up">התשובה עבדה</span><span class="up">+0.5</span></footer></div>
+              <div class="b-q bad"><p>"אנחנו לא מחכים להצעות מהליכוד. הבוחרים שלנו יודעים לאיזה גוש אנחנו שייכים."</p><footer><span class="down">שאלת ההמשך נכשלה</span><span class="down">−0.7</span></footer></div>
+            </div>
+            <div class="b-boxes">
+              <div class="b-box" style="border-top-color: var(--red)"><small>תמיכה</small><b class="down">−0.2%</b></div>
+              <div class="b-box"><small>מנדטים</small><b>6</b></div>
+              <div class="b-box"><small>נותר בקופה</small><b>9 מ׳</b></div>
+            </div>
+            <div class="b-section">
+              <p class="b-label">המצביעים זזו</p>
+              <div class="b-movers">
+                <div class="b-mover"><span class="up">הגיעו</span>מיש עתיד<b class="up">+954</b></div>
+                <div class="b-mover"><span class="down">עזבו</span>למתלבטים<b class="down">−9,420</b></div>
+              </div>
+            </div>
+            <div class="b-cta"><button type="button" class="btn-gold">לפעולה השנייה</button></div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{isWeek}}" hint-placeholder-val="{{ false }}">
+          <div class="b-tick"><span>סוף שבוע</span> יש עתיד ורע״ם עולות · ישראל ביתנו והרשימה המשותפת יורדות</div>
+          <div class="pad" style="display: grid; gap: 18px">
+            <div>
+              <h2 class="b-head">שבוע ראשון: תקווה חדשה עולה ב־0.3%</h2>
+              <p class="b-deck">הצירוף לרשימה עשה את ההבדל. 5.0% בסקרים, 6 מנדטים.</p>
+            </div>
+            <div class="b-section">
+              <p class="b-label">המנצחים והמפסידים של השבוע</p>
+              <div class="b-movers">
+                <div class="b-mover"><i class="dot" style="background: #1e56d6"></i>יש עתיד<b class="up">+1</b></div>
+                <div class="b-mover"><i class="dot" style="background: #84cc16"></i>רע״ם<b class="up">+1</b></div>
+                <div class="b-mover"><i class="dot" style="background: #19a7c4"></i>ישראל ביתנו<b class="down">−1</b></div>
+                <div class="b-mover"><i class="dot" style="background: #1f9d55"></i>הרשימה המשותפת<b class="down">−1</b></div>
+              </div>
+            </div>
+            <div class="b-section">
+              <p class="b-label">הגושים</p>
+              <div class="b-blocs">
+                <sc-for list="{{blocs}}" as="b" hint-placeholder-count="4"><div class="b-bloc" style="{{b.edge}}"><b>{{b.s}}</b><small>{{b.n}}</small></div></sc-for>
+              </div>
+            </div>
+            <div class="b-anchor">
+              <span class="face" aria-hidden="true">מ</span>
+              <div><small>הפרשנות · הנחת מודל</small><p>המומנטום לצידכם: הסיכויים בפעולות של השבוע הבא גבוהים יותר.</p></div>
+            </div>
+            <div class="b-cta"><button type="button" class="btn-gold">לשבוע 2</button></div>
+          </div>
+        </sc-if>
+      </sc-if>
+
+      <!-- ============ C: tidy board ============ -->
+      <sc-if value="{{isC}}" hint-placeholder-val="{{ false }}">
+        <div class="c-strip">
+          <div class="party"><span class="letter" aria-hidden="true">ת</span><div style="display: grid"><b>תקווה חדשה</b><small>שבוע 1 מתוך 5</small></div></div>
+          <div><small>מנדטים</small><b>6</b></div>
+          <div><small>תמיכה</small><b>{{cSupport}}</b></div>
+          <div><small>בסיס נאמן</small><b>{{cBase}}</b></div>
+          <div><small>תקציב</small><b>{{budget}}</b></div>
+        </div>
+
+        <sc-if value="{{isRoom}}" hint-placeholder-val="{{ false }}">
+          <div class="c-tabs" role="tablist" aria-label="חדר המצב">
+            <button type="button" role="tab" class="{{tOverview}}" aria-selected="{{sOverview}}" onClick="{{setOverview}}">סקירה</button>
+            <button type="button" role="tab" class="{{tLists}}" aria-selected="{{sLists}}" onClick="{{setLists}}">רשימות</button>
+            <button type="button" role="tab" class="{{tPolls}}" aria-selected="{{sPolls}}" onClick="{{setPolls}}">סקרים</button>
+            <button type="button" role="tab" class="{{tFile}}" aria-selected="{{sFile}}" onClick="{{setFile}}">תיק המפלגה</button>
+          </div>
+          <div class="pad" style="display: grid; gap: 12px">
+            <sc-if value="{{isOverview}}" hint-placeholder-val="{{ true }}">
+              <div class="c-head"><h2>פתיחת הקמפיין</h2><small>2 פעולות השבוע · הראשונה ריאיון חובה</small></div>
+              <div class="c-grid">
+                <div class="c-card wide">
+                  <h3><span>הגושים</span><span>רוב: 61</span></h3>
+                  <div class="in">
+                    <div class="blocbar" role="img" aria-label="גוש נתניהו 52, גוש השינוי 51, המפלגות הערביות 10, לא משויכת 7">
+                      <sc-for list="{{blocs}}" as="b" hint-placeholder-count="4"><span style="{{b.seg}}"></span></sc-for>
+                      <i class="mark61" style="right: 50.8%"></i>
+                    </div>
+                    <div class="legend"><sc-for list="{{blocs}}" as="b" hint-placeholder-count="4"><span><i class="dot" style="{{b.bg}}"></i>{{b.n}}<b>{{b.s}}</b></span></sc-for></div>
+                  </div>
+                </div>
+                <div class="c-card">
+                  <h3><span>מצביעים</span></h3>
+                  <div class="in c-kv">
+                    <span>בסיס</span><b>115,039</b>
+                    <span>אפשר לשכנע בגוש</span><b>412,806</b>
+                    <span>שיעור הצבעה</span><b>67.4%</b>
+                  </div>
+                </div>
+                <div class="c-card">
+                  <h3><span>מהדורת החדשות</span></h3>
+                  <div class="in"><ul class="c-list"><li>הקמפיין יצא לדרך: חמישה שבועות, שתי פעולות בכל שבוע.</li><li>שלושה סקרים בדיוניים פורסמו.</li></ul></div>
+                </div>
+              </div>
+            </sc-if>
+            <sc-if value="{{isLists}}" hint-placeholder-val="{{ false }}">
+              <div class="c-card">
+                <table class="c-table">
+                  <thead><tr><th>רשימה</th><th class="n">תמיכה</th><th class="n">מנדטים</th></tr></thead>
+                  <tbody>
+                    <sc-for list="{{roomParties}}" as="p" hint-placeholder-count="13">
+                      <tr class="{{p.row}}"><td><span class="c-name"><i class="dot" style="{{p.bg}}"></i>{{p.n}}</span></td><td class="n">{{p.p}}</td><td class="n"><b>{{p.s}}</b></td></tr>
+                    </sc-for>
+                    <tr><td style="color: var(--faint)">מתחת לחסימה: הכלכלית החדשה, רפא</td><td class="n" style="color: var(--faint)">1.2%</td><td class="n" style="color: var(--faint)">0</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </sc-if>
+            <sc-if value="{{isPolls}}" hint-placeholder-val="{{ false }}">
+              <div class="c-card">
+                <table class="c-table">
+                  <thead><tr><th>מכון (בדיוני)</th><th class="n">תקווה חדשה</th></tr></thead>
+                  <tbody>
+                    <tr><td>פאנל רקע</td><td class="n">6.9%</td></tr>
+                    <tr><td>סקרי מגדלור</td><td class="n">4.3%</td></tr>
+                    <tr><td>מכון אלומה</td><td class="n">5.1%</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </sc-if>
+            <sc-if value="{{isFile}}" hint-placeholder-val="{{ false }}">
+              <div class="c-grid">
+                <div class="c-card"><h3><span>במערכה</span></h3><div class="in c-kv"><span>היריבה המרכזית</span><b>הליכוד</b><span>המתחרה על המצביעים</span><b>יש עתיד</b><span>השותפה הקרובה</span><b>ישראל ביתנו</b></div></div>
+                <div class="c-card"><h3><span>הסכמים</span></h3><div class="in c-kv"><span>הסכם עודפים</span><b>ימינה</b><span>אישיויות שצורפו</span><b>0 מתוך 2</b></div></div>
+              </div>
+            </sc-if>
+          </div>
+          <div class="c-foot"><small>מקור התוצאות: ועדת הבחירות · תחזית: הנחת מודל</small><button type="button" class="btn-gold">להתחיל את השבוע</button></div>
+        </sc-if>
+
+        <sc-if value="{{isResult}}" hint-placeholder-val="{{ false }}">
+          <div class="pad" style="display: grid; gap: 12px">
+            <div class="c-head"><h2>ריאיון בערוץ 20</h2><small>פעולה 1 מתוך 2 · השקעה ₪3 מ׳</small></div>
+            <div class="c-grid">
+              <div class="c-card">
+                <h3><span>התוצאה</span><span class="down">−0.19</span></h3>
+                <div class="in c-kv">
+                  <span>התשובה הראשונה · הצליחה (63%)</span><b class="up">+0.49</b>
+                  <span>שאלת ההמשך · נכשלה (71%)</span><b class="down">−0.68</b>
+                </div>
+              </div>
+              <div class="c-card">
+                <h3><span>לפני ואחרי</span></h3>
+                <div class="in c-kv">
+                  <span>תמיכה</span><b>4.74% ← 4.55%</b>
+                  <span>מנדטים</span><b>6 ← 6</b>
+                  <span>תקציב</span><b>₪9 מ׳</b>
+                </div>
+              </div>
+              <div class="c-card">
+                <h3><span>תנועת מצביעים</span></h3>
+                <table class="c-table"><tbody>
+                  <sc-for list="{{flows5}}" as="f" hint-placeholder-count="5"><tr><td>{{f.n}}</td><td class="n {{f.cls}}">{{f.v}}</td></tr></sc-for>
+                </tbody></table>
+              </div>
+              <div class="c-card">
+                <h3><span>מעבר למנדטים</span></h3>
+                <div class="in"><ul class="c-list"><li>הבסיס התחזק: 7,626 מצביעים רכים הפכו לנאמנים.</li><li>מומנטום +0.6: משפיע על הסיכויים בפעולות הבאות.</li><li>אמינות ציבורית 62.</li><li>היחסים עם הליכוד: עוינות גלויה.</li></ul></div>
+              </div>
+            </div>
+          </div>
+          <div class="c-foot"><small>האחוזים: סיכוי לפני הבחירה · הנחת מודל</small><button type="button" class="btn-gold">לפעולה השנייה</button></div>
+        </sc-if>
+
+        <sc-if value="{{isWeek}}" hint-placeholder-val="{{ false }}">
+          <div class="pad" style="display: grid; gap: 12px">
+            <div class="c-head"><h2>סיכום שבוע 1</h2><small class="up">+0.28 נק׳ אחוז · 5.03%</small></div>
+            <div class="c-grid">
+              <div class="c-card">
+                <h3><span>הפעולות</span></h3>
+                <table class="c-table"><tbody>
+                  <tr><td>צירוף טליה וקנין · הצלחה</td><td class="n up">+0.55</td></tr>
+                  <tr><td>ריאיון בערוץ 20 · הצלחה וכישלון</td><td class="n down">−0.19</td></tr>
+                </tbody></table>
+              </div>
+              <div class="c-card">
+                <h3><span>הגושים</span><span>רוב: 61</span></h3>
+                <div class="in">
+                  <div class="blocbar" role="img" aria-label="גוש נתניהו 52, גוש השינוי 51, המפלגות הערביות 10, לא משויכת 7">
+                    <sc-for list="{{blocs}}" as="b" hint-placeholder-count="4"><span style="{{b.seg}}"></span></sc-for>
+                    <i class="mark61" style="right: 50.8%"></i>
+                  </div>
+                  <div class="legend"><sc-for list="{{blocs}}" as="b" hint-placeholder-count="4"><span><i class="dot" style="{{b.bg}}"></i>{{b.n}}<b>{{b.s}}</b></span></sc-for></div>
+                </div>
+              </div>
+              <div class="c-card">
+                <h3><span>הרשימות</span><span>שינוי · מנדטים</span></h3>
+                <table class="c-table"><tbody>
+                  <sc-for list="{{weekParties}}" as="p" hint-placeholder-count="13">
+                    <tr class="{{p.row}}"><td><span class="c-name"><i class="dot" style="{{p.bg}}"></i>{{p.n}}</span></td><td class="n {{p.dcls}}">{{p.dtxt}}</td><td class="n"><b>{{p.s}}</b></td></tr>
+                  </sc-for>
+                </tbody></table>
+              </div>
+              <div class="c-card">
+                <h3><span>הסברים</span></h3>
+                <div class="in"><ul class="c-list"><li>חשש מבזבוז קול: 374 מצביעים עזבו את הכלכלית החדשה, ו־309 את רפא.</li><li>המומנטום לצידכם (+0.6): הסיכויים בפעולות הבאות גבוהים יותר.</li><li>היריבה המרכזית: הליכוד · המתחרה: יש עתיד · השותפה: ישראל ביתנו.</li><li>נרשמה הצהרה אחת שיכולה לחזור בראיונות ובעימותים.</li></ul></div>
+              </div>
+            </div>
+          </div>
+          <div class="c-foot"><small>תחזית מושבים: הנחת מודל</small><button type="button" class="btn-gold">לשבוע 2</button></div>
+        </sc-if>
+      </sc-if>
+
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":1500}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const s = this.state || {};
+    const dir = s.dir || 'a';
+    const screen = s.screen || 'room';
+    const device = s.device || 'phone';
+    const tab = s.tab || 'overview';
+    const on = (x) => (x ? 'on' : '');
+    const set = (patch) => () => this.setState(patch);
+    const blocs = [
+      { n: 'גוש נתניהו', s: 52, c: '#d62839' },
+      { n: 'גוש השינוי', s: 51, c: '#1e56d6' },
+      { n: 'המפלגות הערביות', s: 10, c: '#1f9d55' },
+      { n: 'לא משויכת', s: 7, c: '#8b5cf6' },
+    ].map((b) => ({ ...b, seg: 'width: ' + ((b.s / 120) * 100).toFixed(2) + '%; background: ' + b.c, bg: 'background: ' + b.c, edge: 'border-inline-start-color: ' + b.c }));
+    const row = (n, c, seats, p, d, me) => ({ n, s: seats, p, bg: 'background: ' + c, row: me ? 'me' : '', dtxt: d > 0 ? '+' + d : d < 0 ? '−' + Math.abs(d) : '', dcls: d > 0 ? 'up' : d < 0 ? 'down' : '' });
+    const roomParties = [
+      row('הליכוד', '#d62839', 30, '24.2%', 0), row('יש עתיד', '#1e56d6', 17, '13.9%', 0), row('ש״ס', '#b8461b', 9, '7.2%', 0),
+      row('כחול לבן', '#6aa8ff', 8, '6.6%', 0), row('ימינה', '#8b5cf6', 7, '6.2%', 0), row('העבודה', '#0d2b6e', 7, '6.1%', 0),
+      row('יהדות התורה', '#ffb347', 7, '5.6%', 0), row('ישראל ביתנו', '#19a7c4', 7, '5.6%', 0), row('הציונות הדתית', '#f08a24', 6, '5.1%', 0),
+      row('הרשימה המשותפת', '#1f9d55', 6, '4.8%', 0), row('תקווה חדשה', '#7c8cff', 6, '4.7%', 0, true), row('מרצ', '#2bc4e8', 6, '4.6%', 0),
+      row('רע״ם', '#84cc16', 4, '3.8%', 0),
+    ];
+    const weekParties = [
+      row('הליכוד', '#d62839', 30, '24.4%', 0), row('יש עתיד', '#1e56d6', 18, '14.0%', 1), row('ש״ס', '#b8461b', 9, '7.1%', 0),
+      row('כחול לבן', '#6aa8ff', 8, '6.6%', 0), row('העבודה', '#0d2b6e', 7, '6.0%', 0), row('ימינה', '#8b5cf6', 7, '5.9%', 0),
+      row('יהדות התורה', '#ffb347', 7, '5.7%', 0), row('ישראל ביתנו', '#19a7c4', 6, '5.2%', -1), row('הציונות הדתית', '#f08a24', 6, '5.0%', 0),
+      row('תקווה חדשה', '#7c8cff', 6, '5.0%', 0, true), row('מרצ', '#2bc4e8', 6, '4.5%', 0), row('הרשימה המשותפת', '#1f9d55', 5, '4.8%', -1),
+      row('רע״ם', '#84cc16', 5, '4.2%', 1),
+    ];
+    const flow = (n, v, max) => ({ n, v: (v > 0 ? '+' : '−') + Math.abs(v).toLocaleString('en-US'), cls: v > 0 ? 'up' : 'down', bar: 'width: ' + Math.max(4, (Math.abs(v) / max) * 100).toFixed(0) + '%; background: ' + (v > 0 ? '#3ccf7e' : '#ff6b5e') });
+    const flows = [flow('אל המתלבטים', -9420, 9420), flow('אל הנמנעים', -1385, 9420), flow('מיש עתיד', 954, 9420)];
+    const flows5 = [flow('מתלבטים', -9420, 9420), flow('נמנעים (ניתנים להנעה)', -1385, 9420), flow('יש עתיד', 954, 9420), flow('הליכוד', 88, 9420), flow('ישראל ביתנו', 88, 9420)];
+    return {
+      blocs, roomParties, weekParties, flows, flows5,
+      isA: dir === 'a', isB: dir === 'b', isC: dir === 'c',
+      isRoom: screen === 'room', isResult: screen === 'result', isWeek: screen === 'week',
+      isOverview: tab === 'overview', isLists: tab === 'lists', isPolls: tab === 'polls', isFile: tab === 'file',
+      dirA: on(dir === 'a'), dirB: on(dir === 'b'), dirC: on(dir === 'c'),
+      pA: dir === 'a', pB: dir === 'b', pC: dir === 'c',
+      scrRoom: on(screen === 'room'), scrResult: on(screen === 'result'), scrWeek: on(screen === 'week'),
+      pRoom: screen === 'room', pResult: screen === 'result', pWeek: screen === 'week',
+      devPhone: on(device === 'phone'), devDesk: on(device === 'desk'), pPhone: device === 'phone', pDesk: device === 'desk',
+      tOverview: on(tab === 'overview'), tLists: on(tab === 'lists'), tPolls: on(tab === 'polls'), tFile: on(tab === 'file'),
+      sOverview: tab === 'overview', sLists: tab === 'lists', sPolls: tab === 'polls', sFile: tab === 'file',
+      deviceClass: device === 'phone' ? 'phone' : 'desk',
+      budget: screen === 'room' ? '₪12 מ׳' : screen === 'result' ? '₪9 מ׳' : '₪7.5 מ׳',
+      cSupport: screen === 'room' ? '4.74%' : screen === 'result' ? '4.55%' : '5.03%',
+      cBase: screen === 'week' ? '126K' : '115K',
+      setA: set({ dir: 'a' }), setB: set({ dir: 'b' }), setC: set({ dir: 'c' }),
+      setRoom: set({ screen: 'room' }), setResult: set({ screen: 'result' }), setWeek: set({ screen: 'week' }),
+      setPhone: set({ device: 'phone' }), setDesk: set({ device: 'desk' }),
+      setOverview: set({ tab: 'overview' }), setLists: set({ tab: 'lists' }), setPolls: set({ tab: 'polls' }), setFile: set({ tab: 'file' }),
+    };
+  }
+}
+</script>
+</body>
+</html>

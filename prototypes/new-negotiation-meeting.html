@@ -1,0 +1,807 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>פגישת מו״מ חדשה</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700;800&family=Heebo:wght@700;800;900&display=swap">
+<style>
+/* Layout: a night-sky news graphic. The forming government is the headline graphic on top (11 ministries, the race to 61);
+   the partners sit in a row like a poll chart; the meeting is a white "studio card" pair: their wishes and your offer. */
+:root {
+  --night-0: #040a1c; --night-1: #0a1a3f; --night-2: #14306c;
+  --panel: rgba(10, 26, 63, 0.82); --panel-line: rgba(217, 180, 90, 0.42);
+  --paper: #ffffff; --paper-2: #e4e7ee; --navy: #0c1f4d; --navy-muted: #47577d; --paper-line: #c5cbd9;
+  --text: #ffffff; --muted: #b7c3e0;
+  --gold: #d9b45a; --gold-hi: #f6e19a; --gold-lo: #8f6a26; --gold-grad: linear-gradient(180deg, #f6e19a, #d9b45a 45%, #8f6a26);
+  --good: #3ddc97; --warn: #ffcc66; --bad: #ff7a70;
+  --good-ink: #0f7a4a; --warn-ink: #8a5200; --bad-ink: #b3261e;
+  --f-display: 'Heebo', 'Arial Hebrew', system-ui, sans-serif; --f-body: 'Assistant', 'Arial Hebrew', 'Segoe UI', system-ui, sans-serif;
+  color-scheme: dark;
+}
+body { background: var(--night-0); color: var(--text); font-family: var(--f-body); font-size: 15px; direction: rtl; }
+.sky { position: fixed; inset: 0; z-index: -1; pointer-events: none;
+  background:
+    radial-gradient(2px 2px at 12% 18%, rgba(255,255,255,.55), transparent 60%), radial-gradient(1.5px 1.5px at 78% 9%, rgba(255,255,255,.45), transparent 60%),
+    radial-gradient(1.5px 1.5px at 44% 26%, rgba(255,255,255,.35), transparent 60%), radial-gradient(2px 2px at 91% 33%, rgba(255,255,255,.3), transparent 60%),
+    radial-gradient(120% 60% at 50% 110%, rgba(64, 110, 210, 0.45), transparent 60%),
+    linear-gradient(180deg, var(--night-0), var(--night-1) 55%, var(--night-2)); }
+.app { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 22px 0; max-width: 1180px; margin: 0 auto; display: grid; grid-template-columns: minmax(0, 1fr); gap: 18px; }
+.bottom { min-width: 0; }
+.app * { box-sizing: border-box; }
+.app h1, .app h2, .app h3, .app p { margin: 0; }
+:where(.app) button { font: inherit; color: inherit; cursor: pointer; }
+.app button:focus-visible { outline: 3px solid var(--gold-hi); outline-offset: 2px; }
+
+/* header: white title plate + glowing gold rule */
+.top { display: grid; gap: 12px; justify-items: start; }
+.kicker { font-family: var(--f-display); font-weight: 800; font-size: clamp(22px, 5.4vw, 34px); letter-spacing: 0.01em; text-shadow: 0 2px 18px rgba(80, 140, 255, 0.35); }
+.plate { position: relative; overflow: hidden; display: inline-block; background: var(--paper); color: #000; font-family: var(--f-display); font-weight: 900; font-size: clamp(20px, 4.6vw, 28px); padding: 4px 18px 6px; }
+.plate::after { content: ''; position: absolute; inset: 0; background: linear-gradient(100deg, transparent 30%, rgba(246, 225, 154, 0.75) 48%, transparent 66%); transform: translateX(120%); animation: shine 2.6s 0.4s ease-in-out both; }
+@keyframes shine { to { transform: translateX(-120%); } }
+.rule { width: 100%; height: 3px; background: var(--gold-grad); box-shadow: 0 0 14px rgba(246, 225, 154, 0.55); transform-origin: right; animation: grow 0.9s cubic-bezier(.2,.8,.2,1) both; }
+@keyframes grow { from { transform: scaleX(0); } }
+.top p { color: var(--muted); line-height: 1.55; max-width: 76ch; }
+.modes { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.modes > span { font-weight: 800; font-size: 13.5px; color: var(--muted); }
+.seg { display: flex; flex-wrap: wrap; gap: 4px; padding: 4px; border-radius: 4px; background: var(--panel); border: 1px solid var(--panel-line); }
+.seg button { border: 0; background: transparent; min-height: 40px; padding: 6px 12px; border-radius: 2px; font-weight: 700; color: var(--muted); }
+.seg button[aria-pressed="true"] { background: var(--gold-grad); color: var(--navy); }
+.mode-note { font-size: 14px; color: var(--muted); }
+
+/* panels */
+.card { position: relative; background: var(--panel); border: 1px solid var(--panel-line); border-top: 3px solid var(--gold); padding: 14px; display: grid; gap: 12px; min-width: 0; box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35); }
+.card h2 { font-family: var(--f-display); font-size: 19px; font-weight: 800; display: flex; flex-wrap: wrap; gap: 6px 12px; align-items: baseline; }
+.card h2 small { font-family: var(--f-body); font-weight: 600; color: var(--muted); font-size: 13.5px; }
+
+/* the forming government */
+.race { display: grid; gap: 6px; padding-top: 18px; }
+.race.mini { padding-top: 14px; }
+.race.mini .race-bar { height: 14px; }
+.race.mini .race-61::before { top: -16px; font-size: 11px; }
+.race.mini .race-line b { font-size: 17px; }
+.race-bar { position: relative; height: 26px; background: rgba(255, 255, 255, 0.08); border: 2px solid var(--gold); display: flex; }
+.race-bar span { height: 100%; transition: width 0.7s cubic-bezier(.2,.8,.2,1); box-shadow: inset 0 -6px 0 rgba(0,0,0,.18); }
+.race-bar span.pend { opacity: 0.55; background-image: repeating-linear-gradient(45deg, rgba(255,255,255,.45) 0 5px, transparent 5px 10px); animation: breathe 1.4s ease-in-out infinite alternate; }
+@keyframes breathe { to { opacity: 0.85; } }
+.race-61 { position: absolute; top: -8px; bottom: -8px; inset-inline-start: calc(61 / 120 * 100%); border-inline-start: 3px solid var(--gold-hi); box-shadow: 0 0 10px var(--gold-hi); }
+.race-61::before { content: '61'; position: absolute; top: -20px; inset-inline-start: -10px; font-family: var(--f-display); font-weight: 900; font-size: 13px; color: var(--gold-hi); }
+.race-line { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 12px; font-size: 13.5px; color: var(--muted); padding-top: 6px; }
+.race-line b { color: var(--text); font-family: var(--f-display); font-weight: 900; font-size: 22px; }
+.posts { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 100px), 1fr)); gap: 8px; }
+.post { position: relative; min-height: 66px; background: var(--paper); color: var(--navy); border: 0; border-bottom: 4px solid var(--gold); padding: 8px 10px 8px; display: grid; align-content: start; gap: 2px; text-align: start; transition: background 0.3s, transform 0.25s, box-shadow 0.25s; animation: rise 0.5s cubic-bezier(.2,.8,.2,1) both; }
+.post:nth-child(2) { animation-delay: 40ms } .post:nth-child(3) { animation-delay: 80ms } .post:nth-child(4) { animation-delay: 120ms } .post:nth-child(5) { animation-delay: 160ms } .post:nth-child(6) { animation-delay: 200ms } .post:nth-child(7) { animation-delay: 240ms } .post:nth-child(8) { animation-delay: 280ms } .post:nth-child(9) { animation-delay: 320ms } .post:nth-child(10) { animation-delay: 360ms } .post:nth-child(11) { animation-delay: 400ms }
+@keyframes rise { from { transform: translateY(14px) scale(0.96); opacity: 0; } }
+.post b { font-family: var(--f-display); font-weight: 800; font-size: 15px; line-height: 1.2; }
+.post small { font-size: 12px; color: var(--navy-muted); }
+.post .want { position: absolute; inset-inline-end: 7px; top: 7px; display: flex; gap: 3px; }
+.post .want i { width: 10px; height: 10px; border-radius: 50%; border: 2px solid var(--paper); box-shadow: 0 0 0 1px var(--paper-line); }
+.post.is-own { color: #fff; animation: flipin 0.6s ease both; }
+.post.is-own small { color: rgba(255, 255, 255, 0.9); }
+.post.is-pend { outline: 3px dashed var(--gold); outline-offset: -3px; animation: pop 0.35s ease both; }
+.post.is-pend small { color: var(--navy); font-weight: 800; }
+.post:disabled { cursor: default; }
+.post.can:hover { transform: translateY(-3px); box-shadow: 0 8px 18px rgba(0, 0, 0, 0.35); }
+@keyframes flipin { from { transform: rotateX(90deg); } to { transform: none; } }
+@keyframes pop { 0% { transform: scale(0.94); } 60% { transform: scale(1.04); } 100% { transform: none; } }
+.lines { display: flex; flex-wrap: wrap; gap: 6px; margin: 4px 0 0; padding: 0; }
+.lines li { list-style: none; font-size: 13px; padding: 4px 10px; background: rgba(255, 255, 255, 0.1); border-inline-start: 3px solid var(--gold); }
+.legend { font-size: 12.5px; color: var(--muted); }
+
+/* partners: poll-chart rows */
+.partners { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 210px), 1fr)); gap: 10px; }
+.pt { display: grid; grid-template-columns: auto 1fr auto; gap: 2px 10px; align-items: center; padding: 0; background: var(--paper); color: var(--navy); border: 0; border-bottom: 4px solid var(--gold); text-align: start; min-height: 64px; overflow: hidden; transition: transform 0.2s, box-shadow 0.2s; }
+.pt .badge { grid-row: span 2; width: 64px; height: 64px; border-radius: 0; font-size: 15px; }
+.pt b { font-family: var(--f-display); font-weight: 800; font-size: 16px; padding-top: 8px; }
+.pt small { grid-column: 2 / 4; color: var(--navy-muted); font-size: 12.5px; padding-bottom: 8px; }
+.pt .st { margin-inline-end: 8px; margin-top: 8px; }
+.pt[aria-pressed="true"] { box-shadow: 0 0 0 3px var(--gold-hi), 0 10px 24px rgba(0, 0, 0, 0.4); transform: translateY(-2px); }
+.st { font-size: 12px; font-weight: 800; padding: 3px 8px; background: var(--paper-2); color: var(--navy); white-space: nowrap; }
+.st.ok { background: var(--good-ink); color: #fff; }
+.st.out { background: var(--bad-ink); color: #fff; }
+.st.z-ok { background: #e8553e; color: #fff; } .st.z-warn { background: var(--gold); color: var(--navy); } .st.z-bad { background: #5b8def; color: #fff; }
+.badge { display: grid; place-items: center; color: #fff; font-family: var(--f-display); font-weight: 800; flex: none; position: relative; overflow: hidden; }
+.badge svg { position: absolute; inset: auto 0 0; width: 100%; height: 82%; opacity: 0.55; }
+.badge span { position: relative; text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5); }
+
+/* the meeting */
+.meet { display: grid; gap: 14px; }
+.meet-head { display: flex; flex-wrap: wrap; gap: 10px 14px; align-items: center; }
+.meet-head .badge { width: 64px; height: 64px; font-size: 17px; border-bottom: 4px solid var(--gold); }
+.meet-head h2 { font-size: 22px; }
+.meet-head .who { display: grid; gap: 2px; flex: 1; min-width: 180px; }
+.meet-head .who small { color: var(--muted); }
+.pat { display: flex; gap: 6px; align-items: center; font-size: 12.5px; color: var(--muted); }
+.pat i { width: 14px; height: 14px; border-radius: 50%; background: var(--gold-grad); box-shadow: 0 0 8px rgba(246, 225, 154, 0.6); transition: transform 0.3s, opacity 0.3s; }
+.pat i.used { opacity: 0.18; transform: scale(0.7); box-shadow: none; }
+.table { display: grid; gap: 12px; }
+@media (min-width: 860px) { .table { grid-template-columns: 1fr 1fr; } }
+.side { display: grid; gap: 8px; align-content: start; padding: 12px; background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.12); min-width: 0; }
+.side h3 { font-family: var(--f-display); font-size: 15.5px; font-weight: 800; display: flex; justify-content: space-between; gap: 8px; }
+.side h3 small { font-family: var(--f-body); color: var(--muted); font-weight: 600; font-size: 12.5px; }
+.wish, .offer-item { background: var(--paper); color: var(--navy); border: 0; border-bottom: 3px solid var(--gold); }
+.wish { display: grid; grid-template-columns: auto 1fr; gap: 3px 10px; align-items: start; text-align: start; padding: 10px 12px; min-height: 52px; transition: transform 0.2s; }
+.wish:hover:not(:disabled) { transform: translateX(-4px); }
+.wish .w { grid-row: span 2; font-size: 11.5px; font-weight: 800; padding: 3px 7px; white-space: nowrap; }
+.w.red { background: #c8102e; color: #fff; }
+.w.important { background: var(--gold-grad); color: var(--navy); }
+.w.flexible { background: var(--paper-2); color: var(--navy); }
+.wish b, .offer-item b { font-size: 14.5px; line-height: 1.3; }
+.wish small, .offer-item small { color: var(--navy-muted); font-size: 12.5px; line-height: 1.35; }
+.wish.is-blocked { opacity: 0.55; cursor: not-allowed; }
+.wish.is-in { display: none; }
+.offer-item { display: grid; grid-template-columns: auto 1fr; gap: 3px 10px; align-items: start; padding: 10px 12px; animation: slide 0.4s cubic-bezier(.2,.8,.2,1) both; }
+.offer-item.is-comp { border-bottom-style: dashed; }
+.offer-item .x { width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--paper-line); background: var(--paper-2); color: var(--navy); display: grid; place-items: center; grid-row: span 3; }
+.offer-item .comp { grid-column: 2; justify-self: start; border: 0; background: none; padding: 4px 0; min-height: 36px; color: var(--navy); font-weight: 800; font-size: 13px; text-decoration: underline; text-decoration-color: var(--gold); text-decoration-thickness: 2px; text-underline-offset: 3px; }
+@keyframes slide { from { transform: translateX(-60px); opacity: 0; } to { transform: none; opacity: 1; } }
+.empty { color: var(--muted); font-size: 13.5px; padding: 12px; border: 2px dashed rgba(217, 180, 90, 0.5); text-align: center; }
+.meter { display: grid; gap: 6px; padding-top: 20px; }
+.meter-track { position: relative; height: 16px; background: linear-gradient(to left, #5b8def, #d9b45a 55%, #e8553e); border: 2px solid rgba(255,255,255,.85); }
+.meter-needle { position: absolute; top: -7px; bottom: -7px; width: 6px; background: #fff; box-shadow: 0 0 0 2px var(--navy), 0 0 12px #fff; transition: inset-inline-start 0.6s cubic-bezier(.2,1.4,.4,1); }
+.meter-bar { position: absolute; top: -5px; bottom: -5px; border-inline-start: 3px dotted var(--navy); }
+.meter-bar::after { content: 'הרף'; position: absolute; top: -18px; inset-inline-start: -12px; font-size: 11px; font-weight: 800; color: var(--text); }
+.meter-labels { display: flex; justify-content: space-between; font-size: 12px; color: var(--muted); }
+.meter-say { font-family: var(--f-display); font-weight: 800; font-size: 16px; }
+.meter-say.ok { color: #ff9a7a; } .meter-say.warn { color: var(--gold-hi); } .meter-say.bad { color: #9cbcff; }
+.meter-say.exact-ok { color: var(--good); }
+.blind { font-size: 13.5px; color: var(--muted); padding: 10px; border: 1px dashed rgba(255,255,255,.3); }
+.go { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.btn { min-height: 48px; padding: 8px 20px; border: 2px solid rgba(255,255,255,.75); background: transparent; color: var(--text); font-family: var(--f-display); font-weight: 800; }
+.btn-primary { background: var(--gold-grad); color: var(--navy); border-color: var(--gold-hi); box-shadow: 0 0 18px rgba(246, 225, 154, 0.35); }
+.btn:disabled { opacity: 0.45; cursor: not-allowed; box-shadow: none; }
+.reply { position: relative; display: grid; gap: 8px; padding: 14px; background: var(--paper); color: var(--navy); border-inline-start: 8px solid var(--navy); animation: wipe 0.5s cubic-bezier(.2,.8,.2,1) both; }
+.reply.ok { border-inline-start-color: var(--good-ink); } .reply.bad { border-inline-start-color: var(--bad-ink); } .reply.counter { border-inline-start-color: var(--gold); }
+@keyframes wipe { from { clip-path: inset(0 0 0 100%); } to { clip-path: inset(0 0 0 0); } }
+.reply .tag { justify-self: start; font-family: var(--f-display); font-weight: 900; font-size: 13px; padding: 2px 10px; color: #fff; background: var(--navy); }
+.reply.ok .tag { background: var(--good-ink); } .reply.bad .tag { background: var(--bad-ink); } .reply.counter .tag { background: var(--gold); color: var(--navy); }
+.reply .say { font-family: var(--f-display); font-weight: 700; font-size: 18px; line-height: 1.4; }
+.reply .why { font-size: 14.5px; line-height: 1.5; padding: 8px 10px; background: var(--paper-2); }
+.reply .why b { display: block; font-size: 12.5px; color: var(--navy-muted); }
+.reply .btn { color: var(--navy); border-color: var(--navy); }
+.reply .btn-primary { border-color: var(--gold-lo); }
+.stamp { position: absolute; inset-inline-end: 16px; top: 12px; font-family: var(--f-display); font-weight: 900; font-size: 24px; color: var(--good-ink); border: 4px solid var(--good-ink); padding: 0 14px; transform: rotate(-8deg); animation: stamp 0.5s 0.25s cubic-bezier(.2,1.6,.4,1) both; }
+@keyframes stamp { from { transform: rotate(-8deg) scale(2.4); opacity: 0; } to { transform: rotate(-8deg) scale(1); opacity: 1; } }
+.free-pick { display: grid; gap: 6px; }
+.free-pick > span { font-size: 12.5px; color: var(--muted); font-weight: 700; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip { min-height: 40px; padding: 4px 12px; border: 1px solid rgba(255,255,255,.4); background: rgba(255,255,255,.06); font-size: 13.5px; font-weight: 700; }
+.chip:hover { border-color: var(--gold-hi); }
+.foot { font-size: 12.5px; color: var(--muted); line-height: 1.5; }
+.knesset { display: block; width: 100%; max-width: 100%; height: auto; margin-top: 8px; }
+.ticker { position: relative; overflow: hidden; background: var(--paper); color: var(--navy); border-top: 3px solid var(--gold); display: flex; align-items: stretch; min-height: 38px; }
+.ticker b { flex: none; background: #c8102e; color: #fff; font-family: var(--f-display); font-weight: 900; padding: 8px 14px; z-index: 1; }
+.ticker span { white-space: nowrap; padding: 8px 0; font-weight: 700; animation: crawl 26s linear infinite; padding-inline-start: 100%; }
+@keyframes crawl { to { transform: translateX(100%); } }
+/* v2: the clock, titles, offers left to think over, and joint meetings */
+.gov-head { display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; justify-content: space-between; }
+.clock { display: flex; gap: 10px; align-items: center; font-size: 14px; color: var(--muted); }
+.clock b { font-family: var(--f-display); font-weight: 900; font-size: 22px; color: var(--gold-hi); }
+.btn-sm { min-height: 44px; padding: 6px 14px; font-size: 14px; }
+.clash { display: flex; flex-wrap: wrap; gap: 10px 14px; align-items: center; justify-content: space-between; padding: 10px 12px; background: rgba(200, 16, 46, 0.16); border-inline-start: 6px solid #c8102e; animation: pop 0.4s ease both; }
+.clash > div { display: grid; gap: 2px; min-width: 0; flex: 1 1 260px; }
+.clash b { font-family: var(--f-display); font-weight: 800; font-size: 15.5px; }
+.clash small { color: var(--muted); font-size: 13px; line-height: 1.4; }
+.back-banner { display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: center; justify-content: space-between; padding: 10px 12px; background: var(--gold-grad); color: var(--navy); font-weight: 800; animation: wipe 0.5s cubic-bezier(.2,.8,.2,1) both; }
+.back-banner .btn { background: var(--navy); color: #fff; border-color: var(--navy); box-shadow: none; }
+.st.think { background: #5b8def; color: #fff; }
+.st.back { background: var(--gold-grad); color: var(--navy); animation: breathe 0.9s ease-in-out infinite alternate; }
+.reply.wait { border-inline-start-color: #5b8def; }
+.reply.wait .tag { background: #5b8def; }
+.offer-item.is-title { border-bottom-color: #c8102e; }
+.chip-title { border-color: var(--gold); color: var(--gold-hi); }
+.lines li.is-joint { border-inline-start-color: var(--good); }
+.lines li small { color: var(--good); font-weight: 800; margin-inline-start: 4px; }
+.faces { display: flex; }
+.faces .badge { width: 52px; height: 52px; font-size: 14px; border-bottom: 3px solid var(--gold); }
+.faces .badge + .badge { margin-inline-start: -10px; box-shadow: 0 0 0 2px var(--night-1); }
+.stances { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+@media (min-width: 860px) { .stances { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); } }
+.stances li { display: grid; grid-template-columns: auto 1fr; gap: 10px; align-items: center; background: var(--paper); color: var(--navy); border-bottom: 3px solid var(--gold); padding-inline-end: 10px; }
+.stances li .badge { width: 52px; height: 52px; font-size: 13px; }
+.stances li > span { display: grid; gap: 2px; padding-block: 6px; font-size: 14px; line-height: 1.35; }
+.stances li small { color: var(--navy-muted); font-size: 12.5px; }
+.stances .w { justify-self: start; font-size: 11px; font-weight: 800; padding: 2px 6px; }
+.axis { display: flex; justify-content: space-between; gap: 8px; font-size: 12.5px; font-weight: 700; color: var(--gold-hi); border-bottom: 2px solid var(--gold); padding-bottom: 4px; }
+.formulas { display: grid; gap: 8px; }
+@media (min-width: 860px) { .formulas { grid-template-columns: repeat(3, 1fr); } }
+.formula { display: grid; gap: 8px; align-content: start; text-align: start; padding: 12px; min-height: 96px; background: var(--paper); color: var(--navy); border: 0; border-bottom: 4px solid var(--gold); transition: transform 0.2s, box-shadow 0.2s; }
+.formula b { font-family: var(--f-display); font-weight: 700; font-size: 15px; line-height: 1.35; }
+.formula.is-on { box-shadow: 0 0 0 3px var(--gold-hi), 0 10px 24px rgba(0, 0, 0, 0.4); transform: translateY(-2px); }
+.formula:disabled { cursor: default; opacity: 0.85; }
+.verdicts { display: flex; flex-wrap: wrap; gap: 4px; }
+.verdicts i { font-style: normal; font-size: 12px; font-weight: 800; padding: 2px 7px; }
+.verdicts i.ok { background: var(--good-ink); color: #fff; }
+.verdicts i.no { background: var(--paper-2); color: var(--bad-ink); }
+.j-reply { display: grid; gap: 4px; padding: 8px 10px; background: var(--paper-2); border-inline-start: 4px solid var(--bad-ink); }
+.j-reply.ok { border-inline-start-color: var(--good-ink); }
+.j-reply .say { font-size: 16px; }
+.j-reply .why { padding: 0; background: none; }
+@media (prefers-reduced-motion: reduce) { .app *, .app *::before, .app *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; } .ticker span { padding-inline-start: 0; } }
+</style>
+
+<div class="sky" aria-hidden="true"></div>
+<main class="app" id="app" dir="rtl" lang="he">
+  <header class="top">
+    <span class="kicker">הדרך ל־61</span>
+    <h1 class="plate">פגישת מו״מ חדשה</h1>
+    <i class="rule" aria-hidden="true"></i>
+    <p>אתם הליכוד עם המנדט, אחרי בחירות 2022 כפי שהמשחק מייצר אותן. בחרו שותפה, העבירו להצעה שלכם את מה שהיא מבקשת או תיקים מהלוח, ושלחו. המנהיג עונה ותמיד אומר למה.</p>
+    <p class="mode-note">לפני ששולחים, המד מראה בדיוק כמה ההצעה קרובה לרף שלהם. אפשר גם להציע רוטציה או מינוי לממלא מקום, לתת לשותפה כמה ימים לחשוב, ולכנס פגישה משותפת לשותפות עם קווים סותרים.</p>
+  </header>
+  <section class="card gov" aria-labelledby="gov-title" id="gov"></section>
+  <section class="card" aria-labelledby="pt-title">
+    <h2 id="pt-title">השותפות <small>בחרו עם מי להיפגש</small></h2>
+    <div class="partners" id="partners"></div>
+  </section>
+  <section class="card meet" id="meet" aria-live="polite"></section>
+  <p class="foot">המנגנון והערכים הם הנחות סימולציה. הבקשות של כל מפלגה הן מה שהמשחק מייצר היום מהעמדות שלה, והציטוטים הם דיאלוג מדומה. במקום תמונות המנהיגים יש צלליות, עד שתיפתח הגישה לוויקימדיה.</p>
+  <div class="bottom">
+    <svg class="knesset" viewBox="0 0 1200 170" preserveAspectRatio="xMidYMax meet" aria-hidden="true">
+      <defs>
+        <linearGradient id="kn-wall" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5a4a35"/><stop offset="1" stop-color="#1d1a1f"/></linearGradient>
+        <linearGradient id="kn-glow" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffd98a" stop-opacity=".95"/><stop offset="1" stop-color="#c98a3a" stop-opacity=".55"/></linearGradient>
+        <linearGradient id="kn-refl" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffd98a" stop-opacity=".22"/><stop offset="1" stop-color="#ffd98a" stop-opacity="0"/></linearGradient>
+      </defs>
+      <rect x="150" y="28" width="900" height="14" fill="#cfc3a6"/>
+      <rect x="170" y="42" width="860" height="84" fill="url(#kn-wall)"/>
+      <g fill="url(#kn-glow)">
+        <rect x="190" y="52" width="40" height="66"/><rect x="250" y="52" width="40" height="66"/><rect x="310" y="52" width="40" height="66"/><rect x="370" y="52" width="40" height="66"/><rect x="430" y="52" width="40" height="66"/><rect x="490" y="52" width="40" height="66"/><rect x="550" y="52" width="40" height="66"/><rect x="610" y="52" width="40" height="66"/><rect x="670" y="52" width="40" height="66"/><rect x="730" y="52" width="40" height="66"/><rect x="790" y="52" width="40" height="66"/><rect x="850" y="52" width="40" height="66"/><rect x="910" y="52" width="40" height="66"/><rect x="970" y="52" width="40" height="66"/>
+      </g>
+      <g fill="#e8dcc0"><rect x="180" y="42" width="8" height="84"/><rect x="240" y="42" width="8" height="84"/><rect x="300" y="42" width="8" height="84"/><rect x="360" y="42" width="8" height="84"/><rect x="420" y="42" width="8" height="84"/><rect x="480" y="42" width="8" height="84"/><rect x="540" y="42" width="8" height="84"/><rect x="600" y="42" width="8" height="84"/><rect x="660" y="42" width="8" height="84"/><rect x="720" y="42" width="8" height="84"/><rect x="780" y="42" width="8" height="84"/><rect x="840" y="42" width="8" height="84"/><rect x="900" y="42" width="8" height="84"/><rect x="960" y="42" width="8" height="84"/><rect x="1020" y="42" width="8" height="84"/></g>
+      <rect x="0" y="126" width="1200" height="4" fill="#d9b45a" opacity=".7"/>
+      <rect x="170" y="130" width="860" height="40" fill="url(#kn-refl)"/>
+      <g stroke="#9fb0d6" stroke-width="2" opacity=".7"><line x1="90" y1="126" x2="90" y2="62"/><line x1="112" y1="126" x2="112" y2="70"/><line x1="1088" y1="126" x2="1088" y2="70"/><line x1="1110" y1="126" x2="1110" y2="62"/></g>
+      <g fill="#dfe7fb" opacity=".8"><path d="M90 62h18v10H90z"/><path d="M112 70h16v9h-16z"/><path d="M1088 70h-16v9h16z"/><path d="M1110 62h-18v10h18z"/></g>
+    </svg>
+    <div class="ticker" aria-hidden="true"><b>מבזק</b><span id="tick">המו״מ הקואליציוני נמשך · 28 יום להרכבת הממשלה · כל הסכם נכנס ללוח הממשלה · הציטוטים בהדגמה הם דיאלוג מדומה</span></div>
+  </div>
+</main>
+
+<script>
+(function () {
+  'use strict';
+  const POSTS = [
+    { id: 'DEF', name: 'הביטחון', tier: 'senior' }, { id: 'FOR', name: 'החוץ', tier: 'senior' }, { id: 'FIN', name: 'האוצר', tier: 'senior' }, { id: 'JUS', name: 'המשפטים', tier: 'senior' },
+    { id: 'EDU', name: 'החינוך', tier: 'mid' }, { id: 'POL', name: 'ביטחון לאומי', tier: 'mid' }, { id: 'TRA', name: 'התחבורה', tier: 'mid' }, { id: 'ECO', name: 'הכלכלה', tier: 'mid' },
+    { id: 'INT', name: 'הפנים', tier: 'mid' }, { id: 'HOU', name: 'הבינוי והשיכון', tier: 'mid' }, { id: 'COM', name: 'התקשורת', tier: 'junior' },
+  ];
+  const TIER = { senior: 'תיק בכיר', mid: 'תיק בינוני', junior: 'תיק זוטר' };
+  const TIER_RANK = { senior: 3, mid: 2, junior: 1 };
+  const W = { red: 3, important: 2, flexible: 1 };
+  const W_HE = { red: 'קו אדום', important: 'חשוב', flexible: 'נחמד' };
+  const post = (id) => POSTS.find((p) => p.id === id);
+  const HOLDER = { id: 'likud', name: 'הליכוד', leader: 'בנימין נתניהו', seats: 29, color: '#d62839', initials: 'ב.נ' };
+  const DAYS = 28;
+  const THINK_DAYS = 3;
+  // Clauses are lines of the whole government: promised once, they hold for every partner.
+  const CLAUSES = {
+    override: { short: 'פסקת ההתגברות', text: 'חקיקת פסקת התגברות על בג״ץ', comp: 'ועדה לבחינת היחסים בין הרשויות' },
+    settle: { short: 'חיזוק ההתיישבות', text: 'חיזוק ההתיישבות והגדלת תקציב הביטחון', comp: 'תוספת לתקציב הביטחון בלבד' },
+    yeshiva: { short: 'מעמד לומדי התורה', text: 'עיגון מעמד לומדי התורה בחוק הגיוס', comp: 'ועדה משותפת לנוסח חוק הגיוס', clash: 'draft' },
+    status: { short: 'הסטטוס קוו', text: 'שמירת הסטטוס קוו בענייני דת ומדינה', comp: 'שינויים בדת ומדינה רק בהסכמת כל השותפות', clash: 'civil' },
+    draft: { short: 'חוק גיוס שוויוני', text: 'חוק גיוס שוויוני עם יעדים מחייבים', comp: 'יעדי גיוס הדרגתיים בלי סנקציות', clash: 'yeshiva' },
+    civil: { short: 'תחבורה בשבת וברית זוגיות', text: 'תחבורה ציבורית בשבת וברית זוגיות אזרחית', comp: 'פיילוט מקומי לתחבורה בשבת', clash: 'status' },
+  };
+  const COMMITTEES = { law: 'ועדת החוקה, חוק ומשפט', fin: 'ועדת הכספים' };
+  // Titles the prime minister can give away, one of each (owner's comment, 2026-10-17 08:01Z).
+  const TITLES = {
+    rotation: { name: 'רוטציה בראשות הממשלה', sub: 'ראש הממשלה בחצי השני של הקדנציה. המחיר: הליכוד מוותר על ראשות הממשלה בחצי השני.', value: 0.3 },
+    deputy: { name: 'ממלא מקום ראש הממשלה', sub: 'תואר בכיר, בלי תיק נוסף.', value: 0.08 },
+  };
+  // Clashing guidelines (owner's comment, 08:00Z): a joint meeting can agree one wording for both sides.
+  // Positions run from the first side (0) to the second (1); the wordings are simulated content.
+  const TOPICS = {
+    draft: { name: 'חוק הגיוס', sides: ['yeshiva', 'draft'], formulas: [
+      { id: 'd1', pos: 0.3, text: 'חוק גיוס עם יעדים הדרגתיים, בלי סנקציות' },
+      { id: 'd2', pos: 0.5, text: 'יעדי גיוס מחייבים לצד מסלול מוכר ללומדי תורה, ותמריצים במקום סנקציות' },
+      { id: 'd3', pos: 0.7, text: 'יעדי גיוס מחייבים, עם סנקציות כלכליות על מי שלא מתגייס' },
+    ] },
+    religion: { name: 'דת ומדינה', sides: ['status', 'civil'], formulas: [
+      { id: 'r1', pos: 0.3, text: 'הסטטוס קוו נשמר, ותחבורה ציבורית בשבת רק בפיילוט מקומי' },
+      { id: 'r2', pos: 0.5, text: 'תחבורה ציבורית מצומצמת בשבת בערים שיבחרו בכך, בלי שינוי בנישואים' },
+      { id: 'r3', pos: 0.7, text: 'תחבורה ציבורית בשבת וברית זוגיות אזרחית, בלי לגעת בכשרות' },
+    ] },
+  };
+  const JOINT_TOL = { red: 0.35, important: 0.5, flexible: 0.65 };
+  const topicOf = (c) => Object.keys(TOPICS).find((t) => TOPICS[t].sides.includes(c)) || null;
+  const formula = (t, fid) => TOPICS[t].formulas.find((f) => f.id === fid);
+  // From the game's engine (2022, Likud holds the mandate): seats after the campaign, demands, acceptance bar, relations.
+  const PARTIES = [
+    { id: 'rz', name: 'הציונות הדתית', leader: "בצלאל סמוטריץ'", initials: 'ב.ס', seats: 20, color: '#f08a24', bar: 0.69, rel: 0.08, oppose: ['draft', 'civil'],
+      demands: [
+        { id: 'rz1', kind: 'clause', clause: 'override', weight: 'red', why: 'ההבטחה המרכזית שלהם בקמפיין' },
+        { id: 'rz2', kind: 'post', post: 'JUS', weight: 'important', why: 'כדי להוביל את השינוי במערכת המשפט' },
+        { id: 'rz3', kind: 'post', post: 'FIN', weight: 'important', why: 'הם רוצים יד על התקציב' },
+        { id: 'rz4', kind: 'clause', clause: 'settle', weight: 'important', why: 'נושא ליבה לבוחרים שלהם' },
+        { id: 'rz5', kind: 'post', post: 'POL', weight: 'flexible', why: 'תיק שמתאים לסדר היום שלהם' },
+        { id: 'rz6', kind: 'post', post: 'HOU', weight: 'flexible', why: 'בנייה ביהודה ושומרון' },
+        { id: 'rz7', kind: 'committee', committee: 'law', weight: 'flexible', why: 'כדי להעביר את החקיקה' },
+      ] },
+    { id: 'shas', name: 'ש״ס', leader: 'אריה דרעי', initials: 'א.ד', seats: 10, color: '#b8461b', bar: 0.67, rel: 0.43, oppose: ['draft', 'civil'],
+      demands: [
+        { id: 'sh1', kind: 'clause', clause: 'yeshiva', weight: 'red', why: 'בלי זה אין להם ממשלה' },
+        { id: 'sh2', kind: 'post', post: 'EDU', weight: 'important', why: 'מוסדות החינוך שלהם' },
+        { id: 'sh3', kind: 'post', post: 'HOU', weight: 'important', why: 'דיור לזוגות צעירים בקהילה' },
+        { id: 'sh4', kind: 'clause', clause: 'status', weight: 'important', why: 'שמירה על מה שקיים' },
+        { id: 'sh5', kind: 'committee', committee: 'fin', weight: 'flexible', why: 'שליטה בהעברות התקציב' },
+      ] },
+    { id: 'utj', name: 'יהדות התורה', leader: 'יצחק גולדקנופ', initials: 'י.ג', seats: 8, color: '#ffb347', bar: 0.67, rel: 0.43, oppose: ['draft', 'civil'],
+      demands: [
+        { id: 'ut1', kind: 'clause', clause: 'yeshiva', weight: 'red', why: 'בלי זה אין להם ממשלה' },
+        { id: 'ut2', kind: 'post', post: 'EDU', weight: 'important', why: 'מוסדות החינוך שלהם' },
+        { id: 'ut3', kind: 'clause', clause: 'status', weight: 'important', why: 'שמירה על מה שקיים' },
+        { id: 'ut4', kind: 'committee', committee: 'fin', weight: 'flexible', why: 'שליטה בהעברות התקציב' },
+      ] },
+    { id: 'yb', name: 'ישראל ביתנו', leader: 'אביגדור ליברמן', initials: 'א.ל', seats: 5, color: '#19a7c4', bar: 0.61, rel: -0.57, oppose: ['yeshiva', 'status'],
+      demands: [
+        { id: 'yb1', kind: 'post', post: 'ECO', weight: 'important', why: 'יוקר המחיה' },
+        { id: 'yb2', kind: 'clause', clause: 'civil', weight: 'important', why: 'הבטחה לבוחרים החילונים' },
+        { id: 'yb3', kind: 'clause', clause: 'draft', weight: 'important', why: 'הדגל של הקמפיין שלהם' },
+        { id: 'yb4', kind: 'committee', committee: 'fin', weight: 'flexible', why: 'שליטה בהעברות התקציב' },
+      ] },
+  ];
+
+  const S = {
+    sel: 'shas', view: 'party', topic: null, day: 6,
+    owner: {}, lines: {}, chairs: {}, titles: {}, joint: {},   // what the government has agreed
+    status: {}, patience: {}, offer: {}, reply: {},            // per partner
+    thinking: {}, shift: {}, back: [],                         // offers left with a partner to think over
+    jointPick: {}, jointReply: {}, jointTries: {},             // joint meetings
+    log: [],
+  };
+  PARTIES.forEach((p) => { S.status[p.id] = 'open'; S.patience[p.id] = 3; S.offer[p.id] = []; });
+  Object.keys(TOPICS).forEach((t) => { S.jointTries[t] = 2; });
+
+  const party = (id) => PARTIES.find((p) => p.id === id);
+  const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  const itemText = (d) => d.kind === 'post' ? 'משרד ' + post(d.post).name : d.kind === 'clause' ? 'קווי היסוד: ' + CLAUSES[d.clause].text : 'יו״ר ' + COMMITTEES[d.committee];
+  const whyName = (d) => d.kind === 'post' ? 'משרד ' + post(d.post).name : d.kind === 'clause' ? 'הסעיף על ' + CLAUSES[d.clause].short : 'ראשות ' + COMMITTEES[d.committee];
+  const andList = (xs) => xs.length < 2 ? (xs[0] || '') : xs.slice(0, -1).join(', ') + ' ו' + xs[xs.length - 1];
+  const weightPhrase = (d) => d.weight === 'red' ? 'הוא קו אדום שלהם' : d.weight === 'important' ? 'חשוב להם' : 'נחמד להם';
+  const pending = (pid) => S.offer[pid] || [];
+  const pendingPosts = (pid) => pending(pid).filter((o) => o.kind === 'post').map((o) => o.ref);
+  const postFree = (id, pid) => !S.owner[id] && !pendingPosts(pid).includes(id);
+  const agreedParties = () => PARTIES.filter((p) => S.status[p.id] === 'agreed');
+  const coalitionSeats = () => HOLDER.seats + agreedParties().reduce((a, p) => a + p.seats, 0);
+  const isOpen = (pid) => S.status[pid] === 'open' && !S.thinking[pid];
+  const say = (pid, text) => `${party(pid).leader}: "${text}"`;
+  const note = (text) => { S.log.push(`יום ${S.day}: ${text}`); };
+
+  // A clause the government already took on, or one this offer gives.
+  const clauseState = (pid, c) => {
+    const t = topicOf(c);
+    if (t && S.joint[t]) return 'joint';
+    const o = pending(pid).find((x) => x.kind === 'clause' && x.ref === c);
+    if (o) return o.comp ? 'comp' : 'give';
+    return S.lines[c] || null;
+  };
+  const clashOf = (pid, c) => {
+    const k = CLAUSES[c].clash;
+    return k && clauseState(pid, k) === 'give' ? k : null;
+  };
+  const titleTaken = (t, pid) => S.titles[t] && S.titles[t] !== pid;
+
+  /** How party `pid` scores the offer on the table: the share of its weighted wishes met, plus titles and relations, minus lines it opposes. */
+  function evaluate(pid) {
+    const p = party(pid);
+    let num = 0, den = 0, red = null; const missing = [];
+    const given = [...pendingPosts(pid), ...Object.keys(S.owner).filter((k) => S.owner[k] === pid)];
+    const exact = new Set(p.demands.filter((d) => d.kind === 'post' && given.includes(d.post)).map((d) => d.post));
+    const spare = given.filter((g) => !exact.has(g));
+    for (const d of p.demands) {
+      const w = W[d.weight];
+      let c = 0;
+      if (d.kind === 'post') {
+        if (exact.has(d.post)) c = 1;
+        else if (spare.length) {
+          const i = spare.findIndex((g) => TIER_RANK[post(g).tier] >= TIER_RANK[post(d.post).tier]);
+          const g = spare.splice(i >= 0 ? i : 0, 1)[0];
+          c = TIER_RANK[post(g).tier] >= TIER_RANK[post(d.post).tier] ? 0.5 : 0.3;
+        }
+      } else if (d.kind === 'clause') {
+        const st = clauseState(pid, d.clause);
+        c = st === 'give' ? 1 : st === 'joint' ? 0.6 : st === 'comp' ? (d.weight === 'red' ? 0.35 : 0.5) : 0;
+      } else {
+        const o = pending(pid).find((x) => x.kind === 'committee' && x.ref === d.committee);
+        c = S.chairs[d.committee] === pid ? 1 : o ? (o.comp ? 0.5 : 1) : 0;
+      }
+      den += w; num += w * c;
+      if (c === 0 && d.weight === 'red') red = red || d;
+      if (c < 1) missing.push({ d, c });
+    }
+    let score = den ? num / den : 1;
+    score += 0.04 * spare.length + 0.08 * p.rel;
+    for (const t of Object.keys(TITLES)) if (S.titles[t] === pid || pending(pid).some((o) => o.kind === 'title' && o.ref === t)) score += TITLES[t].value;
+    const hurt = p.oppose.filter((c) => clauseState(pid, c) === 'give');
+    score -= 0.12 * hurt.length;
+    return { score, bar: p.bar + (S.shift[pid] || 0), red, missing, hurt };
+  }
+
+  /** The smallest change that would close the deal: their heaviest unmet wishes first, while the posts are free. */
+  function counterFor(pid) {
+    const p = party(pid);
+    const saved = S.offer[pid].map((o) => ({ ...o }));
+    const fix = [];   // { say, d, taker }: what the leader asks to add, in their words
+    const order = p.demands.slice().sort((a, b) => W[b.weight] - W[a.weight]);
+    for (const d of order) {
+      const e = evaluate(pid);
+      if (!e.red && e.score >= e.bar) break;
+      if (e.missing.every((m) => m.d !== d)) continue;
+      if (d.kind === 'post') {
+        if (postFree(d.post, pid)) { S.offer[pid].push({ key: d.id, kind: 'post', ref: d.post }); fix.push({ say: 'את משרד ' + post(d.post).name, d }); continue; }
+        // Their post went to someone else: a free post of the same tier or higher stands in for it.
+        const want = TIER_RANK[post(d.post).tier];
+        const sub = POSTS.filter((x) => postFree(x.id, pid) && TIER_RANK[x.tier] >= want).sort((x, y) => TIER_RANK[x.tier] - TIER_RANK[y.tier])[0];
+        if (sub) { S.offer[pid].push({ key: 'sub-' + d.id, kind: 'post', ref: sub.id }); fix.push({ say: `את משרד ${sub.name} במקום ${post(d.post).name}`, d, taker: S.owner[d.post] || null }); }
+      } else if (d.kind === 'clause') {
+        const st = clauseState(pid, d.clause);
+        if (clashOf(pid, d.clause) || st === 'joint') continue;
+        const o = S.offer[pid].find((x) => x.kind === 'clause' && x.ref === d.clause);
+        if (o && o.comp) { o.comp = false; fix.push({ say: `את ${CLAUSES[d.clause].short} במלואו, בלי פשרה`, d }); }
+        else if (!o && !S.lines[d.clause]) { S.offer[pid].push({ key: d.id, kind: 'clause', ref: d.clause }); fix.push({ say: `את ${CLAUSES[d.clause].short} בקווי היסוד`, d }); }
+      } else if (!S.chairs[d.committee]) {
+        const o = S.offer[pid].find((x) => x.kind === 'committee' && x.ref === d.committee);
+        if (o && o.comp) { o.comp = false; fix.push({ say: `את ${COMMITTEES[d.committee]} לכל הקדנציה`, d }); }
+        else if (!o) { S.offer[pid].push({ key: d.id, kind: 'committee', ref: d.committee }); fix.push({ say: `את ראשות ${COMMITTEES[d.committee]}`, d }); }
+      }
+    }
+    const e = evaluate(pid);
+    const next = S.offer[pid];
+    S.offer[pid] = saved;
+    return !e.red && e.score >= e.bar && fix.length ? { fix, next } : null;
+  }
+
+  function zone(e) {
+    const m = e.score - e.bar;
+    if (e.red) return { cls: 'bad', he: 'קו אדום לא נענה' };
+    if (m >= 0) return { cls: 'ok', he: 'מספיק להסכם' };
+    if (m >= -0.12) return { cls: 'warn', he: 'כמעט' };
+    if (m >= -0.3) return { cls: 'warn', he: 'רחוק' };
+    return { cls: 'bad', he: 'רחוק מאוד' };
+  }
+
+  /** The leader's answer to the offer on the table, always with the reason. Signs the deal when it clears their bar. */
+  function replyFor(pid) {
+    const e = evaluate(pid);
+    if (e.red) {
+      const short = e.red.kind === 'clause' ? CLAUSES[e.red.clause].short : itemText(e.red);
+      const comp = e.red.kind === 'clause' && pending(pid).some((o) => o.kind === 'clause' && o.ref === e.red.clause);
+      return { tone: 'bad', say: say(pid, comp ? `פשרה על ${short} לא תעבור אצלנו.` : `בלי ${short} אין על מה לדבר.`),
+        why: `${whyName(e.red)} הוא הקו האדום שלהם: ${e.red.why}. ${comp ? 'פשרה על קו אדום שווה להם מעט' : 'בלעדיו הם לא נכנסים'}, ולכן גם הצעה נדיבה בשאר לא תעזור.` };
+    }
+    if (e.score >= e.bar) {
+      const r = { tone: 'ok', say: say(pid, 'סגרנו. נחתום עוד הערב.'), why: e.hurt.length ? `הם הסכימו למרות ${andList(e.hurt.map((c) => CLAUSES[c].short))}, שמפריע להם. זה יחזור בהמשך הקדנציה.` : 'ההצעה ענתה על מה שהכי חשוב להם.' };
+      commit(pid);
+      return r;
+    }
+    const c = counterFor(pid);
+    const close = e.score - e.bar >= -0.12;
+    const taken = e.missing.find((m) => m.d.kind === 'post' && S.owner[m.d.post] && S.owner[m.d.post] !== pid);
+    const heavy = e.missing.filter((m) => m.c < 1).sort((a, b) => W[b.d.weight] - W[a.d.weight]).slice(0, 2).map((m) => `${whyName(m.d)} (${W_HE[m.d.weight]})`);
+    if (c) {
+      return { tone: 'counter', say: say(pid, `${close ? 'כמעט.' : 'זה עוד לא מספיק.'} תוסיפו ${andList(c.fix.map((f) => f.say))}, ונסגור.`),
+        why: `${c.fix.map((f) => f.taker ? `${whyName(f.d)} ${weightPhrase(f.d)}, אבל הוא כבר הובטח ל${party(f.taker).name}, ולכן הם מסתפקים בתיק אחר באותה דרגה` : `${whyName(f.d)} ${weightPhrase(f.d)}: ${f.d.why}`).join('. ')}. זה התיקון הקטן ביותר שיספיק להם${e.hurt.length ? `, למרות ש${andList(e.hurt.map((x) => CLAUSES[x].short))} מפריע להם` : ''}.`, fix: c.next };
+    }
+    if (taken) return { tone: 'bad', say: say(pid, `את משרד ${post(taken.d.post).name} כבר נתתם ל${party(S.owner[taken.d.post]).name}. מה נשאר לנו?`), why: 'התיק שהם רצו כבר הובטח לשותפה אחרת, ואין מספיק תיקים פנויים באותה דרגה ודברים אחרים כדי לפצות אותם.' };
+    return { tone: 'bad', say: say(pid, 'זה רחוק ממה שאנחנו צריכים.'), why: `חסרים להם ${andList(heavy)}${e.hurt.length ? `, ומפריע להם ${andList(e.hurt.map((x) => CLAUSES[x].short))}` : ''}.` };
+  }
+
+  function commit(pid) {
+    for (const o of S.offer[pid]) {
+      if (o.kind === 'post') S.owner[o.ref] = pid;
+      else if (o.kind === 'clause') { if (S.lines[o.ref] !== 'give') S.lines[o.ref] = o.comp ? 'comp' : 'give'; }
+      else if (o.kind === 'title') S.titles[o.ref] = pid;
+      else S.chairs[o.ref] = pid;
+    }
+    // A title or post can be promised once: drop it from offers still on the table elsewhere.
+    for (const q of PARTIES) if (q.id !== pid) S.offer[q.id] = S.offer[q.id].filter((o) => !(o.kind === 'title' && S.titles[o.ref]) && !(o.kind === 'post' && S.owner[o.ref]));
+    S.offer[pid] = [];
+    S.status[pid] = 'agreed';
+    delete S.thinking[pid];
+    note(`${party(pid).name} חתמה על הסכם קואליציוני`);
+  }
+
+  function propose(pid) {
+    if (S.patience[pid] <= 0 || !isOpen(pid)) return;
+    S.patience[pid] -= 1;
+    const r = replyFor(pid);
+    if (S.patience[pid] <= 0 && r.tone !== 'ok') r.why += ' נגמרו ההצעות לפגישה הזו. אפשר לתת להם לחשוב על ההצעה האחרונה.';
+    S.reply[pid] = r;
+    advance(1);
+    render();
+    const el = document.querySelector('.reply');
+    if (el && el.scrollIntoView) el.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'nearest' });
+  }
+
+  /** Leave the offer with them for a few days (owner's comment, 07:58Z); the game brings the player back when they answer. */
+  function think(pid) {
+    if (!isOpen(pid) || !pending(pid).length) return;
+    S.thinking[pid] = { until: S.day + THINK_DAYS, signedAt: agreedParties().length };
+    S.reply[pid] = { tone: 'wait', say: say(pid, `ניתן לכם תשובה בעוד ${THINK_DAYS} ימים.`), why: `ההצעה מונחת אצלם עד יום ${S.day + THINK_DAYS}. בינתיים אפשר להתקדם עם האחרות, והמשחק יחזיר אתכם אליהם עם התשובה.` };
+    note(`${party(pid).name} לוקחת זמן לחשוב על ההצעה`);
+    render();
+  }
+
+  // What changed for them while they were thinking; it moves their bar.
+  function thinkShift(pid) {
+    const others = agreedParties().filter((x) => x.id !== pid);
+    const without = HOLDER.seats + others.reduce((a, x) => a + x.seats, 0);
+    if (without >= 61) return { d: -0.12, why: 'בזמן שחשבו נבנה לכם רוב בלעדיהם, והם חוששים להישאר בחוץ.' };
+    const rest = PARTIES.filter((x) => x.id !== pid && S.status[x.id] === 'open').reduce((a, x) => a + x.seats, 0);
+    if (without + rest < 61) return { d: 0.04, why: 'בזמן שחשבו הבינו שבלעדיהם אין לכם 61, והם מעלים את המחיר.' };
+    if (others.length > S.thinking[pid].signedAt) return { d: -0.07, why: 'בזמן שחשבו חתמתם עם שותפה נוספת, והם לא רוצים להישאר מאחור.' };
+    return { d: -0.03, why: 'הזמן ריכך אותם מעט.' };
+  }
+
+  function advance(n) {
+    for (let i = 0; i < n && S.day < DAYS; i++) {
+      S.day += 1;
+      for (const pid of Object.keys(S.thinking)) {
+        if (S.thinking[pid].until > S.day) continue;
+        const sh = thinkShift(pid);
+        S.shift[pid] = (S.shift[pid] || 0) + sh.d;
+        delete S.thinking[pid];
+        const r = replyFor(pid);
+        r.why = sh.why + ' ' + r.why;
+        r.back = true;
+        S.reply[pid] = r;
+        S.patience[pid] = Math.max(1, S.patience[pid]);
+        S.back.push(pid);
+        note(`${party(pid).name} חזרה עם תשובה`);
+      }
+    }
+  }
+  // When a partner comes back with an answer, the game takes the player to that meeting.
+  function goBack() {
+    const pid = S.back.shift();
+    if (pid) { S.sel = pid; S.view = 'party'; }
+  }
+
+  // ---------- joint meetings ----------
+  const stakeOf = (t, p) => {
+    const d = p.demands.find((x) => x.kind === 'clause' && TOPICS[t].sides.includes(x.clause));
+    return d ? { d, side: TOPICS[t].sides.indexOf(d.clause) } : null;
+  };
+  const stakeholders = (t) => PARTIES.filter((p) => stakeOf(t, p));
+  const topicLive = (t) => !S.joint[t] && [0, 1].every((s) => stakeholders(t).some((p) => stakeOf(t, p).side === s));
+
+  /** Would `p` accept wording `fid`? Each side moves further when it is content with the rest of its deal. */
+  function jointView(t, fid, p) {
+    const { d, side } = stakeOf(t, p);
+    const saved = S.joint[t];
+    S.joint[t] = fid;
+    const e = evaluate(p.id);
+    if (saved) S.joint[t] = saved; else delete S.joint[t];
+    const content = S.status[p.id] === 'agreed' || (!e.red && e.score >= e.bar - 0.05);
+    const tol = JOINT_TOL[d.weight] + (content ? 0.2 : 0) - 0.05;
+    const dist = Math.abs(formula(t, fid).pos - side);
+    return { ok: dist <= tol + 1e-9, content, d };
+  }
+
+  function proposeJoint(t) {
+    const fid = S.jointPick[t];
+    if (!fid || S.jointTries[t] <= 0 || S.joint[t]) return;
+    S.jointTries[t] -= 1;
+    const replies = stakeholders(t).map((p) => {
+      const v = jointView(t, fid, p);
+      return v.ok
+        ? { pid: p.id, ok: true, say: say(p.id, 'נוכל לחיות עם הנוסח הזה.'), why: v.content ? 'עם הנוסח הזה ועם שאר מה שקיבלו מכם, העסקה טובה בעיניהם, ולכן הם מוכנים לזוז עד כאן.' : 'הנוסח קרוב מספיק לעמדה שלהם.' }
+        : { pid: p.id, ok: false, say: say(p.id, 'הנוסח הזה לא יעבור אצלנו.'), why: `${whyName(v.d)} ${weightPhrase(v.d)}, והנוסח רחוק מדי מהעמדה שלהם.${v.content ? '' : ' גם עם הנוסח הזה, שאר ההצעה אליהם לא מספיקה להם, ולכן אין להם סיבה לוותר. כדאי לשפר קודם את ההצעה אליהם.'}` };
+    });
+    const all = replies.every((r) => r.ok);
+    S.jointReply[t] = { fid, replies, all };
+    if (all) {
+      S.joint[t] = fid;
+      for (const c of TOPICS[t].sides) delete S.lines[c];
+      for (const q of PARTIES) S.offer[q.id] = S.offer[q.id].filter((o) => !(o.kind === 'clause' && TOPICS[t].sides.includes(o.ref)));
+      note(`נוסח משותף על ${TOPICS[t].name}: ${andList(stakeholders(t).map((p) => p.name))}`);
+    }
+    advance(1);
+    render();
+  }
+
+  function add(pid, d) {
+    if (!isOpen(pid)) return;
+    if (d.kind === 'post' && !postFree(d.post, pid)) return;
+    if (d.kind === 'clause' && (clashOf(pid, d.clause) || clauseState(pid, d.clause) === 'joint')) return;
+    S.offer[pid].push({ key: d.id, kind: d.kind, ref: d.kind === 'post' ? d.post : d.kind === 'clause' ? d.clause : d.committee, comp: false });
+    S.reply[pid] = null;
+    render();
+  }
+  function addPost(pid, id) {
+    if (!isOpen(pid) || !postFree(id, pid)) return;
+    S.offer[pid].push({ key: 'x-' + id, kind: 'post', ref: id, comp: false });
+    S.reply[pid] = null;
+    render();
+  }
+  function addTitle(pid, t) {
+    if (!isOpen(pid) || S.titles[t] || pending(pid).some((o) => o.kind === 'title' && o.ref === t)) return;
+    S.offer[pid].push({ key: 't-' + t, kind: 'title', ref: t, comp: false });
+    S.reply[pid] = null;
+    render();
+  }
+
+  // ---------- views ----------
+  // A photo tile: until real photos can be loaded, a head-and-shoulders silhouette on the party colour.
+  const SIL = '<svg viewBox="0 0 64 54" aria-hidden="true"><circle cx="32" cy="17" r="12" fill="#fff"/><path d="M6 54c2-15 12-22 26-22s24 7 26 22z" fill="#fff"/><path d="M28 33l4 14 4-14z" fill="rgba(0,0,0,.45)"/></svg>';
+  const badge = (p) => `<span class="badge" style="background:linear-gradient(160deg, ${p.color}, #0a1a3f 120%)" aria-hidden="true">${SIL}<span>${p.initials}</span></span>`;
+  const X_ICON = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>';
+
+  // The coalition so far as one bar out of 120 seats, with the party in the meeting striped when its offer is on the table.
+  function raceBar(pend) {
+    const segs = [HOLDER, ...agreedParties()].map((p) => `<span style="width:${p.seats / 120 * 100}%;background:${p.color}" title="${esc(p.name)}"></span>`)
+      .concat(pend ? [`<span class="pend" style="width:${pend.seats / 120 * 100}%;background:${pend.color}"></span>`] : []);
+    return `<div class="race-bar" role="img" aria-label="${coalitionSeats()} חברי כנסת בקואליציה מתוך 61 הדרושים">${segs.join('')}<i class="race-61" aria-hidden="true"></i></div>`;
+  }
+
+  function viewGov() {
+    const agreed = agreedParties();
+    const pend = S.view === 'party' ? party(S.sel) : null;
+    const seats = coalitionSeats();
+    const pendSeats = pend && isOpen(pend.id) && pending(pend.id).length ? pend.seats : 0;
+    const wants = (id) => PARTIES.filter((p) => S.status[p.id] === 'open' && p.demands.some((d) => d.kind === 'post' && d.post === id));
+    const tiles = POSTS.map((p) => {
+      const own = S.owner[p.id] ? party(S.owner[p.id]) : null;
+      const inOffer = pend && pendingPosts(pend.id).includes(p.id);
+      const can = !own && pend && isOpen(pend.id);
+      const w = wants(p.id).map((x) => `<i style="background:${x.color}" title="${esc(x.name)} מבקשת"></i>`).join('');
+      const cls = own ? 'is-own' : inOffer ? 'is-pend' : can ? 'can' : '';
+      const style = own ? `background:${own.color}` : '';
+      const sub = own ? 'הובטח ל' + own.name : inOffer ? 'בהצעה ל' + pend.name : 'נשאר לליכוד · ' + TIER[p.tier];
+      return `<button type="button" class="post ${cls}" style="${style}" data-post="${p.id}" ${own || !can ? 'disabled' : ''} aria-label="משרד ${esc(p.name)}: ${esc(sub)}"><b>${esc(p.name)}</b><small>${esc(sub)}</small>${w && !own ? `<span class="want" aria-hidden="true">${w}</span>` : ''}</button>`;
+    }).join('');
+    const lines = Object.keys(S.lines).map((c) => `<li>${esc(S.lines[c] === 'give' ? CLAUSES[c].text : CLAUSES[c].comp)}</li>`).join('')
+      + Object.keys(S.joint).map((t) => `<li class="is-joint">${esc(formula(t, S.joint[t]).text)} <small>נוסח משותף</small></li>`).join('')
+      + Object.keys(S.chairs).map((k) => `<li>יו״ר ${esc(COMMITTEES[k])}: ${esc(party(S.chairs[k]).name)}</li>`).join('')
+      + Object.keys(S.titles).map((t) => `<li>${esc(TITLES[t].name)}: ${esc(party(S.titles[t]).leader)}</li>`).join('');
+    const clashes = Object.keys(TOPICS).filter(topicLive).map((t) => {
+      const sides = [0, 1].map((s) => andList(stakeholders(t).filter((p) => stakeOf(t, p).side === s).map((p) => p.name)));
+      return `<div class="clash"><div><b>קווים מתנגשים: ${esc(TOPICS[t].name)}</b><small>${esc(sides[0])} מול ${esc(sides[1])}. אי אפשר לתת לשני הצדדים את מה שהם מבקשים.</small></div><button type="button" class="btn" data-joint="${t}">לכנס פגישה משותפת</button></div>`;
+    }).join('');
+    return `<div class="gov-head"><h2 id="gov-title">הממשלה המתגבשת <small>ראש הממשלה: ${HOLDER.leader} · ${agreed.length ? 'חתמו: ' + agreed.map((p) => p.name).join(', ') : 'עוד אין שותפות'}</small></h2>
+        <div class="clock"><span>יום <b>${S.day}</b> מתוך ${DAYS}</span><button type="button" class="btn btn-sm" data-pass ${S.day >= DAYS ? 'disabled' : ''}>להעביר יום</button></div></div>
+      <div class="race">${raceBar(pendSeats ? pend : null)}
+      <div class="race-line"><span><b>${seats}</b> מנדטים בקואליציה${pendSeats ? ` · עם ${pend.name}: ${seats + pendSeats}` : ''}</span><span>${seats >= 61 ? 'יש רוב: אפשר להציג ממשלה' : `חסרים ${61 - seats} עד 61`}</span></div></div>
+      <div class="posts" role="group" aria-label="11 תיקי הממשלה">${tiles}</div>
+      <p class="legend">נקודה צבעונית על תיק: מפלגה שמבקשת אותו. לחיצה על תיק פנוי מוסיפה אותו להצעה לשותפה שבפגישה.</p>
+      ${clashes}
+      ${lines ? `<div><p class="legend">מה שכבר סוכם:</p><ul class="lines">${lines}</ul></div>` : ''}`;
+  }
+
+  function viewPartners() {
+    return PARTIES.map((p) => {
+      const st = S.status[p.id];
+      const z = zone(evaluate(p.id));
+      const label = st === 'agreed' ? '<span class="st ok">חתמה</span>'
+        : S.thinking[p.id] ? `<span class="st think">חושבת עד יום ${S.thinking[p.id].until}</span>`
+        : S.back.includes(p.id) ? '<span class="st back">חזרה עם תשובה</span>'
+        : S.patience[p.id] <= 0 ? '<span class="st out">נגמרו ההצעות</span>'
+        : `<span class="st z-${z.cls}">${z.he}</span>`;
+      return `<button type="button" class="pt" data-pt="${p.id}" aria-pressed="${S.view === 'party' && S.sel === p.id}">${badge(p)}<b>${esc(p.name)}</b>${label}<small>${p.seats} מנדטים · ${esc(p.leader)}</small></button>`;
+    }).join('');
+  }
+
+  function meter(e) {
+    const z = zone(e);
+    const pos = Math.max(0, Math.min(1, e.score));
+    return `<div class="meter"><div class="meter-track"><i class="meter-needle" style="inset-inline-start:calc(${(pos * 100).toFixed(1)}% - 3px)"></i><i class="meter-bar" style="inset-inline-start:${(Math.min(1, e.bar) * 100).toFixed(1)}%" title="הרף שלהם"></i></div><div class="meter-labels"><span>רחוק</span><span>קרוב</span><span>מספיק</span></div><p class="meter-say ${!e.red && e.score >= e.bar ? 'exact-ok' : z.cls}">${esc(z.he)} · ${Math.round(e.score * 100)} מתוך ${Math.round(e.bar * 100)} שהם צריכים</p></div>`;
+  }
+
+  function backBanner() {
+    if (!S.back.length) return '';
+    const p = party(S.back[0]);
+    return `<div class="back-banner" role="status"><span>${esc(p.leader)} חזר עם תשובה על ההצעה שהשארתם.</span><button type="button" class="btn btn-primary btn-sm" data-goback>לחזור לפגישה עם ${esc(p.name)}</button></div>`;
+  }
+
+  function viewMeet() {
+    if (S.view === 'joint') return viewJoint(S.topic);
+    const p = party(S.sel);
+    const st = S.status[p.id];
+    const open = isOpen(p.id);
+    const th = S.thinking[p.id];
+    const e = evaluate(p.id);
+    const inOffer = (d) => pending(p.id).some((o) => o.key === d.id || (d.kind === 'post' && o.kind === 'post' && o.ref === d.post) || (d.kind === 'clause' && o.kind === 'clause' && o.ref === d.clause) || (d.kind === 'committee' && o.kind === 'committee' && o.ref === d.committee));
+    const metAlready = (d) => (d.kind === 'post' && S.owner[d.post] === p.id) || (d.kind === 'clause' && S.lines[d.clause] === 'give') || (d.kind === 'committee' && S.chairs[d.committee] === p.id);
+    const wishes = p.demands.slice().sort((a, b) => W[b.weight] - W[a.weight]).map((d) => {
+      if (metAlready(d)) return `<div class="wish" aria-disabled="true"><span class="w ${d.weight}">${W_HE[d.weight]}</span><b>${esc(itemText(d))}</b><small>כבר בממשלה</small></div>`;
+      if (d.kind === 'clause' && clauseState(p.id, d.clause) === 'joint') return `<div class="wish" aria-disabled="true"><span class="w ${d.weight}">${W_HE[d.weight]}</span><b>${esc(itemText(d))}</b><small>סוכם בנוסח משותף: ${esc(formula(topicOf(d.clause), S.joint[topicOf(d.clause)]).text)}</small></div>`;
+      const takenBy = d.kind === 'post' && S.owner[d.post] && S.owner[d.post] !== p.id ? party(S.owner[d.post]) : null;
+      const clash = d.kind === 'clause' ? clashOf(p.id, d.clause) : null;
+      const chairBy = d.kind === 'committee' && S.chairs[d.committee] ? party(S.chairs[d.committee]) : null;
+      const block = takenBy ? `הובטח ל${takenBy.name}` : clash ? `סותר את ${CLAUSES[clash].text}. אפשר לכנס פגישה משותפת` : chairBy ? `הובטח ל${chairBy.name}` : '';
+      return `<button type="button" class="wish ${inOffer(d) ? 'is-in' : ''} ${block ? 'is-blocked' : ''}" data-wish="${d.id}" ${block || !open ? 'disabled' : ''}><span class="w ${d.weight}">${W_HE[d.weight]}</span><b>${esc(itemText(d))}</b><small>${esc(block || d.why)}</small></button>`;
+    }).join('');
+    const offer = pending(p.id).map((o) => {
+      const d = p.demands.find((x) => x.id === o.key || (o.kind === 'post' && x.kind === 'post' && x.post === o.ref));
+      const text = o.kind === 'post' ? 'משרד ' + post(o.ref).name + ' · ' + TIER[post(o.ref).tier]
+        : o.kind === 'clause' ? 'קווי היסוד: ' + (o.comp ? CLAUSES[o.ref].comp : CLAUSES[o.ref].text)
+        : o.kind === 'title' ? TITLES[o.ref].name
+        : 'יו״ר ' + COMMITTEES[o.ref] + (o.comp ? ' לחצי קדנציה' : '');
+      const sub = o.kind === 'title' ? TITLES[o.ref].sub : d ? (o.comp ? 'פשרה על: ' + W_HE[d.weight] : 'בדיוק מה שביקשו') : 'תיק שלא ביקשו: שווה להם פחות';
+      const canComp = (o.kind === 'clause' || o.kind === 'committee') && open;
+      return `<div class="offer-item ${o.comp ? 'is-comp' : ''} ${o.kind === 'title' ? 'is-title' : ''}">${open ? `<button type="button" class="x" data-drop="${o.key}" aria-label="להוריד מההצעה">${X_ICON}</button>` : '<span></span>'}<b>${esc(text)}</b><small>${esc(sub)}</small>${canComp ? `<button type="button" class="comp" data-comp="${o.key}">${o.comp ? 'לתת במלואו' : 'להציע פשרה במקום'}</button>` : ''}</div>`;
+    }).join('');
+    const free = POSTS.filter((x) => postFree(x.id, p.id) && !p.demands.some((d) => d.kind === 'post' && d.post === x.id));
+    const titles = Object.keys(TITLES).filter((t) => !S.titles[t] && !pending(p.id).some((o) => o.kind === 'title' && o.ref === t));
+    const r = S.reply[p.id];
+    const reply = r ? `<div class="reply ${r.tone}"><span class="tag">${r.tone === 'ok' ? 'הסכם' : r.tone === 'counter' ? 'הצעה נגדית' : r.tone === 'wait' ? 'לוקחים זמן' : 'סירוב'}${r.back ? ` · יום ${S.day}` : ''}</span><p class="say">${esc(r.say)}</p><p class="why"><b>${r.tone === 'ok' ? 'למה הסכימו' : r.tone === 'counter' ? 'למה עוד לא' : r.tone === 'wait' ? 'מה עכשיו' : 'למה סירבו'}</b>${esc(r.why)}</p>${r.tone === 'ok' ? '<span class="stamp">נחתם</span>' : ''}${r.fix && open ? `<div class="go"><button type="button" class="btn btn-primary" data-take>לקבל את התיקון ולסגור</button><button type="button" class="btn" data-edit>להמשיך לשנות בעצמי</button></div>` : ''}</div>` : '';
+    const pat = Array.from({ length: 3 }, (_, i) => `<i class="${i >= S.patience[p.id] ? 'used' : ''}"></i>`).join('');
+    const miniSeats = HOLDER.seats + PARTIES.filter((x) => S.status[x.id] === 'agreed' || x.id === p.id).reduce((a, x) => a + x.seats, 0);
+    const side = open || th ? `<div class="table">
+        <div class="side"><h3>מה הם מבקשים <small>${open ? 'לחיצה מעבירה להצעה' : ''}</small></h3>${wishes || '<p class="empty">הכול בהצעה</p>'}</div>
+        <div class="side"><h3>ההצעה שלכם <small>${pending(p.id).length} פריטים</small></h3>${offer || '<p class="empty">ההצעה ריקה. העבירו לכאן בקשות, או לחצו על תיק פנוי בלוח.</p>'}
+          ${open && free.length ? `<div class="free-pick"><span>תיק שלא ביקשו:</span><div class="chips">${free.map((x) => `<button type="button" class="chip" data-free="${x.id}">${esc(x.name)}</button>`).join('')}</div></div>` : ''}
+          ${open && titles.length ? `<div class="free-pick"><span>תואר:</span><div class="chips">${titles.map((t) => `<button type="button" class="chip chip-title" data-title="${t}">${esc(TITLES[t].name)}</button>`).join('')}</div></div>` : ''}
+          ${open ? meter(e) : ''}
+          ${th ? `<p class="blind">ההצעה מונחת אצלם. הם יחזרו עם תשובה ביום ${th.until}. אפשר להתקדם עם אחרות או להעביר יום.</p>` : ''}
+          ${open ? `<div class="go"><button type="button" class="btn btn-primary" data-send ${S.patience[p.id] <= 0 || !pending(p.id).length ? 'disabled' : ''}>להציע ל${esc(p.name)}</button><button type="button" class="btn" data-think ${!pending(p.id).length ? 'disabled' : ''}>לתת להם לחשוב עד יום ${Math.min(DAYS, S.day + THINK_DAYS)}</button></div>` : ''}
+        </div>
+      </div>` : '';
+    return `${backBanner()}<div class="meet-head">${badge(p)}<div class="who"><h2>פגישה עם ${esc(p.leader)}</h2><small>${esc(p.name)} · ${p.seats} מנדטים</small></div><div class="pat" aria-label="נותרו ${S.patience[p.id]} הצעות בפגישה">${pat}<span>הצעות שנשארו</span></div></div>
+      <div class="race mini">${raceBar(open ? p : null)}<p class="race-line"><span>${st === 'agreed' ? 'בקואליציה' : 'אם יחתמו'}: <b>${miniSeats}</b> מנדטים</span><span>${miniSeats >= 61 ? 'יש רוב' : `חסרים ${61 - miniSeats} עד 61`}</span></p></div>
+      ${side}
+      ${reply}`;
+  }
+
+  function viewJoint(t) {
+    const T = TOPICS[t];
+    const who = stakeholders(t);
+    const sideNames = [0, 1].map((s) => andList(who.filter((p) => stakeOf(t, p).side === s).map((p) => p.name)));
+    const jr = S.jointReply[t];
+    const done = !!S.joint[t];
+    const cards = T.formulas.map((f) => {
+      const views = who.map((p) => ({ p, v: jointView(t, f.id, p) }));
+      const picked = S.jointPick[t] === f.id;
+      return `<button type="button" class="formula ${picked ? 'is-on' : ''}" data-formula="${f.id}" aria-pressed="${picked}" ${done ? 'disabled' : ''} style="--pos:${f.pos}">
+        <b>${esc(f.text)}</b>
+        <span class="verdicts">${views.map(({ p, v }) => `<i class="${v.ok ? 'ok' : 'no'}">${esc(p.name)}: ${v.ok ? 'מקובל' : 'לא מקובל'}</i>`).join('')}</span></button>`;
+    }).join('');
+    const stance = who.map((p) => { const { d } = stakeOf(t, p); return `<li>${badge(p)}<span><b>${esc(p.name)}</b> ${esc(CLAUSES[d.clause].text)} <span class="w ${d.weight}">${W_HE[d.weight]}</span><small>${S.status[p.id] === 'agreed' ? 'כבר חתמה' : jointView(t, T.formulas[1].id, p).content ? 'שאר ההצעה אליהם כבר מספיקה להם' : 'שאר ההצעה אליהם עוד לא מספיקה להם'}</small></span></li>`; }).join('');
+    const pat = Array.from({ length: 2 }, (_, i) => `<i class="${i >= S.jointTries[t] ? 'used' : ''}"></i>`).join('');
+    const replies = jr ? `<div class="reply ${jr.all ? 'ok' : 'bad'}"><span class="tag">${jr.all ? 'נוסח משותף' : 'אין הסכמה'}</span>${jr.replies.map((r) => `<div class="j-reply ${r.ok ? 'ok' : 'no'}"><p class="say">${esc(r.say)}</p><p class="why">${esc(r.why)}</p></div>`).join('')}${jr.all ? '<span class="stamp">סוכם</span>' : ''}</div>` : '';
+    return `${backBanner()}<div class="meet-head"><div class="faces">${who.map(badge).join('')}</div><div class="who"><h2>פגישה משותפת על ${esc(T.name)}</h2><small>${esc(andList(who.map((p) => p.leader)))}</small></div><div class="pat" aria-label="נותרו ${S.jointTries[t]} הצעות נוסח">${pat}<span>הצעות נוסח שנשארו</span></div></div>
+      <ul class="stances">${stance}</ul>
+      <p class="legend">בחרו נוסח אחד לקווי היסוד. הוא יחליף את הדרישות של שני הצדדים. כל צד מוכן לזוז רחוק יותר כשהוא מרוצה משאר ההצעה אליו.</p>
+      <div class="axis"><span>קרוב ל${esc(sideNames[0])}</span><span>קרוב ל${esc(sideNames[1])}</span></div>
+      <div class="formulas">${cards}</div>
+      <div class="go">${done ? '' : `<button type="button" class="btn btn-primary" data-jsend ${!S.jointPick[t] || S.jointTries[t] <= 0 ? 'disabled' : ''}>להציע את הנוסח</button>`}<button type="button" class="btn" data-jclose>חזרה לפגישות</button></div>
+      ${replies}`;
+  }
+
+  function render() {
+    document.getElementById('gov').innerHTML = viewGov();
+    document.getElementById('partners').innerHTML = viewPartners();
+    document.getElementById('meet').innerHTML = viewMeet();
+    const tick = document.getElementById('tick');
+    if (tick && S.log.length) tick.textContent = S.log.slice(-4).reverse().join(' · ');
+  }
+
+  document.getElementById('app').addEventListener('click', (ev) => {
+    const b = ev.target.closest('button');
+    if (!b || b.disabled) return;
+    const pid = S.sel;
+    const p = party(pid);
+    const ds = b.dataset;
+    if (ds.pt) { S.sel = ds.pt; S.view = 'party'; S.back = S.back.filter((x) => x !== ds.pt); render(); return; }
+    if (ds.post) { addPost(pid, ds.post); return; }
+    if (ds.free) { addPost(pid, ds.free); return; }
+    if (ds.title) { addTitle(pid, ds.title); return; }
+    if (ds.wish) { add(pid, p.demands.find((d) => d.id === ds.wish)); return; }
+    if (ds.drop) { S.offer[pid] = S.offer[pid].filter((o) => o.key !== ds.drop); S.reply[pid] = null; render(); return; }
+    if (ds.comp) { const o = S.offer[pid].find((x) => x.key === ds.comp); if (o) o.comp = !o.comp; S.reply[pid] = null; render(); return; }
+    if (ds.joint) { S.view = 'joint'; S.topic = ds.joint; render(); document.getElementById('meet').scrollIntoView({ block: 'start' }); return; }
+    if (ds.formula) { S.jointPick[S.topic] = ds.formula; render(); return; }
+    if ('jsend' in ds) { proposeJoint(S.topic); return; }
+    if ('jclose' in ds) { S.view = 'party'; render(); return; }
+    if ('send' in ds) { propose(pid); return; }
+    if ('think' in ds) { think(pid); return; }
+    if ('pass' in ds) { advance(1); if (S.back.length) goBack(); render(); return; }
+    if ('goback' in ds) { goBack(); render(); document.getElementById('meet').scrollIntoView({ block: 'start' }); return; }
+    if ('take' in ds) { const r = S.reply[pid]; if (r && r.fix) { S.offer[pid] = r.fix; commit(pid); S.reply[pid] = { tone: 'ok', say: say(pid, 'סגרנו. נחתום עוד הערב.'), why: 'התיקון שהם ביקשו נכנס להסכם.' }; render(); } return; }
+    if ('edit' in ds) { S.reply[pid].fix = null; render(); return; }
+  });
+  render();
+})();
+</script>
+
+</body></html>

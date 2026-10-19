@@ -1,0 +1,873 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>סבב 2: כיווני עיצוב</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;800&amp;family=Frank+Ruhl+Libre:wght@500;700;900&amp;family=Rubik:wght@500;700;800;900&amp;family=Secular+One&amp;family=Assistant:wght@400;600;700;800&amp;display=swap">
+<style>
+body{margin:0;background:#e9e6df}
+.demo{font-family:'Heebo',system-ui,sans-serif;color:#1d1d1f;min-height:100vh;box-sizing:border-box;padding:20px 16px 60px;background:#e9e6df}
+.demo *{box-sizing:border-box}
+.demo button{font:inherit;cursor:pointer}
+.demo h1,.demo h2,.demo h3,.demo p{margin:0}
+.ctl{max-width:1100px;margin:0 auto 18px;display:grid;gap:12px}
+.ctl h1{font-size:22px;font-weight:800}
+.ctl > p{color:#5d5a54;font-size:14.5px;line-height:1.5}
+.groups{display:flex;flex-wrap:wrap;gap:12px 18px;align-items:flex-end}
+.group{display:grid;gap:6px}
+.group > span{font-size:12px;font-weight:700;color:#7a756c}
+.seg{display:flex;flex-wrap:wrap;gap:4px;padding:4px;border-radius:12px;background:#fff;border:1px solid #d8d2c5}
+.seg button{font-size:14px;font-weight:700;min-height:40px;padding:6px 13px;border-radius:9px;border:0;background:transparent;color:#4a4740}
+.seg button.on{background:#1d1d1f;color:#fff}
+.stage{display:flex;justify-content:center}
+.screen{container-type:inline-size;width:100%;overflow:hidden;position:relative}
+.screen.phone{max-width:390px;border-radius:30px;box-shadow:0 0 0 7px #1d1d1f,0 24px 60px rgba(0,0,0,.28)}
+.screen.desk{max-width:1100px;border-radius:14px;box-shadow:0 0 0 1px #c9c2b4,0 24px 60px rgba(0,0,0,.16)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.ic{display:inline-block;vertical-align:middle;flex:none}
+.up{color:#1f8a4c}.down{color:#c0392b}
+
+/* shared: my seats as tokens. --f = how solid the seat is (visual only, no number shown) */
+.seats{display:flex;flex-wrap:wrap;gap:6px;align-items:flex-end}
+.st{--sc:#7c8cff;--se:rgba(124,140,255,.16);position:relative;width:26px;height:26px;border-radius:50%;background:linear-gradient(to top,var(--sc) var(--f),var(--se) var(--f));flex:none}
+.st.ghost{background:linear-gradient(to top,var(--se) var(--f),transparent var(--f));border:2px dashed var(--sc)}
+.st.was::after{content:'';position:absolute;inset-inline:-3px;bottom:var(--w);border-top:2px dashed #1d1d1f;opacity:.55}
+.ph{width:44px;height:44px;border-radius:50%;border:3px solid currentColor;background:#efe9de;display:grid;place-items:center;overflow:hidden;flex:none}
+.ph svg{width:100%;height:100%;display:block}
+
+/* ====================== 1. מליאה ====================== */
+.m{--bg:#f6f1e7;--ink:#14213d;--mut:#6d675c;--line:#e2d8c4;--gold:#9a7428;--card:#fffdf8;background:var(--bg);color:var(--ink);min-height:780px;display:flex;flex-direction:column}
+.m-top{display:flex;align-items:center;gap:10px;padding:14px 16px;border-bottom:1px solid var(--line)}
+.m-emb{width:36px;height:36px;border-radius:50%;background:#7c8cff;color:#fff;display:grid;place-items:center;font-weight:800;font-size:15px;flex:none}
+.m-top b{font-family:'Frank Ruhl Libre',serif;font-size:19px;display:block;line-height:1.1}
+.m-top small{color:var(--mut);font-size:12.5px}
+.m-top .grow{flex:1;min-width:0}
+.m-pill{font-size:13px;color:var(--mut);border:1px solid var(--line);border-radius:999px;padding:5px 11px;white-space:nowrap}
+.m-iconbtn{width:42px;height:42px;border:0;border-radius:10px;background:transparent;color:var(--ink);display:grid;place-items:center}
+.m-body{flex:1;padding:20px 16px 28px;display:grid;gap:20px;align-content:start}
+.m-eyebrow{font-size:12.5px;color:var(--gold);font-weight:700}
+.m-title{font-family:'Frank Ruhl Libre',serif;font-weight:700;font-size:28px;line-height:1.15;margin-top:4px}
+.m-lede{color:var(--mut);font-size:15.5px;line-height:1.55;margin-top:8px}
+.m-lede b{color:var(--ink)}
+.hemi{position:relative;padding:8% 3% 2%}
+.hemi-in{position:relative;aspect-ratio:2/1}
+.hs{position:absolute;width:4.3%;aspect-ratio:1;border-radius:50%;transform:translate(-50%,-50%)}
+.hs.me{--sc:#7c8cff;--se:rgba(124,140,255,.22);background:linear-gradient(to top,var(--sc) var(--f),var(--se) var(--f));box-shadow:0 0 0 2px #fff,0 0 0 3.5px #4b5bd6;z-index:2}
+.hs.me.edge{box-shadow:0 0 0 2px #fff,0 0 0 3.5px #4b5bd6,0 0 10px 2px rgba(124,140,255,.55)}
+.hs.moved{box-shadow:0 0 0 2px var(--bg),0 0 0 4px var(--gold);z-index:1}
+.h61{position:absolute;left:50%;top:-6%;height:66%;border-inline-start:1.5px dashed rgba(20,33,61,.45)}
+.h61 span{position:absolute;top:-16px;left:50%;transform:translateX(-50%);font-size:11px;font-weight:800;color:var(--mut);white-space:nowrap}
+.hcenter{position:absolute;left:50%;bottom:0;transform:translateX(-50%);text-align:center;line-height:1}
+.hcenter b{font-family:'Frank Ruhl Libre',serif;font-size:clamp(40px,11cqi,76px);font-weight:900;display:block}
+.hcenter small{font-size:13px;color:var(--mut);display:block;margin-top:4px}
+.m-blocs{display:flex;justify-content:space-between;gap:10px;font-size:14px;margin-top:10px}
+.m-blocs b{font-family:'Frank Ruhl Libre',serif;font-size:22px;display:block;line-height:1}
+.m-blocs .l{text-align:left}
+.m-blocs .mine b{color:#2b47c9}
+.m-blocs small{font-size:12px;color:var(--mut)}
+.m-side{display:flex;justify-content:center;gap:16px;font-size:12.5px;color:var(--mut);margin-top:8px}
+.m-mine{display:flex;align-items:center;gap:14px;padding:14px;border:1px solid var(--line);border-radius:14px;background:var(--card)}
+.m-mine .seats .st{width:24px;height:24px}
+.m-mine p{font-size:14.5px;line-height:1.4}
+.m-mine small{color:var(--mut);display:block;font-size:12.5px}
+.m-h{font-family:'Frank Ruhl Libre',serif;font-size:19px;font-weight:700;margin-bottom:10px}
+.m-people{display:grid;gap:8px}
+.m-person{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:12px;background:var(--card);border:1px solid var(--line)}
+.m-person .grow{flex:1;min-width:0}
+.m-person b{font-size:15.5px}
+.m-person small{display:block;color:var(--mut);font-size:12.5px}
+.m-person .n{font-family:'Frank Ruhl Libre',serif;font-size:24px;font-weight:700}
+.m-news{border-inline-start:3px solid var(--gold);padding:4px 12px;font-size:15px;line-height:1.5}
+.m-news small{display:block;font-size:12px;color:var(--gold);font-weight:700}
+.m-fold{border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.m-fold summary{list-style:none;cursor:pointer;min-height:48px;display:flex;align-items:center;justify-content:space-between;font-weight:700;font-size:15px}
+.m-fold summary::-webkit-details-marker{display:none}
+.m-fold summary small{color:var(--mut);font-weight:400;font-size:13px}
+.m-list{display:grid;gap:2px;padding:4px 0 12px}
+.m-list div{display:flex;align-items:center;gap:10px;min-height:34px;font-size:14.5px}
+.m-list div.me{font-weight:800}
+.m-list .grow{flex:1}
+.m-list b{font-family:'Frank Ruhl Libre',serif;font-size:18px;min-width:28px;text-align:left}
+.m-list .d{min-width:26px;font-size:13px;font-weight:700;text-align:left}
+.dot{width:10px;height:10px;border-radius:50%;display:inline-block;flex:none}
+.m-cta{position:sticky;bottom:0;padding:12px 16px 16px;background:linear-gradient(to top,var(--bg) 70%,rgba(246,241,231,0));display:flex;align-items:center;gap:12px}
+.m-cta small{color:var(--mut);font-size:13px;white-space:nowrap}
+.m-btn{flex:1;min-height:52px;border:0;border-radius:12px;background:var(--ink);color:#fff;font-weight:700;font-size:16.5px;padding:0 22px}
+.m-zoom{padding:20px 14px;border-radius:16px;background:var(--card);border:1px solid var(--line);display:grid;gap:14px;justify-items:center;text-align:center}
+.m-zoom .seats{justify-content:center;gap:10px}
+.m-zoom .st{width:44px;height:44px}
+.m-zoom p{font-size:16px}
+.m-zoom small{color:var(--mut);font-size:13px}
+.m-rows{display:grid;gap:8px}
+.m-row{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:12px;background:var(--card);border:1px solid var(--line);font-size:15px}
+.m-row .grow{flex:1}
+.m-row small{color:var(--mut);font-size:13px}
+.mk{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;color:#fff;flex:none}
+.mk.ok{background:#1f8a4c}.mk.bad{background:#c0392b}.mk.mid{background:#b3832a}
+.m-quote{font-family:'Frank Ruhl Libre',serif;font-size:16px;line-height:1.55;color:#3c3a35;padding:6px 0 12px}
+.m-moves{display:grid;gap:6px}
+.m-move{display:flex;align-items:center;gap:10px;font-size:15px;min-height:36px}
+.m-move .grow{flex:1}
+.m-move b{font-family:'Frank Ruhl Libre',serif;font-size:18px}
+.m-key{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--mut);justify-content:center}
+.m-key i{width:12px;height:12px;border-radius:50%;box-shadow:0 0 0 2px var(--bg),0 0 0 3.5px var(--gold);background:#bccadb}
+@container (min-width:760px){
+  .m-top{padding:16px 32px}
+  .m-body{grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:22px 40px;padding:28px 32px 32px}
+  .m-body > .m-main{grid-row:span 6}
+  .m-body > .m-head{grid-column:1 / -1}
+  .m-title{font-size:34px}
+  .m-cta{padding:14px 32px 20px}
+  .m-btn{flex:none;min-width:280px}
+}
+
+/* ====================== 2. צ'אט המטה ====================== */
+.h{--bg:#e6ebee;--ink:#17212b;--mut:#66727e;--line:#d6dde3;--me:#7c8cff;--out:#dfe3ff;background:var(--bg);color:var(--ink);min-height:780px;display:flex;font-family:'Assistant','Heebo',sans-serif}
+.h-side{display:none}
+.h-chat{flex:1;display:flex;flex-direction:column;min-width:0}
+.h-head{display:flex;align-items:center;gap:10px;padding:10px 12px;background:#fff;border-bottom:1px solid var(--line)}
+.h-head .grow{flex:1;min-width:0}
+.h-head b{display:block;font-size:17px;font-weight:800}
+.h-head small{color:var(--mut);font-size:12.5px}
+.h-gav{width:40px;height:40px;border-radius:50%;background:var(--me);color:#fff;display:grid;place-items:center;font-weight:800;font-size:16px;flex:none}
+.h-coins{font-size:13px;font-weight:700;background:#f1f3f5;border-radius:999px;padding:5px 10px;white-space:nowrap}
+.h-pin{display:flex;align-items:center;gap:10px;padding:10px 14px;background:#fff;border-bottom:1px solid var(--line);font-size:14px}
+.h-pin b{font-size:16px;font-weight:800}
+.h-pin .seats{gap:4px}
+.h-pin .st{width:16px;height:16px}
+.h-pin small{color:var(--mut)}
+.h-log{flex:1;padding:14px 12px 10px;display:flex;flex-direction:column;gap:10px}
+.h-day{align-self:center;font-size:12px;font-weight:700;color:var(--mut);background:rgba(255,255,255,.75);border-radius:999px;padding:4px 12px}
+.h-msg{display:flex;gap:8px;align-items:flex-end;max-width:88%}
+.h-av{width:30px;height:30px;border-radius:50%;color:#fff;display:grid;place-items:center;font-weight:800;font-size:13px;flex:none}
+.h-bub{background:#fff;border-radius:16px;border-end-start-radius:4px;padding:8px 12px 9px;box-shadow:0 1px 0 rgba(0,0,0,.06);display:grid;gap:7px;font-size:15.5px;line-height:1.45;min-width:0}
+.h-bub .who{font-size:12.5px;font-weight:800}
+.h-out{align-self:flex-end;max-width:84%;background:var(--out);border-radius:16px;border-end-end-radius:4px;padding:8px 12px 9px;font-size:15px;line-height:1.5;box-shadow:0 1px 0 rgba(0,0,0,.06)}
+.h-out small{display:block;font-size:12px;color:#5960a8;font-weight:700;margin-bottom:2px}
+.h-bub .seats{gap:5px}
+.h-bub .st{width:20px;height:20px}
+.h-bar{position:relative;display:flex;height:12px;border-radius:6px;overflow:hidden;background:#eef1f4}
+.h-bar span{height:100%}
+.h-bar i{position:absolute;top:0;bottom:0;width:2px;background:#17212b}
+.h-leg{display:flex;flex-wrap:wrap;gap:4px 12px;font-size:13px;color:var(--mut)}
+.h-leg b{color:var(--ink)}
+.h-contacts{display:grid;gap:6px}
+.h-contact{display:flex;align-items:center;gap:10px;font-size:14.5px}
+.h-contact .ph{width:36px;height:36px;border-width:2px}
+.h-contact .grow{flex:1;min-width:0}
+.h-contact small{display:block;color:var(--mut);font-size:12.5px}
+.h-contact b{font-size:17px}
+.h-res{display:flex;align-items:center;gap:8px;font-weight:700}
+.h-res .mk{width:22px;height:22px}
+.h-chips{display:flex;flex-wrap:wrap;gap:6px}
+.h-chip{display:inline-flex;align-items:center;gap:6px;background:#f1f3f5;border-radius:999px;padding:4px 10px;font-size:13.5px}
+.h-chip b{font-weight:800}
+.h-table{display:grid;gap:2px;font-size:14px}
+.h-table div{display:flex;align-items:center;gap:8px;min-height:28px}
+.h-table div.me{font-weight:800}
+.h-table .grow{flex:1}
+.h-table .d{min-width:24px;text-align:left;font-weight:700;font-size:12.5px}
+.h-reply{padding:10px 12px 14px;display:flex;flex-wrap:wrap;gap:8px;background:linear-gradient(to top,var(--bg) 80%,rgba(230,235,238,0));position:sticky;bottom:0}
+.h-r{min-height:44px;border-radius:999px;border:1.5px solid #b9c2ca;background:#fff;color:var(--ink);font-weight:700;font-size:14.5px;padding:0 16px}
+.h-r.main{background:#2f3f9e;border-color:#2f3f9e;color:#fff;flex:1 1 100%}
+@container (min-width:760px){
+  .h-side{display:flex;flex-direction:column;width:300px;background:#fff;border-inline-end:1px solid var(--line)}
+  .h-side h2{font-size:20px;font-weight:800;padding:18px 18px 10px}
+  .h-thread{display:flex;gap:10px;align-items:center;padding:12px 18px;border-top:1px solid #f0f2f4}
+  .h-thread.on{background:#eef0ff}
+  .h-thread .grow{flex:1;min-width:0}
+  .h-thread b{display:block;font-size:15px}
+  .h-thread small{display:block;color:var(--mut);font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .h-log{padding:20px 40px 10px}
+  .h-msg{max-width:560px}
+  .h-out{max-width:520px}
+  .h-reply{padding:12px 40px 20px}
+  .h-r.main{flex:0 1 auto;min-width:260px}
+}
+
+/* ====================== 3. מרוץ ל־61 ====================== */
+.r{--bg:#dff0ff;--ink:#1b1b3a;--mut:#4d5372;--y:#ffd23f;--pink:#ff5d8f;--grn:#2ec27e;background:var(--bg);color:var(--ink);min-height:780px;display:flex;flex-direction:column;font-family:'Rubik','Heebo',sans-serif}
+.r-top{display:flex;align-items:center;gap:10px;padding:14px 14px 6px}
+.r-token{width:42px;height:42px;border-radius:50%;background:#7c8cff;color:#fff;display:grid;place-items:center;font-weight:900;font-size:18px;border:3px solid var(--ink);box-shadow:0 3px 0 var(--ink);flex:none}
+.r-top .grow{flex:1;min-width:0}
+.r-top b{display:block;font-size:18px;font-weight:800;line-height:1.1}
+.r-top small{font-size:13px;color:var(--mut);font-weight:500}
+.r-coin{display:inline-flex;align-items:center;gap:6px;font-weight:800;font-size:14px;background:var(--y);border:2.5px solid var(--ink);border-radius:999px;padding:4px 10px;box-shadow:0 2px 0 var(--ink);white-space:nowrap}
+.r-body{flex:1;padding:12px 14px 24px;display:grid;gap:14px;align-content:start}
+.r-card{background:#fff;border:3px solid var(--ink);border-radius:18px;box-shadow:0 5px 0 var(--ink);padding:14px}
+.r-card h3{font-size:17px;font-weight:800;margin-bottom:12px;display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.r-card h3 small{font-size:13px;color:var(--mut);font-weight:500}
+.r-title{font-size:27px;font-weight:900;line-height:1.15}
+.r-sub{font-size:15px;color:var(--mut);margin-top:4px;font-weight:500}
+.lane{display:grid;gap:6px;margin-bottom:14px}
+.lane:last-of-type{margin-bottom:6px}
+.lane-h{display:flex;align-items:baseline;gap:8px;font-weight:700;font-size:15px}
+.lane-h .grow{flex:1}
+.lane-h big{font-size:26px;font-weight:900;line-height:1}
+.lane-h em{font-style:normal;font-size:12px;font-weight:800;background:var(--y);border:2px solid var(--ink);border-radius:999px;padding:1px 8px}
+.track{position:relative;height:26px;border-radius:13px;background:repeating-linear-gradient(to left,#eef3fb 0 calc(100%/6.6 - 2px),#d4deee calc(100%/6.6 - 2px) calc(100%/6.6));border:2.5px solid var(--ink)}
+.track .fill{position:absolute;inset-block:0;inset-inline-start:0;border-radius:10px}
+.track .flag{position:absolute;inset-block:-8px;width:12px;inset-inline-start:calc(92.4% - 6px);background:repeating-conic-gradient(var(--ink) 0 25%,#fff 0 50%) 0 0/6px 6px;border:2px solid var(--ink);border-radius:2px}
+.track .tok{position:absolute;top:50%;width:30px;height:30px;border-radius:50%;transform:translate(50%,-50%);border:3px solid var(--ink);background:#fff;box-shadow:0 2px 0 var(--ink)}
+.lane-f{display:flex;justify-content:space-between;font-size:12.5px;color:var(--mut);font-weight:500}
+.r-kings{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.r-king{display:inline-flex;align-items:center;gap:8px;border:2.5px solid var(--ink);border-radius:12px;padding:6px 10px;font-weight:700;font-size:14px;background:#fff8e0}
+.r-king b{font-size:18px;font-weight:900}
+.chips{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.chip3{--sc:#7c8cff;--se:#e3e7ff;width:38px;height:38px;border-radius:50%;border:3px solid var(--ink);box-shadow:0 3px 0 var(--ink);background:linear-gradient(to top,var(--sc) var(--f),var(--se) var(--f));position:relative}
+.chip3::before{content:'';position:absolute;inset:6px;border-radius:50%;border:2px dashed rgba(255,255,255,.75)}
+.chip3.ghost{border-style:dashed;box-shadow:none;background:linear-gradient(to top,var(--se) var(--f),#fff var(--f))}
+.chip3.ghost::before{display:none}
+.chip3.was::after{content:'';position:absolute;inset-inline:-4px;bottom:var(--w);border-top:3px solid var(--pink)}
+.r-note{margin-top:10px;font-size:15px;font-weight:700}
+.r-note small{display:block;color:var(--mut);font-weight:500;font-size:13px}
+.players{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.player{border:2.5px solid var(--ink);border-radius:14px;padding:10px 6px;text-align:center;display:grid;justify-items:center;gap:4px;background:#fff}
+.player .ph{width:46px;height:46px}
+.player b{font-size:13.5px;line-height:1.2}
+.player big{font-size:22px;font-weight:900;line-height:1}
+.player em{font-style:normal;font-size:11.5px;font-weight:800;padding:1px 8px;border-radius:999px;color:#fff}
+.flips{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.flip{border:3px solid var(--ink);border-radius:18px;box-shadow:0 5px 0 var(--ink);padding:16px 10px;text-align:center;display:grid;gap:6px;justify-items:center;color:#fff}
+.flip.ok{background:var(--grn)}.flip.bad{background:var(--pink)}
+.flip .big{width:52px;height:52px;border-radius:50%;background:#fff;color:var(--ink);display:grid;place-items:center;border:3px solid var(--ink)}
+.flip b{font-size:17px;font-weight:900}
+.flip small{font-size:13px;font-weight:700;opacity:.95}
+.movers{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.mover{display:flex;align-items:center;gap:8px;border:2.5px solid var(--ink);border-radius:12px;padding:8px 10px;font-weight:700;font-size:14px;min-width:0}
+.mover big{font-size:20px;font-weight:900;min-width:30px}
+.mover span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mover.up{background:#dcf7e9;color:var(--ink)}.mover.down{background:#ffe1ea;color:var(--ink)}
+.r-acts{display:grid;gap:8px}
+.r-act{display:flex;align-items:center;gap:10px;font-weight:700;font-size:15px}
+.r-act small{display:block;color:var(--mut);font-weight:500;font-size:13px}
+.r-cta{position:sticky;bottom:0;padding:12px 14px 16px;background:linear-gradient(to top,var(--bg) 75%,rgba(223,240,255,0));display:flex;gap:10px;align-items:center}
+.r-btn{flex:1;min-height:56px;border-radius:16px;border:3px solid var(--ink);background:var(--y);color:var(--ink);font-weight:900;font-size:18px;box-shadow:0 5px 0 var(--ink)}
+.r-btn2{min-height:56px;border-radius:16px;border:3px solid var(--ink);background:#fff;color:var(--ink);font-weight:800;font-size:15px;padding:0 14px;box-shadow:0 5px 0 var(--ink)}
+.r-list{display:grid;gap:4px}
+.r-list div{display:flex;align-items:center;gap:8px;font-size:14.5px;font-weight:600;min-height:30px}
+.r-list div.me{font-weight:900}
+.r-list .grow{flex:1}
+.r-list .d{min-width:26px;text-align:left;font-size:13px;font-weight:800}
+@container (min-width:760px){
+  .r-top{padding:20px 28px 8px}
+  .r-body{grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;padding:16px 28px 28px}
+  .r-body > .wide{grid-column:1 / -1}
+  .r-cta{padding:14px 28px 22px}
+  .r-btn{flex:none;min-width:320px}
+}
+
+/* ====================== 4. קלף אחד ====================== */
+.k{--bg:#e8d9bf;--ink:#2b2118;--mut:#6f6250;--card:#fffaf0;background:var(--bg);color:var(--ink);min-height:780px;display:flex;flex-direction:column;font-family:'Assistant','Heebo',sans-serif}
+.k-meter{padding:14px 16px 12px;display:grid;gap:10px;background:#2b2118;color:#f3e7d2}
+.k-row{display:flex;align-items:center;gap:10px}
+.k-row .lbl{font-size:12px;font-weight:700;color:#cbb994;min-width:52px}
+.k-row .grow{flex:1;min-width:0}
+.k-chairs{display:flex;gap:5px;align-items:flex-end}
+.chair{--sc:#9aa6ff;--se:rgba(154,166,255,.18);position:relative;width:20px;height:24px;border-radius:7px 7px 3px 3px;background:linear-gradient(to top,var(--sc) var(--f),var(--se) var(--f))}
+.chair::after{content:'';position:absolute;inset-inline:3px;bottom:-4px;height:3px;border-radius:2px;background:currentColor;opacity:.5}
+.chair.ghost{background:linear-gradient(to top,var(--se) var(--f),transparent var(--f));outline:2px dashed var(--sc);outline-offset:-2px}
+.chair.was::before{content:'';position:absolute;inset-inline:-3px;bottom:var(--w);border-top:2px solid #f3e7d2;opacity:.8}
+.k-count{font-family:'Secular One',sans-serif;font-size:26px;line-height:1}
+.tug{position:relative;display:flex;justify-content:space-between;height:12px;border-radius:6px;background:#5a4c3c;overflow:hidden}
+.tug span{height:100%}
+.tug i{position:absolute;left:50%;top:-3px;bottom:-3px;width:2px;background:#f3e7d2}
+.k-tuglbl{display:flex;justify-content:space-between;font-size:12.5px;color:#cbb994}
+.k-tuglbl b{color:#f3e7d2;font-size:14px}
+.k-stage{flex:1;padding:22px 18px 18px;display:grid;justify-items:center;align-content:start;gap:14px}
+.k-card{width:100%;max-width:400px;background:var(--card);border-radius:22px;box-shadow:0 2px 0 #c8b48f,0 18px 40px rgba(43,33,24,.25);overflow:hidden;position:relative}
+.k-card::before{content:'';position:absolute;inset:8px;border:1.5px solid #e2d3b6;border-radius:16px;pointer-events:none}
+.k-art{height:200px;display:grid;place-items:center;position:relative}
+.k-art .ph{width:120px;height:120px;border-width:5px;background:#f6efe2}
+.k-art .tag{position:absolute;top:18px;inset-inline-start:18px;font-size:12px;font-weight:800;color:#fff;background:rgba(43,33,24,.55);border-radius:999px;padding:3px 10px}
+.k-art .trio{display:flex;gap:10px}
+.k-art .trio .ph{width:78px;height:78px;border-width:4px}
+.k-studio{width:150px;height:96px;border-radius:14px;background:#2b2118;color:#f3e7d2;display:grid;place-items:center;font-family:'Secular One',sans-serif;font-size:26px;box-shadow:inset 0 0 0 4px #5a4c3c}
+.k-txt{padding:18px 22px 22px;text-align:center;display:grid;gap:8px}
+.k-txt h2{font-family:'Secular One',sans-serif;font-size:26px;font-weight:400;line-height:1.2}
+.k-txt p{font-size:16.5px;line-height:1.5;color:#4a3f33}
+.k-stamps{display:flex;justify-content:center;gap:10px;flex-wrap:wrap}
+.stamp{display:inline-flex;align-items:center;gap:6px;border:2.5px solid currentColor;border-radius:8px;padding:4px 10px;font-weight:800;font-size:14px;transform:rotate(-3deg)}
+.stamp.ok{color:#1f7a45}.stamp.bad{color:#b23a2c;transform:rotate(2deg)}
+.k-moves{display:grid;gap:6px;text-align:start;margin-top:4px}
+.k-moves div{display:flex;align-items:center;gap:10px;font-size:15.5px}
+.k-moves .grow{flex:1}
+.k-moves b{font-family:'Secular One',sans-serif;font-size:18px}
+.k-pager{display:flex;align-items:center;gap:14px}
+.k-arrow{width:46px;height:46px;border-radius:50%;border:2px solid var(--ink);background:transparent;color:var(--ink);display:grid;place-items:center}
+.k-arrow.off{opacity:.3;cursor:default}
+.k-dots{display:flex;gap:6px}
+.k-dots i{width:8px;height:8px;border-radius:50%;background:rgba(43,33,24,.25)}
+.k-dots i.on{background:var(--ink);width:22px;border-radius:4px}
+.k-cta{position:sticky;bottom:0;padding:12px 18px 18px;display:flex;justify-content:center;gap:10px;align-items:center;background:linear-gradient(to top,var(--bg) 75%,rgba(232,217,191,0))}
+.k-btn{flex:1;max-width:400px;min-height:54px;border-radius:999px;border:0;background:var(--ink);color:#f3e7d2;font-family:'Secular One',sans-serif;font-size:19px}
+.k-cta small{color:var(--mut);font-size:13px;white-space:nowrap}
+@container (min-width:760px){
+  .k-meter{grid-template-columns:1fr 1fr;gap:10px 48px;padding:16px 36px}
+  .k-stage{padding:34px 18px 18px}
+  .k-card{max-width:460px}
+  .k-art{height:230px}
+}
+</style>
+</helmet>
+
+<div class="demo">
+  <div class="ctl">
+    <h1>סבב 2: ארבעה כיוונים חדשים, רק מנדטים</h1>
+    <p>אותם שלושה מסכים ואותו משחק (תקווה חדשה 2021, שבוע 1). אין כאן אחוזים ואין מספרי מצביעים: רק מנדטים, ותזוזה שלהם. מנדט חלקי מצויר כמנדט שמתמלא או מתרוקן, בלי מספר. העיגולים הריקים הם מקום לתמונות המנהיגים.</p>
+    <div class="groups">
+      <div class="group"><span>כיוון</span>
+        <div class="seg" role="group" aria-label="כיוון עיצוב">
+          <button type="button" class="{{dM}}" aria-pressed="{{pM}}" onClick="{{setM}}">1 · מליאה</button>
+          <button type="button" class="{{dH}}" aria-pressed="{{pH}}" onClick="{{setH}}">2 · צ׳אט המטה</button>
+          <button type="button" class="{{dR}}" aria-pressed="{{pR}}" onClick="{{setR}}">3 · מרוץ ל־61</button>
+          <button type="button" class="{{dK}}" aria-pressed="{{pK}}" onClick="{{setK}}">4 · קלף אחד</button>
+        </div>
+      </div>
+      <div class="group"><span>מסך</span>
+        <div class="seg" role="group" aria-label="מסך">
+          <button type="button" class="{{sRoom}}" aria-pressed="{{isRoom}}" onClick="{{setRoom}}">חדר המצב</button>
+          <button type="button" class="{{sResult}}" aria-pressed="{{isResult}}" onClick="{{setResult}}">תוצאת פעולה</button>
+          <button type="button" class="{{sWeek}}" aria-pressed="{{isWeek}}" onClick="{{setWeek}}">סיכום שבוע</button>
+        </div>
+      </div>
+      <div class="group"><span>מכשיר</span>
+        <div class="seg" role="group" aria-label="מכשיר">
+          <button type="button" class="{{vPhone}}" aria-pressed="{{isPhone}}" onClick="{{setPhone}}">טלפון</button>
+          <button type="button" class="{{vDesk}}" aria-pressed="{{isDesk}}" onClick="{{setDesk}}">מחשב</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="stage">
+    <div class="screen {{deviceClass}}">
+
+      <!-- ============ 1. מליאה ============ -->
+      <sc-if value="{{isM}}" hint-placeholder-val="{{ true }}">
+        <div class="m">
+          <div class="m-top">
+            <span class="m-emb" aria-hidden="true">ת</span>
+            <div class="grow"><b>תקווה חדשה</b><small>{{weekLabel}}</small></div>
+            <span class="m-pill">{{budget}}</span>
+            <button type="button" class="m-iconbtn" aria-label="תפריט המשחק"><svg class="ic" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+          </div>
+
+          <sc-if value="{{isRoom}}" hint-placeholder-val="{{ true }}">
+            <div class="m-body">
+              <div class="m-head">
+                <p class="m-eyebrow">ערב פתיחת הקמפיין</p>
+                <h2 class="m-title">פותחים על 6 מנדטים</h2>
+              </div>
+              <div class="m-main">
+                <div class="hemi" role="img" aria-label="מליאת הכנסת: לתקווה חדשה 6 מנדטים. גוש נתניהו 52, גוש השינוי 51, המפלגות הערביות 10, לא משויכת 7. רוב: 61">
+                  <div class="hemi-in">
+                    <sc-for list="{{hemiRoom}}" as="s" hint-placeholder-count="120"><span class="hs {{s.cls}}" style="{{s.pos}}"></span></sc-for>
+                    <span class="h61"><span>61</span></span>
+                    <div class="hcenter"><b>6</b><small>המנדטים שלכם</small></div>
+                  </div>
+                </div>
+                <div class="m-blocs">
+                  <div><b>52</b><small>גוש נתניהו</small></div>
+                  <div class="l mine"><b>51</b><small>גוש השינוי, שלכם</small></div>
+                </div>
+                <p class="m-side"><span>לא משויכת 7</span><span>המפלגות הערביות 10</span></p>
+              </div>
+              <div class="m-mine">
+                <div class="seats"><sc-for list="{{mySeats}}" as="t" hint-placeholder-count="6"><span class="st {{t.cls}}" style="{{t.f}}"></span></sc-for></div>
+                <p>{{seatLine}}<small>הכיסא החלקי הוא הראשון שיזוז.</small></p>
+              </div>
+              <p class="m-lede">לגוש שלכם חסרים <b>10 מנדטים</b> כדי להגיע ל־61.</p>
+              <div>
+                <h3 class="m-h">על מי לשים עין</h3>
+                <div class="m-people">
+                  <sc-for list="{{rels}}" as="p" hint-placeholder-count="3">
+                    <div class="m-person">
+                      <span class="ph" style="{{p.ring}}"><svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="15" r="7" fill="#c9bfae"/><path d="M5 40c1-9 7-14 15-14s14 5 15 14z" fill="#c9bfae"/></svg></span>
+                      <div class="grow"><b>{{p.n}}</b><small>{{p.role}}</small></div>
+                      <span class="n">{{p.s}}</span>
+                    </div>
+                  </sc-for>
+                </div>
+              </div>
+              <p class="m-news"><small>השבוע</small>שתי פעולות. הראשונה היא ריאיון טלוויזיוני, חובה בפתיחת הקמפיין.</p>
+              <details class="m-fold">
+                <summary><span>כל הרשימות</span><small>מנדטים</small></summary>
+                <div class="m-list">
+                  <sc-for list="{{tableRoom}}" as="p" hint-placeholder-count="13">
+                    <div class="{{p.row}}"><i class="dot" style="{{p.bg}}"></i><span class="grow">{{p.n}}</span><span class="d {{p.dcls}}">{{p.d}}</span><b>{{p.s}}</b></div>
+                  </sc-for>
+                </div>
+              </details>
+            </div>
+            <div class="m-cta"><small>{{budget}} בקופה</small><button type="button" class="m-btn">לתכנן את שבוע 1</button></div>
+          </sc-if>
+
+          <sc-if value="{{isResult}}" hint-placeholder-val="{{ false }}">
+            <div class="m-body">
+              <div class="m-head">
+                <p class="m-eyebrow">פעולה 1 מתוך 2 · ריאיון בערוץ 20</p>
+                <h2 class="m-title">שאלה אחת עבדה, ההמשך פחות</h2>
+              </div>
+              <div class="m-main">
+                <div class="m-zoom">
+                  <small>הכיסאות שלכם במליאה</small>
+                  <div class="seats"><sc-for list="{{mySeats}}" as="t" hint-placeholder-count="6"><span class="st {{t.cls}}" style="{{t.f}}"></span></sc-for></div>
+                  <p><b>נשארתם על 6.</b> המנדט השישי התרופף.</p>
+                  <small>הקו המקווקו: איפה הוא עמד לפני הריאיון</small>
+                </div>
+              </div>
+              <div class="m-rows">
+                <div class="m-row"><span class="mk ok"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.2 4.2L19 7"/></svg></span><span class="grow">התשובה הראשונה</span><small>חיזקה</small></div>
+                <div class="m-row"><span class="mk bad"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></span><span class="grow">שאלת ההמשך</span><small>החלישה יותר</small></div>
+              </div>
+              <details class="m-fold">
+                <summary><span>מה אמרתם</span><small>2 תשובות</small></summary>
+                <p class="m-quote">"הבוחרים שלנו יודעים טוב מאוד בעד מה: התוכנית שלנו מפורסמת ומדברים עליה בכל כנס."</p>
+                <p class="m-quote">"אנחנו לא מחכים להצעות מהליכוד. הבוחרים שלנו יודעים לאיזה גוש אנחנו שייכים."</p>
+              </details>
+            </div>
+            <div class="m-cta"><small>נותרו {{budget}}</small><button type="button" class="m-btn">לפעולה השנייה</button></div>
+          </sc-if>
+
+          <sc-if value="{{isWeek}}" hint-placeholder-val="{{ false }}">
+            <div class="m-body">
+              <div class="m-head">
+                <p class="m-eyebrow">סוף שבוע 1 מתוך 5</p>
+                <h2 class="m-title">6 יציבים, ושביעי בדרך</h2>
+              </div>
+              <div class="m-main">
+                <div class="hemi" role="img" aria-label="מליאת הכנסת אחרי שבוע 1: לתקווה חדשה 6 מנדטים. הגושים לא זזו">
+                  <div class="hemi-in">
+                    <sc-for list="{{hemiWeek}}" as="s" hint-placeholder-count="120"><span class="hs {{s.cls}}" style="{{s.pos}}"></span></sc-for>
+                    <span class="h61"><span>61</span></span>
+                    <div class="hcenter"><b>6</b><small>המנדטים שלכם</small></div>
+                  </div>
+                </div>
+                <p class="m-key"><i></i>מנדט שעבר השבוע לרשימה אחרת</p>
+              </div>
+              <div class="m-mine">
+                <div class="seats"><sc-for list="{{mySeats}}" as="t" hint-placeholder-count="7"><span class="st {{t.cls}}" style="{{t.f}}"></span></sc-for></div>
+                <p>{{seatLine}}<small>הכיסא המקווקו הוא המנדט הבא.</small></p>
+              </div>
+              <div class="m-rows">
+                <div class="m-row"><span class="mk ok"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.2 4.2L19 7"/></svg></span><span class="grow">צירוף טליה וקנין</span><small>ייצב את השישי</small></div>
+                <div class="m-row"><span class="mk mid"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" aria-hidden="true"><path d="M6 12h12"/></svg></span><span class="grow">ריאיון בערוץ 20</span><small>עלה לכם מעט</small></div>
+              </div>
+              <div>
+                <h3 class="m-h">מי זז השבוע</h3>
+                <div class="m-moves">
+                  <sc-for list="{{movers}}" as="v" hint-placeholder-count="4">
+                    <div class="m-move"><i class="dot" style="{{v.bg}}"></i><span class="grow">{{v.n}}</span><span class="{{v.cls}}">{{v.d}}</span><b>{{v.to}}</b></div>
+                  </sc-for>
+                </div>
+                <p class="m-lede">הגושים לא זזו: 52 מול 51.</p>
+              </div>
+            </div>
+            <div class="m-cta"><small>{{budget}} בקופה</small><button type="button" class="m-btn">לשבוע 2</button></div>
+          </sc-if>
+        </div>
+      </sc-if>
+
+      <!-- ============ 2. צ'אט המטה ============ -->
+      <sc-if value="{{isH}}" hint-placeholder-val="{{ false }}">
+        <div class="h">
+          <div class="h-side">
+            <h2>שיחות</h2>
+            <div class="h-thread on"><span class="h-gav">ת</span><div class="grow"><b>מטה תקווה חדשה</b><small>{{lastLine}}</small></div></div>
+            <div class="h-thread"><span class="h-av" style="background: #b3832a">ח</span><div class="grow"><b>חדר החדשות</b><small>הקמפיין יצא לדרך</small></div></div>
+            <div class="h-thread"><span class="h-av" style="background: #17867a">ס</span><div class="grow"><b>הסוקרים</b><small>שלושה סקרים חדשים</small></div></div>
+            <div class="h-thread"><span class="h-av" style="background: #7a5bbf">ה</span><div class="grow"><b>הסכמים</b><small>הסכם עודפים עם ימינה</small></div></div>
+          </div>
+          <div class="h-chat">
+            <div class="h-head">
+              <span class="h-gav">ת</span>
+              <div class="grow"><b>מטה תקווה חדשה</b><small>{{weekLabel}}</small></div>
+              <span class="h-coins">{{budget}}</span>
+            </div>
+            <div class="h-pin">
+              <svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 4h6l-1 6 4 4H6l4-4-1-6zM12 14v6"/></svg>
+              <b>6 מנדטים</b>
+              <div class="seats"><sc-for list="{{mySeats}}" as="t" hint-placeholder-count="6"><span class="st {{t.cls}}" style="{{t.f}}"></span></sc-for></div>
+            </div>
+
+            <sc-if value="{{isRoom}}" hint-placeholder-val="{{ true }}">
+              <div class="h-log">
+                <span class="h-day">ערב פתיחת הקמפיין</span>
+                <div class="h-msg"><span class="h-av" style="background: #17867a">ס</span><div class="h-bub"><span class="who" style="color: #17867a">הסוקרת</span>פותחים על 6 מנדטים. השישי עוד לא סגור, והוא הראשון שיזוז.<div class="seats"><sc-for list="{{mySeats}}" as="t" hint-placeholder-count="6"><span class="st {{t.cls}}" style="{{t.f}}"></span></sc-for></div></div></div>
+                <div class="h-msg"><span class="h-av" style="background: #b3832a">א</span><div class="h-bub"><span class="who" style="color: #b3832a">האסטרטג</span>גוש נתניהו 52, הגוש שלנו 51. חסרים לנו 10 ל־61.
+                  <div class="h-bar" role="img" aria-label="גוש נתניהו 52, גוש השינוי 51, המפלגות הערביות 10, לא משויכת 7"><sc-for list="{{blocs}}" as="b" hint-placeholder-count="4"><span style="{{b.seg}}"></span></sc-for><i style="right: 50.8%"></i></div>
+                  <div class="h-leg"><sc-for list="{{blocs}}" as="b" hint-placeholder-count="4"><span>{{b.n}} <b>{{b.s}}</b></span></sc-for></div>
+                </div></div>
+                <div class="h-msg"><span class="h-av" style="background: #7a5bbf">ר</span><div class="h-bub"><span class="who" style="color: #7a5bbf">ראש המטה</span>שלושה שצריך לעקוב אחריהם:
+                  <div class="h-contacts"><sc-for list="{{rels}}" as="p" hint-placeholder-count="3">
+                    <div class="h-contact"><span class="ph" style="{{p.ring}}"><svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="15" r="7" fill="#c9bfae"/><path d="M5 40c1-9 7-14 15-14s14 5 15 14z" fill="#c9bfae"/></svg></span><div class="grow">{{p.n}}<small>{{p.role}}</small></div><b>{{p.s}}</b></div>
+                  </sc-for></div>
+                </div></div>
+                <div class="h-msg"><span class="h-av" style="background: #c2477a">ד</span><div class="h-bub"><span class="who" style="color: #c2477a">הדוברת</span>השבוע שתי פעולות. הראשונה ריאיון טלוויזיוני, חובה בפתיחה.</div></div>
+                <sc-if value="{{showLists}}" hint-placeholder-val="{{ false }}">
+                  <div class="h-msg"><span class="h-av" style="background: #17867a">ס</span><div class="h-bub"><span class="who" style="color: #17867a">הסוקרת</span>כל הרשימות, במנדטים:
+                    <div class="h-table"><sc-for list="{{tableRoom}}" as="p" hint-placeholder-count="13"><div class="{{p.row}}"><i class="dot" style="{{p.bg}}"></i><span class="grow">{{p.n}}</span><b>{{p.s}}</b></div></sc-for></div>
+                  </div></div>
+                </sc-if>
+              </div>
+              <div class="h-reply">
+                <button type="button" class="h-r main">לתכנן את שבוע 1</button>
+                <button type="button" class="h-r" onClick="{{toggleLists}}">{{listsLabel}}</button>
+                <button type="button" class="h-r">מה הסקרים אומרים</button>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{isResult}}" hint-placeholder-val="{{ false }}">
+              <div class="h-log">
+                <span class="h-day">ריאיון בערוץ 20</span>
+                <div class="h-out"><small>אתם, באולפן</small>"הבוחרים שלנו יודעים טוב מאוד בעד מה: התוכנית שלנו מפורסמת ומדברים עליה בכל כנס."</div>
+                <div class="h-msg"><span class="h-av" style="background: #c2477a">ד</span><div class="h-bub"><span class="who" style="color: #c2477a">הדוברת</span><span class="h-res"><span class="mk ok"><svg class="ic" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.2 4.2L19 7"/></svg></span>זה עבד.</span></div></div>
+                <div class="h-out"><small>אתם, בשאלת ההמשך</small>"אנחנו לא מחכים להצעות מהליכוד. הבוחרים שלנו יודעים לאיזה גוש אנחנו שייכים."</div>
+                <div class="h-msg"><span class="h-av" style="background: #c2477a">ד</span><div class="h-bub"><span class="who" style="color: #c2477a">הדוברת</span><span class="h-res"><span class="mk bad"><svg class="ic" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></span>כאן נתפסנו לא מוכנים.</span></div></div>
+                <div class="h-msg"><span class="h-av" style="background: #17867a">ס</span><div class="h-bub"><span class="who" style="color: #17867a">הסוקרת</span>נשארנו על 6, אבל השישי התרופף. הקו מראה איפה הוא היה לפני.<div class="seats"><sc-for list="{{mySeats}}" as="t" hint-placeholder-count="6"><span class="st {{t.cls}}" style="{{t.f}}"></span></sc-for></div></div></div>
+              </div>
+              <div class="h-reply">
+                <button type="button" class="h-r main">לפעולה השנייה · נותרו {{budget}}</button>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{isWeek}}" hint-placeholder-val="{{ false }}">
+              <div class="h-log">
+                <span class="h-day">סוף שבוע 1</span>
+                <div class="h-msg"><span class="h-av" style="background: #7a5bbf">ר</span><div class="h-bub"><span class="who" style="color: #7a5bbf">ראש המטה</span>שבוע 1 נסגר.
+                  <span class="h-res"><span class="mk ok"><svg class="ic" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.2 4.2L19 7"/></svg></span>צירוף טליה וקנין ייצב את השישי.</span>
+                  <span class="h-res"><span class="mk mid"><svg class="ic" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" aria-hidden="true"><path d="M6 12h12"/></svg></span>הריאיון עלה לנו מעט.</span>
+                </div></div>
+                <div class="h-msg"><span class="h-av" style="background: #17867a">ס</span><div class="h-bub"><span class="who" style="color: #17867a">הסוקרת</span>6 יציבים, ושביעי מתחיל להיבנות.<div class="seats"><sc-for list="{{mySeats}}" as="t" hint-placeholder-count="7"><span class="st {{t.cls}}" style="{{t.f}}"></span></sc-for></div></div></div>
+                <div class="h-msg"><span class="h-av" style="background: #b3832a">א</span><div class="h-bub"><span class="who" style="color: #b3832a">האסטרטג</span>מי זז השבוע:
+                  <div class="h-chips"><sc-for list="{{movers}}" as="v" hint-placeholder-count="4"><span class="h-chip"><i class="dot" style="{{v.bg}}"></i>{{v.n}} <b class="{{v.cls}}">{{v.d}}</b></span></sc-for></div>
+                  הגושים לא זזו: 52 מול 51.
+                </div></div>
+                <sc-if value="{{showLists}}" hint-placeholder-val="{{ false }}">
+                  <div class="h-msg"><span class="h-av" style="background: #17867a">ס</span><div class="h-bub"><span class="who" style="color: #17867a">הסוקרת</span>כל הרשימות, במנדטים:
+                    <div class="h-table"><sc-for list="{{tableWeek}}" as="p" hint-placeholder-count="13"><div class="{{p.row}}"><i class="dot" style="{{p.bg}}"></i><span class="grow">{{p.n}}</span><span class="d {{p.dcls}}">{{p.d}}</span><b>{{p.s}}</b></div></sc-for></div>
+                  </div></div>
+                </sc-if>
+              </div>
+              <div class="h-reply">
+                <button type="button" class="h-r main">לשבוע 2</button>
+                <button type="button" class="h-r" onClick="{{toggleLists}}">{{listsLabel}}</button>
+              </div>
+            </sc-if>
+          </div>
+        </div>
+      </sc-if>
+
+      <!-- ============ 3. מרוץ ל־61 ============ -->
+      <sc-if value="{{isR}}" hint-placeholder-val="{{ false }}">
+        <div class="r">
+          <div class="r-top">
+            <span class="r-token" aria-hidden="true">ת</span>
+            <div class="grow"><b>תקווה חדשה</b><small>{{roundLabel}}</small></div>
+            <span class="r-coin"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="#f5a623" stroke="#1b1b3a" stroke-width="2.5"/></svg>{{budget}}</span>
+          </div>
+
+          <sc-if value="{{isRoom}}" hint-placeholder-val="{{ true }}">
+            <div class="r-body">
+              <div class="wide"><h2 class="r-title">המרוץ ל־61 מתחיל</h2><p class="r-sub">אף גוש לא בקו הסיום. אתם בגוש של 51.</p></div>
+              <div class="r-card wide">
+                <h3><span>הגושים</span><small>דגל = 61</small></h3>
+                <sc-for list="{{lanes}}" as="l" hint-placeholder-count="2">
+                  <div class="lane">
+                    <div class="lane-h"><span>{{l.n}}</span><sc-if value="{{l.me}}" hint-placeholder-val="{{ false }}"><em>אתם כאן</em></sc-if><span class="grow"></span><big>{{l.s}}</big></div>
+                    <div class="track"><span class="fill" style="{{l.fill}}"></span><span class="flag"></span><span class="tok" style="{{l.tok}}"></span></div>
+                    <div class="lane-f"><span>{{l.togo}}</span><span>{{l.zero}}</span></div>
+                  </div>
+                </sc-for>
+                <div class="r-kings"><span class="r-king">לא משויכת <b>7</b></span><span class="r-king">המפלגות הערביות <b>10</b></span></div>
+              </div>
+              <div class="r-card">
+                <h3><span>הקופה שלכם</span><small>6 מנדטים</small></h3>
+                <div class="chips"><sc-for list="{{mySeats}}" as="t" hint-placeholder-count="6"><span class="chip3 {{t.cls}}" style="{{t.f}}"></span></sc-for></div>
+                <p class="r-note">{{seatLine}}<small>האסימון החלקי הוא הראשון שיזוז.</small></p>
+              </div>
+              <div class="r-card">
+                <h3><span>השחקנים מולכם</span></h3>
+                <div class="players"><sc-for list="{{rels}}" as="p" hint-placeholder-count="3">
+                  <div class="player"><span class="ph" style="{{p.ring}}"><svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="15" r="7" fill="#c9bfae"/><path d="M5 40c1-9 7-14 15-14s14 5 15 14z" fill="#c9bfae"/></svg></span><b>{{p.n}}</b><big>{{p.s}}</big><em style="{{p.bg}}">{{p.tag}}</em></div>
+                </sc-for></div>
+              </div>
+              <sc-if value="{{showLists}}" hint-placeholder-val="{{ false }}">
+                <div class="r-card wide"><h3><span>כל הרשימות</span><small>מנדטים</small></h3>
+                  <div class="r-list"><sc-for list="{{tableRoom}}" as="p" hint-placeholder-count="13"><div class="{{p.row}}"><i class="dot" style="{{p.bg}}"></i><span class="grow">{{p.n}}</span><b>{{p.s}}</b></div></sc-for></div>
+                </div>
+              </sc-if>
+            </div>
+            <div class="r-cta"><button type="button" class="r-btn">לשחק את סיבוב 1</button><button type="button" class="r-btn2" onClick="{{toggleLists}}">{{listsShort}}</button></div>
+          </sc-if>
+
+          <sc-if value="{{isResult}}" hint-placeholder-val="{{ false }}">
+            <div class="r-body">
+              <div class="wide"><h2 class="r-title">ריאיון בערוץ 20</h2><p class="r-sub">מהלך 1 מתוך 2 בסיבוב</p></div>
+              <div class="flips wide">
+                <div class="flip ok"><span class="big"><svg class="ic" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.2 4.2L19 7"/></svg></span><b>התשובה הראשונה</b><small>הצליחה</small></div>
+                <div class="flip bad"><span class="big"><svg class="ic" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></span><b>שאלת ההמשך</b><small>נכשלה</small></div>
+              </div>
+              <div class="r-card wide">
+                <h3><span>הקופה שלכם</span><small>נשארתם על 6</small></h3>
+                <div class="chips"><sc-for list="{{mySeats}}" as="t" hint-placeholder-count="6"><span class="chip3 {{t.cls}}" style="{{t.f}}"></span></sc-for></div>
+                <p class="r-note">{{seatLine}}<small>הקו הוורוד: איפה הוא היה לפני המהלך.</small></p>
+              </div>
+            </div>
+            <div class="r-cta"><button type="button" class="r-btn">למהלך הבא</button></div>
+          </sc-if>
+
+          <sc-if value="{{isWeek}}" hint-placeholder-val="{{ false }}">
+            <div class="r-body">
+              <div class="wide"><h2 class="r-title">סיבוב 1 נגמר</h2><p class="r-sub">החזקתם 6, ואסימון שביעי התחיל להיבנות.</p></div>
+              <div class="r-card">
+                <h3><span>הקופה שלכם</span><small>6 מנדטים</small></h3>
+                <div class="chips"><sc-for list="{{mySeats}}" as="t" hint-placeholder-count="7"><span class="chip3 {{t.cls}}" style="{{t.f}}"></span></sc-for></div>
+                <div class="r-acts" style="margin-top: 12px">
+                  <div class="r-act"><span class="mk ok"><svg class="ic" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.2 4.2L19 7"/></svg></span><span>צירוף טליה וקנין<small>ייצב את השישי</small></span></div>
+                  <div class="r-act"><span class="mk mid"><svg class="ic" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" aria-hidden="true"><path d="M6 12h12"/></svg></span><span>ריאיון בערוץ 20<small>עלה לכם מעט</small></span></div>
+                </div>
+              </div>
+              <div class="r-card">
+                <h3><span>מי זז</span><small>הגושים במקום</small></h3>
+                <div class="movers"><sc-for list="{{movers}}" as="v" hint-placeholder-count="4"><div class="mover {{v.cls}}"><big>{{v.d}}</big><span>{{v.n}}</span></div></sc-for></div>
+              </div>
+              <div class="r-card wide">
+                <h3><span>הגושים</span><small>דגל = 61</small></h3>
+                <sc-for list="{{lanes}}" as="l" hint-placeholder-count="2">
+                  <div class="lane">
+                    <div class="lane-h"><span>{{l.n}}</span><sc-if value="{{l.me}}" hint-placeholder-val="{{ false }}"><em>אתם כאן</em></sc-if><span class="grow"></span><big>{{l.s}}</big></div>
+                    <div class="track"><span class="fill" style="{{l.fill}}"></span><span class="flag"></span><span class="tok" style="{{l.tok}}"></span></div>
+                  </div>
+                </sc-for>
+              </div>
+              <sc-if value="{{showLists}}" hint-placeholder-val="{{ false }}">
+                <div class="r-card wide"><h3><span>כל הרשימות</span><small>מנדטים ושינוי</small></h3>
+                  <div class="r-list"><sc-for list="{{tableWeek}}" as="p" hint-placeholder-count="13"><div class="{{p.row}}"><i class="dot" style="{{p.bg}}"></i><span class="grow">{{p.n}}</span><span class="d {{p.dcls}}">{{p.d}}</span><b>{{p.s}}</b></div></sc-for></div>
+                </div>
+              </sc-if>
+            </div>
+            <div class="r-cta"><button type="button" class="r-btn">לסיבוב 2</button><button type="button" class="r-btn2" onClick="{{toggleLists}}">{{listsShort}}</button></div>
+          </sc-if>
+        </div>
+      </sc-if>
+
+      <!-- ============ 4. קלף אחד ============ -->
+      <sc-if value="{{isK}}" hint-placeholder-val="{{ false }}">
+        <div class="k">
+          <div class="k-meter">
+            <div class="k-row">
+              <span class="lbl">המנדטים שלכם</span>
+              <div class="k-chairs grow"><sc-for list="{{mySeats}}" as="t" hint-placeholder-count="6"><span class="chair {{t.cls}}" style="{{t.f}}"></span></sc-for></div>
+              <span class="k-count">6</span>
+            </div>
+            <div>
+              <div class="tug" role="img" aria-label="גוש נתניהו 52 מול גוש השינוי 51; הקו באמצע הוא 61"><span style="width: 43.3%; background: #d9534f"></span><span style="width: 42.5%; background: #5b7fe0"></span><i></i></div>
+              <div class="k-tuglbl"><span>גוש נתניהו <b>52</b></span><span>61</span><span><b>51</b> גוש השינוי</span></div>
+            </div>
+          </div>
+
+          <sc-if value="{{isRoom}}" hint-placeholder-val="{{ true }}">
+            <div class="k-stage">
+              <sc-if value="{{k0}}" hint-placeholder-val="{{ true }}">
+                <div class="k-card">
+                  <div class="k-art" style="background: linear-gradient(160deg, #c9d0ff, #8e9bf0)"><span class="tag">תקווה חדשה</span><span class="ph" style="color: #4b5bd6"><svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="15" r="7" fill="#c9bfae"/><path d="M5 40c1-9 7-14 15-14s14 5 15 14z" fill="#c9bfae"/></svg></span></div>
+                  <div class="k-txt"><h2>פותחים על 6</h2><p>המנדט השישי עוד לא סגור. הוא הראשון שיזוז, לכאן או לכאן.</p></div>
+                </div>
+              </sc-if>
+              <sc-if value="{{k1}}" hint-placeholder-val="{{ false }}">
+                <div class="k-card">
+                  <div class="k-art" style="background: linear-gradient(160deg, #f1d9c4, #d8b48f)"><span class="tag">על מי לשים עין</span>
+                    <div class="trio"><sc-for list="{{rels}}" as="p" hint-placeholder-count="3"><span class="ph" style="{{p.ring}}"><svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="15" r="7" fill="#c9bfae"/><path d="M5 40c1-9 7-14 15-14s14 5 15 14z" fill="#c9bfae"/></svg></span></sc-for></div>
+                  </div>
+                  <div class="k-txt"><h2>הליכוד, יש עתיד, ישראל ביתנו</h2><p>היריבה עם 30, המתחרה על אותם קולות עם 17, והשותפה עם 7.</p></div>
+                </div>
+              </sc-if>
+              <sc-if value="{{k2}}" hint-placeholder-val="{{ false }}">
+                <div class="k-card">
+                  <div class="k-art" style="background: linear-gradient(160deg, #3d3226, #2b2118)"><span class="tag">השבוע</span><span class="k-studio">2 פעולות</span></div>
+                  <div class="k-txt"><h2>הראשונה: ריאיון</h2><p>ריאיון טלוויזיוני הוא חובה בפתיחת הקמפיין. אחריו בוחרים פעולה שנייה.</p></div>
+                </div>
+              </sc-if>
+              <div class="k-pager">
+                <button type="button" class="k-arrow {{prevCls}}" aria-label="הקלף הקודם" aria-disabled="{{noPrev}}" onClick="{{prevCard}}"><svg class="ic" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button>
+                <div class="k-dots"><sc-for list="{{dots}}" as="d" hint-placeholder-count="3"><i class="{{d.cls}}"></i></sc-for></div>
+                <button type="button" class="k-arrow {{nextCls}}" aria-label="הקלף הבא" aria-disabled="{{noNext}}" onClick="{{nextCard}}"><svg class="ic" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg></button>
+              </div>
+            </div>
+            <div class="k-cta"><button type="button" class="k-btn">לתכנן את השבוע</button><small>{{budget}}</small></div>
+          </sc-if>
+
+          <sc-if value="{{isResult}}" hint-placeholder-val="{{ false }}">
+            <div class="k-stage">
+              <div class="k-card">
+                <div class="k-art" style="background: linear-gradient(160deg, #3d3226, #2b2118)"><span class="tag">פעולה 1 מתוך 2</span><span class="k-studio">ערוץ 20</span></div>
+                <div class="k-txt">
+                  <div class="k-stamps"><span class="stamp ok"><svg class="ic" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.2 4.2L19 7"/></svg>תשובה ראשונה</span><span class="stamp bad"><svg class="ic" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>שאלת המשך</span></div>
+                  <h2>נשארתם על 6</h2>
+                  <p>אבל הכיסא השישי התרופף. הקו בפס העליון מראה איפה הוא היה.</p>
+                </div>
+              </div>
+            </div>
+            <div class="k-cta"><button type="button" class="k-btn">לפעולה השנייה</button><small>נותרו {{budget}}</small></div>
+          </sc-if>
+
+          <sc-if value="{{isWeek}}" hint-placeholder-val="{{ false }}">
+            <div class="k-stage">
+              <sc-if value="{{k0}}" hint-placeholder-val="{{ true }}">
+                <div class="k-card">
+                  <div class="k-art" style="background: linear-gradient(160deg, #c9d0ff, #8e9bf0)"><span class="tag">סוף שבוע 1</span><span class="ph" style="color: #4b5bd6"><svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="15" r="7" fill="#c9bfae"/><path d="M5 40c1-9 7-14 15-14s14 5 15 14z" fill="#c9bfae"/></svg></span></div>
+                  <div class="k-txt">
+                    <div class="k-stamps"><span class="stamp ok"><svg class="ic" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.2 4.2L19 7"/></svg>צירוף טליה וקנין</span></div>
+                    <h2>6 יציבים, ושביעי בדרך</h2><p>הצירוף ייצב את השישי. הריאיון עלה לכם מעט.</p>
+                  </div>
+                </div>
+              </sc-if>
+              <sc-if value="{{k1}}" hint-placeholder-val="{{ false }}">
+                <div class="k-card">
+                  <div class="k-art" style="background: linear-gradient(160deg, #f1d9c4, #d8b48f)"><span class="tag">מי זז</span><span class="k-studio">52 · 51</span></div>
+                  <div class="k-txt"><h2>הגושים לא זזו</h2>
+                    <div class="k-moves"><sc-for list="{{movers}}" as="v" hint-placeholder-count="4"><div><i class="dot" style="{{v.bg}}"></i><span class="grow">{{v.n}}</span><span class="{{v.cls}}">{{v.d}}</span><b>{{v.to}}</b></div></sc-for></div>
+                  </div>
+                </div>
+              </sc-if>
+              <div class="k-pager">
+                <button type="button" class="k-arrow {{prevCls}}" aria-label="הקלף הקודם" aria-disabled="{{noPrev}}" onClick="{{prevCard}}"><svg class="ic" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button>
+                <div class="k-dots"><sc-for list="{{dots}}" as="d" hint-placeholder-count="2"><i class="{{d.cls}}"></i></sc-for></div>
+                <button type="button" class="k-arrow {{nextCls}}" aria-label="הקלף הבא" aria-disabled="{{noNext}}" onClick="{{nextCard}}"><svg class="ic" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg></button>
+              </div>
+            </div>
+            <div class="k-cta"><button type="button" class="k-btn">לשבוע 2</button><small>{{budget}}</small></div>
+          </sc-if>
+        </div>
+      </sc-if>
+
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":1500}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const s = this.state || {};
+    const dir = s.dir || 'm';
+    const screen = s.screen || 'room';
+    const device = s.device || 'phone';
+    const lists = !!s.lists;
+    const nCards = dir === 'k' ? (screen === 'room' ? 3 : screen === 'week' ? 2 : 1) : 1;
+    const card = Math.min(s.card || 0, nCards - 1);
+    const on = (x) => (x ? 'on' : '');
+    const go = (patch) => () => this.setState(Object.assign({ card: 0 }, patch));
+    const ME = '#7c8cff';
+
+    // Seat order from the right of the hemicycle: Netanyahu bloc, unaligned, change bloc, Arab parties.
+    const base = [
+      ['likud', 'הליכוד', '#d62839', 30, 'n'], ['shas', 'ש״ס', '#b8461b', 9, 'n'], ['utj', 'יהדות התורה', '#ffb347', 7, 'n'], ['rz', 'הציונות הדתית', '#f08a24', 6, 'n'],
+      ['yamina', 'ימינה', '#8b5cf6', 7, 's'], ['nh', 'תקווה חדשה', ME, 6, 'c'], ['yb', 'ישראל ביתנו', '#19a7c4', 7, 'c'], ['bw', 'כחול לבן', '#6aa8ff', 8, 'c'],
+      ['ya', 'יש עתיד', '#1e56d6', 17, 'c'], ['labor', 'העבודה', '#0d2b6e', 7, 'c'], ['meretz', 'מרצ', '#2bc4e8', 6, 'c'],
+      ['joint', 'הרשימה המשותפת', '#1f9d55', 6, 'a'], ['raam', 'רע״ם', '#84cc16', 4, 'a'],
+    ];
+    const weekSeats = { ya: 18, yb: 6, joint: 5, raam: 5 };
+    const TONE = { n: ['#cfa7a0', '#e0c3be'], c: ['#a3b3cb', '#c1cddd'], a: ['#a3c6ae', '#c3dbc9'], s: ['#bcaed9', '#d3c9e8'] };
+
+    const radii = [0.38, 0.504, 0.628, 0.752, 0.876, 1];
+    const counts = [11, 15, 18, 22, 25, 29];
+    const pts = [];
+    radii.forEach((r, i) => { const n = counts[i]; for (let k = 0; k < n; k++) pts.push({ a: Math.PI * (k / (n - 1)), r }); });
+    pts.sort((p, q) => (p.a - q.a) || (q.r - p.r));
+    const hemi = (week, edge) => {
+      const out = []; let i = 0;
+      base.forEach(([id, , , s0, bloc], pi) => {
+        const n = week && weekSeats[id] !== undefined ? weekSeats[id] : s0;
+        for (let k = 0; k < n; k++) {
+          const p = pts[i++];
+          const x = 50 + 50 * p.r * Math.cos(p.a);
+          const y = 100 - 100 * p.r * Math.sin(p.a);
+          let pos = 'left: ' + x.toFixed(2) + '%; top: ' + y.toFixed(2) + '%;';
+          let cls = '';
+          if (id === 'nh') {
+            const last = k === n - 1;
+            cls = 'me' + (last && edge < 100 ? ' edge' : '');
+            pos += ' --f: ' + (last ? edge : 100) + '%;';
+          } else {
+            pos += ' background: ' + TONE[bloc][pi % 2] + ';';
+          }
+          if (week && (id === 'ya' || id === 'raam') && k === n - 1) cls += ' moved';
+          out.push({ pos, cls });
+        }
+      });
+      return out;
+    };
+
+    const fills = screen === 'room' ? [100, 100, 100, 100, 100, 78] : screen === 'result' ? [100, 100, 100, 100, 100, 55] : [100, 100, 100, 100, 100, 100, 12];
+    const mySeats = fills.map((f, i) => ({
+      cls: i === 6 ? 'ghost' : f < 100 ? 'part' + (screen === 'result' ? ' was' : '') : 'full',
+      f: '--f: ' + f + '%; --w: 78%',
+    }));
+    const seatLine = screen === 'room' ? 'המנדט השישי עוד לא סגור.' : screen === 'result' ? 'המנדט השישי התרופף.' : '6 יציבים, ושביעי מתחיל להיבנות.';
+
+    const blocs = [
+      { n: 'גוש נתניהו', s: 52, c: '#d62839' }, { n: 'גוש השינוי', s: 51, c: '#1e56d6' },
+      { n: 'המפלגות הערביות', s: 10, c: '#1f9d55' }, { n: 'לא משויכת', s: 7, c: '#8b5cf6' },
+    ].map((b) => ({ ...b, seg: 'width: ' + ((b.s / 120) * 100).toFixed(2) + '%; background: ' + b.c }));
+
+    const lane = (n, sN, c, me) => ({
+      n, s: sN, me, togo: 'עוד ' + (61 - sN) + ' ל־61', zero: '0',
+      fill: 'width: ' + ((sN / 66) * 100).toFixed(1) + '%; background: ' + c + '; opacity: .85',
+      tok: 'inset-inline-start: ' + ((sN / 66) * 100).toFixed(1) + '%; background: ' + c,
+    });
+    const lanes = [lane('גוש נתניהו', 52, '#d62839', false), lane('גוש השינוי', 51, '#1e56d6', true)];
+
+    const rel = (n, sN, role, tag, c) => ({ n, s: sN, role, tag, ring: 'color: ' + c, bg: 'background: ' + c });
+    const rels = [
+      rel('הליכוד', '30', 'היריבה', 'יריבה', '#d62839'),
+      rel('יש עתיד', '17', 'מתחרה על אותם קולות', 'מתחרה', '#1e56d6'),
+      rel('ישראל ביתנו', '7', 'השותפה', 'שותפה', '#19a7c4'),
+    ];
+
+    const mv = (n, c, from, to) => ({ n, from, to, d: to > from ? '+' + (to - from) : '−' + (from - to), cls: to > from ? 'up' : 'down', bg: 'background: ' + c });
+    const movers = [mv('יש עתיד', '#1e56d6', 17, 18), mv('רע״ם', '#84cc16', 4, 5), mv('ישראל ביתנו', '#19a7c4', 7, 6), mv('הרשימה המשותפת', '#1f9d55', 6, 5)];
+
+    const row = (id, n, c, s0, s1) => ({ n, s: s1, bg: 'background: ' + c, row: id === 'nh' ? 'me' : '', d: s1 > s0 ? '+' + (s1 - s0) : s1 < s0 ? '−' + (s0 - s1) : '', dcls: s1 > s0 ? 'up' : s1 < s0 ? 'down' : '' });
+    const sorted = (week) => base.map(([id, n, c, s0]) => row(id, n, c, s0, week && weekSeats[id] !== undefined ? weekSeats[id] : s0)).sort((a, b) => b.s - a.s);
+
+    const budget = screen === 'room' ? '₪12 מ׳' : screen === 'result' ? '₪9 מ׳' : '₪7.5 מ׳';
+    const dots = Array.from({ length: nCards }, (_, i) => ({ cls: i === card ? 'on' : '' }));
+
+    return {
+      isM: dir === 'm', isH: dir === 'h', isR: dir === 'r', isK: dir === 'k',
+      dM: on(dir === 'm'), dH: on(dir === 'h'), dR: on(dir === 'r'), dK: on(dir === 'k'),
+      pM: dir === 'm', pH: dir === 'h', pR: dir === 'r', pK: dir === 'k',
+      isRoom: screen === 'room', isResult: screen === 'result', isWeek: screen === 'week',
+      sRoom: on(screen === 'room'), sResult: on(screen === 'result'), sWeek: on(screen === 'week'),
+      isPhone: device === 'phone', isDesk: device === 'desk', vPhone: on(device === 'phone'), vDesk: on(device === 'desk'),
+      deviceClass: device === 'phone' ? 'phone' : 'desk',
+      setM: go({ dir: 'm' }), setH: go({ dir: 'h' }), setR: go({ dir: 'r' }), setK: go({ dir: 'k' }),
+      setRoom: go({ screen: 'room' }), setResult: go({ screen: 'result' }), setWeek: go({ screen: 'week' }),
+      setPhone: () => this.setState({ device: 'phone' }), setDesk: () => this.setState({ device: 'desk' }),
+      hemiRoom: hemi(false, 78), hemiWeek: hemi(true, 100),
+      mySeats, seatLine, blocs, lanes, rels, movers,
+      tableRoom: sorted(false), tableWeek: sorted(true),
+      showLists: lists, toggleLists: () => this.setState({ lists: !lists }),
+      listsLabel: lists ? 'להסתיר את הרשימות' : 'כל הרשימות', listsShort: lists ? 'להסתיר' : 'כל הרשימות',
+      budget,
+      weekLabel: screen === 'week' ? 'סוף שבוע 1 מתוך 5' : 'שבוע 1 מתוך 5',
+      roundLabel: screen === 'week' ? 'סוף סיבוב 1 מתוך 5' : 'סיבוב 1 מתוך 5',
+      lastLine: screen === 'room' ? 'פותחים על 6 מנדטים' : screen === 'result' ? 'נשארנו על 6' : 'שבוע 1 נסגר',
+      k0: card === 0, k1: card === 1, k2: card === 2, dots,
+      noPrev: card === 0, noNext: card >= nCards - 1, prevCls: card === 0 ? 'off' : '', nextCls: card >= nCards - 1 ? 'off' : '',
+      prevCard: () => this.setState({ card: Math.max(0, card - 1) }),
+      nextCard: () => this.setState({ card: Math.min(nCards - 1, card + 1) }),
+    };
+  }
+}
+</script>
+</body>
+</html>

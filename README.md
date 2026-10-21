@@ -6,7 +6,7 @@
 
 | תיקייה | תוכן | מקור |
 |---|---|---|
-| `game/index.html` | **המשחק הראשי** (גרסה 63, 21.10.2026) | https://claude.ai/artifact/L9qJtKpU1T3MkthLFzZ87B |
+| `game/index.html` | **המשחק הראשי** (גרסה 64, 21.10.2026) | https://claude.ai/artifact/L9qJtKpU1T3MkthLFzZ87B |
 | `prototypes/election-edition.html` | הדרך ל־61: מהדורת בחירות | https://claude.ai/artifact/VrKUekcybgbLSxUYjFGmEg |
 | `prototypes/seat-movement-models.html` | מודלי תנועת המנדטים | https://claude.ai/artifact/FYex1KYwtFtZGmaALb9Aja |
 | `prototypes/rivals-with-character.html` | יריבות עם אופי | https://claude.ai/artifact/NCxZ3g7YgN2gfsfkp3yMog |

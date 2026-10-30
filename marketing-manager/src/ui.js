@@ -21,9 +21,10 @@ const CT = {
   all: null, _idx: {},
   load() {
     const raw = (typeof window !== 'undefined' && window.MM_CONTENT) || {};
-    let loaded = null;
-    if (has('loadContent')) { try { loaded = MMx().loadContent(raw); } catch (e) { console.warn('loadContent failed', e); loaded = null; } }
-    if (!loaded) { loaded = Object.assign({}, raw); const sc = []; for (const k of Object.keys(raw)) if (/^scenarios\./.test(k) && Array.isArray(raw[k])) { sc.push(...raw[k]); delete loaded[k]; } loaded.scenarios = sc; }
+    /* The engine indexes its own copy; the UI reads the raw banks (keeps object-shaped banks such as lessons.json intact). */
+    if (has('loadContent')) { try { MMx().loadContent(raw); } catch (e) { console.warn('loadContent failed', e); } }
+    const loaded = Object.assign({}, raw); const sc = []; for (const k of Object.keys(raw)) if (/^scenarios\./.test(k) && Array.isArray(raw[k])) { sc.push(...raw[k]); delete loaded[k]; }
+    loaded.scenarios = sc.filter(x => x && x.bank !== 'moment' && x.bank !== 'event'); loaded.moments = (Array.isArray(raw.moments) ? raw.moments : []).concat(sc.filter(x => x && x.bank === 'moment')); loaded.events = (Array.isArray(raw.events) ? raw.events : []).concat(sc.filter(x => x && x.bank === 'event'));
     CT.all = loaded; CT._idx = {}; return loaded;
   },
   bank(name) { return (CT.all && CT.all[name]) || null; },
@@ -104,7 +105,7 @@ function defaultState(opts) {
 function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); }
 function bdiWrap(html) {
   if (!html || html.indexOf('<bdi') !== -1) return html;
-  return html.split(/(<[^>]+>)/g).map(part => part[0] === '<' ? part : part.replace(/(\d[\d.,:%\/−–-]*|[A-Za-z][A-Za-z0-9.\-]*)/g, '<bdi>$1</bdi>')).join('');
+  return html.split(/(<[^>]+>|&[#\w]+;)/g).map(part => (part[0] === '<' || part[0] === '&') ? part : part.replace(/(\d[\d.,:%\/−–-]*|[A-Za-z][A-Za-z0-9.\-]*)/g, '<bdi>$1</bdi>')).join('');
 }
 function localFill(str, params, ctx) {
   params = params || {}; ctx = ctx || { gender: 'm', genders: {}, params: {} };

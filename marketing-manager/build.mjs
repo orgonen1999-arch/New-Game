@@ -6,8 +6,17 @@
 import { readFileSync, writeFileSync, readdirSync, statSync } from 'node:fs'
 import { join, dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { validate } from './tools/validate.mjs'
 
 const here = dirname(fileURLToPath(import.meta.url))
+
+// Content validation runs before bundling (DESIGN.md §15); any error aborts the build.
+{
+  const v = validate({ contentDir: join(here, 'content'), srcDir: join(here, 'src') })
+  for (const w of v.warnings) console.warn('warning  ' + w)
+  for (const e of v.errors) console.error('error    ' + e)
+  if (v.errors.length) { console.error(`build aborted: ${v.errors.length} content error${v.errors.length === 1 ? '' : 's'} (node tools/validate.mjs)`); process.exit(1) }
+}
 const srcDir = join(here, 'src')
 const contentDir = join(here, 'content')
 const template = readFileSync(join(srcDir, 'index.template.html'), 'utf8')

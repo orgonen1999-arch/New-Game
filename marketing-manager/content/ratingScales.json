@@ -1,0 +1,80 @@
+{
+  "byEngType": {
+    "isox": "icfr",
+    "audit": "severity",
+    "compliance": "compliance",
+    "risk-survey": "riskBands",
+    "control-review": "designOp",
+    "policy-writing": "docStatus"
+  },
+  "scales": [
+    {
+      "id": "icfr",
+      "he": "סולם ICFR (ISOX)",
+      "kind": "severity",
+      "engTypes": ["isox"],
+      "pills": [
+        { "id": "deficiency", "he": "ליקוי", "level": 1 },
+        { "id": "significant", "he": "ליקוי משמעותי", "level": 2 },
+        { "id": "material", "he": "חולשה מהותית", "level": 3 }
+      ]
+    },
+    {
+      "id": "severity",
+      "he": "סולם חומרה (ביקורת פנימית)",
+      "kind": "severity",
+      "engTypes": ["audit"],
+      "pills": [
+        { "id": "low", "he": "חומרה נמוכה", "level": 1 },
+        { "id": "medium", "he": "חומרה בינונית", "level": 2 },
+        { "id": "high", "he": "חומרה גבוהה", "level": 3 }
+      ]
+    },
+    {
+      "id": "compliance",
+      "he": "סולם ציות",
+      "kind": "severity",
+      "engTypes": ["compliance"],
+      "pills": [
+        { "id": "recommendation", "he": "המלצה", "level": 1 },
+        { "id": "noncompliance", "he": "אי-עמידה", "level": 2 },
+        { "id": "breach", "he": "הפרה", "level": 3 }
+      ]
+    },
+    {
+      "id": "riskBands",
+      "he": "רמות סיכון (סקר סיכונים)",
+      "kind": "severity",
+      "engTypes": ["risk-survey"],
+      "pair": { "inherent": "מובנה", "residual": "שיורי", "separator": " · " },
+      "pills": [
+        { "id": "low", "he": "נמוך", "level": 1 },
+        { "id": "medium", "he": "בינוני", "level": 2 },
+        { "id": "high", "he": "גבוה", "level": 3 },
+        { "id": "critical", "he": "קריטי", "level": 4 }
+      ]
+    },
+    {
+      "id": "designOp",
+      "he": "תכנון מול תפעול (סקירת בקרות)",
+      "kind": "severity",
+      "engTypes": ["control-review"],
+      "pills": [
+        { "id": "note", "he": "הערה", "level": 1 },
+        { "id": "operating", "he": "ליקוי תפעול", "level": 2 },
+        { "id": "design", "he": "ליקוי תכנון", "level": 3 }
+      ]
+    },
+    {
+      "id": "docStatus",
+      "he": "סטטוס מסמך (כתיבת נוהל)",
+      "kind": "status",
+      "engTypes": ["policy-writing"],
+      "pills": [
+        { "id": "draft", "he": "טיוטה", "level": 1 },
+        { "id": "review", "he": "בסבב הערות", "level": 2 },
+        { "id": "approved", "he": "מאושר", "level": 3 }
+      ]
+    }
+  ]
+}

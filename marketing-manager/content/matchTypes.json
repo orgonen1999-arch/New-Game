@@ -1,0 +1,63 @@
+[
+  {
+    "id": "validation",
+    "hebrew": "תיקוף ממצאים מול הלקוח",
+    "hebrewByEngType": { "policy-writing": "סבב הערות עם בעל התהליך" },
+    "moments": 3,
+    "trigger": "end of findings phase",
+    "fit": {
+      "basis": { "risk": 3, "rules": 1 },
+      "transparency": { "full": 3, "managed": 1 },
+      "escalation": { "low": 1, "high": 2 }
+    }
+  },
+  {
+    "id": "present",
+    "hebrew": "הצגה לדרג בכיר",
+    "hebrewByEngType": { "policy-writing": "אישור הנוהל בהנהלה" },
+    "moments": 3,
+    "trigger": "end of present phase",
+    "fit": {
+      "basis": { "risk": 3, "rules": 1 },
+      "transparency": { "full": 2, "managed": 2 },
+      "escalation": { "low": 1, "high": 3 }
+    }
+  },
+  {
+    "id": "inspection",
+    "hebrew": "ביקורת רגולטור",
+    "hebrewByEngType": {},
+    "moments": 5,
+    "trigger": "1-2 per season at financial clients, announced 3 weeks ahead (6 with scouting)",
+    "fit": {
+      "basis": { "risk": 1, "rules": 3 },
+      "transparency": { "full": 3, "managed": 0 },
+      "escalation": { "low": 0, "high": 3 }
+    }
+  },
+  {
+    "id": "incident",
+    "hebrew": "תקרית",
+    "hebrewByEngType": {},
+    "moments": 3,
+    "trigger": "2 per season, any non-holiday week, scaled by firm.incidentRate",
+    "fit": {
+      "basis": { "risk": 3, "rules": 1 },
+      "transparency": { "full": 3, "managed": 1 },
+      "escalation": { "low": 0, "high": 3 }
+    }
+  },
+  {
+    "id": "ac",
+    "hebrew": "ועדת ביקורת",
+    "hebrewByEngType": {},
+    "moments": 5,
+    "trigger": "quarter close (weeks 12, 24, 36, 48) for the active financial-sector engagement with the earliest deadline, else any active engagement, else skipped",
+    "momentsFrom": ["present", "inspection"],
+    "fit": {
+      "basis": { "risk": 3, "rules": 2 },
+      "transparency": { "full": 2, "managed": 2 },
+      "escalation": { "low": 2, "high": 2 }
+    }
+  }
+]

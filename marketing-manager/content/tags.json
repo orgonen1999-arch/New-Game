@@ -1,0 +1,146 @@
+{
+  "tags": [
+    {
+      "id": "shortcut",
+      "he": "קיצור דרך",
+      "desc": "skipped a step to save time"
+    },
+    {
+      "id": "client-pleasing",
+      "he": "ריצוי לקוח",
+      "desc": "chose what the client wanted over the method"
+    },
+    {
+      "id": "documentation",
+      "he": "תיעוד",
+      "desc": "documented the method or the evidence"
+    },
+    {
+      "id": "initiative",
+      "he": "יוזמה",
+      "desc": "proposed instead of asking"
+    },
+    {
+      "id": "escalate",
+      "he": "הסלמה",
+      "desc": "raised to manager, partner or regulator"
+    },
+    {
+      "id": "defer",
+      "he": "דחייה",
+      "desc": "postponed to gather more"
+    },
+    {
+      "id": "independence",
+      "he": "עצמאות",
+      "desc": "protected independence or objectivity"
+    },
+    {
+      "id": "disclosure",
+      "he": "גילוי",
+      "desc": "disclosed a conflict, error or limitation"
+    },
+    {
+      "id": "scope-cut",
+      "he": "צמצום היקף",
+      "desc": "reduced scope under pressure"
+    },
+    {
+      "id": "over-testing",
+      "he": "בדיקת יתר",
+      "desc": "tested beyond what the risk justified"
+    },
+    {
+      "id": "political",
+      "he": "פוליטי",
+      "desc": "chose for internal politics"
+    },
+    {
+      "id": "delegate",
+      "he": "האצלה",
+      "desc": "handed the task to someone else"
+    },
+    {
+      "id": "downgrade",
+      "he": "הורדת דירוג",
+      "desc": "lowered a finding's rating under pressure"
+    },
+    {
+      "id": "hide",
+      "he": "הסתרה",
+      "desc": "concealed a finding or an error"
+    },
+    {
+      "id": "tip-off",
+      "he": "הדלפה",
+      "desc": "tipped off a subject (AML)"
+    }
+  ],
+  "biases": [
+    {
+      "id": "anchoring",
+      "he": "עיגון",
+      "desc": "the first number or item on the table became the default"
+    },
+    {
+      "id": "social-pressure",
+      "he": "לחץ חברתי",
+      "desc": "a friendly tone or a room full of people moved the decision"
+    },
+    {
+      "id": "procedure-bias",
+      "he": "הטיית ההליך",
+      "desc": "a step that sounds objective replaced a documented method"
+    },
+    {
+      "id": "responsibility-transfer",
+      "he": "העברת אחריות",
+      "desc": "escalated or delegated to avoid owning the call"
+    },
+    {
+      "id": "sunk-cost",
+      "he": "עלות שקועה",
+      "desc": "continued because of hours already spent"
+    },
+    {
+      "id": "availability",
+      "he": "זמינות",
+      "desc": "judged by the case that came to mind, not the base rate"
+    },
+    {
+      "id": "overconfidence",
+      "he": "ביטחון יתר",
+      "desc": "treated a guess as a conclusion"
+    },
+    {
+      "id": "authority",
+      "he": "סמכות",
+      "desc": "deferred to rank instead of evidence"
+    },
+    {
+      "id": "confirmation",
+      "he": "אישוש",
+      "desc": "looked only for what supports the first impression"
+    },
+    {
+      "id": "status-quo",
+      "he": "שמרנות",
+      "desc": "kept last year's approach because it was there"
+    },
+    {
+      "id": "planning-fallacy",
+      "he": "כשל התכנון",
+      "desc": "assumed the work would take less than it does"
+    },
+    {
+      "id": "loss-aversion",
+      "he": "שנאת הפסד",
+      "desc": "avoided a small certain loss at a large risk"
+    },
+    {
+      "id": "risk-aversion",
+      "he": "הימנעות מסיכון",
+      "desc": "chose what felt safe over what was right"
+    }
+  ]
+}

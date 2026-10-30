@@ -1,0 +1,179 @@
+[
+  {
+    "id": "t1-s1",
+    "tier": 1,
+    "firm": "ofek",
+    "season": 1,
+    "title": "העונה הראשונה: חמישה תיקים, מנהל אחד, הרבה שטח",
+    "scripted": [
+      "bank-aml-kyc-sample-v1",
+      "muni-sod-small-council-v1",
+      "muni-procurement-files-v1",
+      "isox-one-deviation-25-v1",
+      "govco-tender-tickets-v1",
+      "insurer-privacy-wrong-address-v1"
+    ],
+    "engagements": [
+      {
+        "clientId": "muni-north",
+        "type": "audit",
+        "line": 3,
+        "process": "procurement",
+        "startWeek": 2,
+        "duration": 12,
+        "managerId": "uri",
+        "contactId": "yossi"
+      },
+      {
+        "sectorPool": ["bank", "insurer"],
+        "type": "compliance",
+        "line": 3,
+        "process": "kyc",
+        "startWeek": 8,
+        "duration": 14,
+        "managerId": "uri"
+      },
+      {
+        "clientId": "govco-rail",
+        "type": "risk-survey",
+        "line": 2,
+        "process": "operations",
+        "startWeek": 20,
+        "duration": 10,
+        "managerId": "uri",
+        "contactId": "rail-vp-ops"
+      },
+      {
+        "sectorPool": ["ministry", "muni"],
+        "type": "policy-writing",
+        "line": 2,
+        "process": "gifts",
+        "startWeek": 24,
+        "duration": 8,
+        "managerId": "uri",
+        "phaseWork": { "planning": 1, "fieldwork": 3, "findings": 1, "report": 2, "present": 1 }
+      },
+      {
+        "clientId": "bank-alon",
+        "type": "isox",
+        "line": 3,
+        "process": "payments",
+        "startWeek": 30,
+        "duration": 14,
+        "managerId": "uri",
+        "contactId": "alon-cfo"
+      }
+    ]
+  },
+  {
+    "id": "t1-any",
+    "tier": 1,
+    "title": "עונה שנייה כאנליסט: אותו סולם, לקוחות אחרים",
+    "scripted": [],
+    "engagements": [
+      {
+        "sectorPool": ["muni", "ministry", "statutory"],
+        "type": "audit",
+        "line": 3,
+        "process": "payroll",
+        "startWeek": 2,
+        "duration": 12
+      },
+      {
+        "sectorPool": ["bank", "insurer", "invest"],
+        "type": "compliance",
+        "line": 3,
+        "process": "kyc",
+        "startWeek": 8,
+        "duration": 14
+      },
+      {
+        "sectorPool": ["govco", "statutory"],
+        "type": "risk-survey",
+        "line": 2,
+        "process": "vendors",
+        "startWeek": 20,
+        "duration": 10
+      },
+      {
+        "sectorPool": ["muni", "ministry"],
+        "type": "policy-writing",
+        "line": 2,
+        "process": "gifts",
+        "startWeek": 24,
+        "duration": 8,
+        "phaseWork": { "planning": 1, "fieldwork": 3, "findings": 1, "report": 2, "present": 1 }
+      },
+      {
+        "sectorPool": ["bank", "insurer"],
+        "type": "control-review",
+        "line": 3,
+        "process": "access",
+        "startWeek": 30,
+        "duration": 14
+      }
+    ]
+  },
+  {
+    "id": "t2-any",
+    "tier": 2,
+    "title": "אנליסט בכיר: תיק אחד שלכם מהתחלה ועד הסוף, ונוהל שכותבים לבד",
+    "scripted": [],
+    "engagements": [
+      {
+        "clientId": "provident-migdalor",
+        "type": "audit",
+        "line": 3,
+        "process": "access",
+        "startWeek": 2,
+        "duration": 12,
+        "contactId": "migdalor-ceo"
+      },
+      {
+        "sectorPool": ["bank"],
+        "type": "compliance",
+        "line": 3,
+        "process": "aml-monitoring",
+        "startWeek": 8,
+        "duration": 14
+      },
+      {
+        "clientId": "muni-yam",
+        "type": "risk-survey",
+        "line": 2,
+        "process": "collections",
+        "startWeek": 14,
+        "duration": 10,
+        "owned": true,
+        "contactId": "yam-treasurer"
+      },
+      {
+        "sectorPool": ["govco", "statutory"],
+        "type": "policy-writing",
+        "line": 2,
+        "process": "vendors",
+        "startWeek": 20,
+        "duration": 8,
+        "phaseWork": { "planning": 1, "fieldwork": 3, "findings": 1, "report": 2, "present": 1 }
+      },
+      {
+        "clientId": "ministry-infra",
+        "type": "audit",
+        "line": 3,
+        "process": "grants",
+        "startWeek": 24,
+        "duration": 12,
+        "contactId": "infra-dg"
+      },
+      {
+        "clientId": "carmel-insurance",
+        "type": "isox",
+        "line": 3,
+        "process": "claims",
+        "startWeek": 30,
+        "duration": 14,
+        "contactId": "carmel-cfo"
+      }
+    ]
+  }
+]

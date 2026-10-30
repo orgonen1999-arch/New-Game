@@ -273,12 +273,12 @@ test('energy: fixed point of a normal week in [60, 72]; a crunch drops below 30 
 test('spendBlock: hours are hard, work adds units (+1 with contact trust ≥ 60), learn returns a drill', () => {
   load(); const st = game(); MM.tick(st); const eng = engOf(st, 'bank-alon'); assert.equal(eng.status, 'active')
   const r = MM.spendBlock(st, 'work', { engId: eng.id }); assert.equal(r.units, 1); assert.equal(eng.work, 1); assert.equal(st.budget.hours, 32)
+  assert.equal(MM.spendBlock(st, 'work', { engId: 'nope' }).error.key, 'budget.needsEngagement')
   st.world.contacts.anat.trust = 60; assert.equal(MM.spendBlock(st, 'work', { engId: eng.id }).units, 2)
   const l = MM.spendBlock(st, 'learn', { skillId: 'testing' }); assert.equal(l.drill.id, 'd-testing'); assert.equal(l.drill.items.length, 5)
   const dr = MM.runDrill(st, 'd-testing', [0, 0, 0, 0, 1]); assert.equal(dr.score, 80); assert.equal(st.player.skills.testing.obs, 0.5)
-  const n = MM.spendBlock(st, 'network', { personId: 'uri' }); assert.equal(n.gain, 4.5); assert.equal(st.budget.hours, 12)
-  MM.spendBlock(st, 'rest'); assert.equal(st.budget.hours, 4); assert.equal(MM.spendBlock(st, 'work', { engId: eng.id }).error.key, 'budget.notEnough')
-  assert.equal(MM.spendBlock(st, 'work', { engId: 'nope' }).error.key, 'budget.needsEngagement')
+  const n = MM.spendBlock(st, 'network', { personId: 'uri' }); assert.equal(n.gain, 4.5); assert.equal(st.budget.hours, 16)
+  MM.spendBlock(st, 'rest'); assert.equal(st.budget.hours, 8); MM.spendBlock(st, 'scout'); assert.equal(st.budget.hours, 4); assert.equal(MM.spendBlock(st, 'work', { engId: eng.id }).error.key, 'budget.notEnough')
 })
 
 test('phase advance, match scheduling at W+1, placement at the tick into W+1, auto-resolve at the tick out of it', () => {
@@ -321,10 +321,11 @@ test('draw fallback ladder: exact match rung 0, wildcard-only rung 4, no active 
   // week 1: no active engagement → wildcard rung
   let it = MM.drawOne(st); assert.ok(it); assert.equal(it.rung, 4); assert.ok(it.scenarioId.startsWith('wild-'))
   MM.tick(st); st.inbox = []; const eng = engOf(st, 'bank-alon'); eng.phase = 'fieldwork'
-  st.player.flags = {}; st.seen = {}
+  st.player.flags = {}; st.seen = {}; const abs = MM.absWeek(st); for (let i = 1; i <= 4; i++) st.seen['wild-' + i] = abs // wildcards on cooldown
   it = MM.drawOne(st); assert.equal(it.rung, 0); assert.equal(it.scenarioId, S7.id); assert.equal(it.engId, eng.id)
   st.inbox = []; it = MM.drawOne(st); assert.equal(it.rung, 1); assert.equal(it.scenarioId, 'bank-planning') // phase dropped
-  st.inbox = []; it = MM.drawOne(st); assert.equal(it.rung, 4) // only wildcards left (rungs 2–3 have nothing new)
+  st.inbox = []; assert.equal(MM.drawOne(st), null) // nothing left: the cooldown-relax rung never serves an id seen this season
+  for (let i = 1; i <= 4; i++) delete st.seen['wild-' + i]; it = MM.drawOne(st); assert.equal(it.rung, 0); assert.ok(it.scenarioId.startsWith('wild-')) // wildcards match any active engagement
   // tier relax: a tier-3 player with only tier-1/2 content
   st = game({ seed: 12, tier: 3 }); st.scriptedLeft = []; st.inbox = []; MM.tick(st); st.inbox = []
   it = MM.drawOne(st); assert.ok(it); assert.equal(it.rung, 5); assert.equal(st.contentEndShown, true); assert.equal(st.inbox.filter(i => i.key === 'content.endsHere').length, 1)
@@ -338,8 +339,8 @@ test('draw fallback ladder: exact match rung 0, wildcard-only rung 4, no active 
 test('inbox draw respects holidays, the 2-full-rooms cap and the size cap', () => {
   load(); const st = game({ seed: 5 }); st.week = 14; st.inbox = []; MM.tick(st); assert.equal(st.week, 15)
   assert.equal(st.inbox.filter(i => i.type === 'decision').length, 0); assert.ok(st.inbox.some(i => i.key === 'holiday.greeting'))
-  st.inbox = []; for (let i = 0; i < 5; i++) st.inbox.push({ id: 'z' + i, type: 'news', week: st.week, season: 1, read: false, done: false })
-  st.week = 20; MM.tick(st); assert.equal(st.inbox.filter(i => i.type === 'decision').length, 0); assert.ok(st.stats.deferred >= 1)
+  st.week = 20; st.inbox = []; for (let i = 0; i < 5; i++) st.inbox.push({ id: 'z' + i, type: 'news', week: st.week, season: 1, read: false, done: false })
+  MM.tick(st); assert.equal(st.inbox.filter(i => i.type === 'decision').length, 0); assert.ok(st.stats.deferred >= 1)
   assert.equal(MM.fullRooms(st), 0)
 })
 
@@ -383,8 +384,8 @@ test('patterns: good-process-bad-luck and info-skipped detectors fire from journ
 
 test('quarter close, season end, promotion verdict and awards; dismissal after two low quarters', () => {
   load(); const st = game({ seed: 21 }); st.scriptedLeft = []
-  st.week = 47; MM.tick(st); assert.equal(st.week, 48); assert.ok(st.matches.some(m => m.type === 'ac' && m.week === 48))
-  st.player.gate = 80; st.world.cast.naama.trust = 70; st.player.confidence = 80
+  st.week = 46; MM.tick(st); assert.ok(st.matches.some(m => m.type === 'ac' && m.week === 48)); MM.tick(st); assert.equal(st.week, 48); assert.ok(st.inbox.some(i => i.type === 'moment'))
+  st.player.gate = 80; st.world.cast.naama.trust = 70; st.player.confidence = 80; for (const id of ['testing', 'evidence', 'writing']) st.player.skills[id].mastery = 8
   for (const e of st.engagements) e.quality = 90
   st.journal.push({ id: 'jx', kind: 'light', season: 1, week: 40, P: 95, O: 8, option: { quality: 3, tags: [], escalation: 'none' }, info: { decisiveTotal: 0, decisiveBought: 0, noise: [], offered: 0 }, rubric: {}, consequences: [], applied: { confidence: 2, rep: 0, engQuality: 5, trust: {} }, energy: 60, calibration: null, title: 't', scenarioId: S7.id })
   const r = MM.tick(st)
@@ -398,7 +399,7 @@ test('quarter close, season end, promotion verdict and awards; dismissal after t
 
 test('losing conditions: ethics ending, forced leave, material failure', () => {
   load(); let st = game(); st.player.integrity = 15; MM.tick(st); assert.equal(st.ended.key, 'ending.ethics'); assert.equal(MM.tick(st).ended.key, 'ending.ethics')
-  st = game(); st.counters.lowEnergyWeeks = 3; st.player.energy = 5; st.budget.work = 5; const m0 = st.player.skills.testing.mastery; MM.tick(st)
+  st = game(); st.counters.lowEnergyWeeks = 3; st.player.energy = 5; st.budget.work = 5; st.budget.rooms = 2; st.budget.hours = 0; const m0 = st.player.skills.testing.mastery; MM.tick(st)
   assert.ok(st.leaveUntil > MM.absWeek(st)); assert.equal(st.player.skills.testing.mastery, m0 - 0.5); assert.equal(MM.spendBlock(st, 'rest').error.key, 'leave.forced')
   st = game(); st.player.flags.material_failure = 1; st.player.rep = 10; MM.tick(st); assert.equal(st.stats.dismissals, 1)
 })

@@ -586,16 +586,19 @@
       { eng: (s, e) => mt(s.engType, e.type) },
       { eng: () => true },
       { wild: true },
-      { wild: true, tierRelax: true },
-      { wild: true, tierRelax: true, cooldownRelax: true }
+      { tierRelax: true },
+      { tierRelax: true, cooldownRelax: true }
     ];
+    // tier relax = the highest content tier at or below the player's (or the lowest above it when nothing is below)
+    const lowerTier = s => { const ts = listOf(s.tier); return !ts.length || ts.some(x => x <= tier); };
     for (let r = active.length ? 0 : 4; r < rungs.length; r++) {
       const rg = rungs[r]; const cands = [];
       for (const s of base) {
-        if (!(tierOk(s, tier) || (rg.tierRelax && tierOk(s, maxTier)))) continue;
+        if (!(tierOk(s, tier) || (rg.tierRelax && (lowerTier(s) || tierOk(s, maxTier))))) continue;
         if (!(rg.cooldownRelax ? notThisSeason(s) : cool(s))) continue;
         let engs;
         if (rg.wild) { if (!isWild(s)) continue; const e = attachFallback(state, null); if (!requiresOk(state, s, e)) continue; engs = [e]; }
+        else if (rg.tierRelax) { const e = active.length ? pick(state, active.filter(x => mt(s.sector, x.sector) && mt(s.engType, x.type))) || pick(state, active) : attachFallback(state, s); if (!requiresOk(state, s, e)) continue; engs = [e]; }
         else { engs = active.filter(e => rg.eng(s, e) && requiresOk(state, s, e)); if (!engs.length) continue; }
         cands.push({ s, engs });
       }
@@ -1114,7 +1117,7 @@
     const lines = []; const H = k => t('journal.export.' + k);
     for (const e of state.journal) {
       if (e.kind === 'moment') continue; const s = scenarioById(e.scenarioId) || {}; const ctx = ctxFor(state, e.engId);
-      lines.push('## ' + H('heading').replace('{week}', e.week).replace('{season}', e.season) + ' · ' + (ctx.params.client || '') + ' · ' + fill(e.title || '', {}, ctx));
+      lines.push(t('journal.export.heading', { week: e.week, season: e.season, client: ctx.params.client || '' }, ctx) + ' · ' + fill(e.title || '', {}, ctx));
       if (e.framing) { const f = byId(listOf(s.framings), e.framing.id); lines.push('- ' + H('question') + ': ' + fill(f ? f.text : '', {}, ctx)); }
       lines.push('- ' + H('known') + ': ' + e.info.bought.map(id => { const i = byId(listOf(s.info), id); return i ? fill(i.label, {}, ctx) : id; }).join('; '));
       lines.push('- ' + H('options') + ': ' + listOf(s.options).map(o => fill(o.label, {}, ctx)).join(' / '));

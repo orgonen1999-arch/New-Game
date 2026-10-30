@@ -437,7 +437,7 @@
     const hist = state.world.firmHistory[eng.clientId] || (state.world.firmHistory[eng.clientId] = []);
     if (eng.line === 3 && hist.some(h => h.line === 2 && h.process === eng.process && h.firmId === state.firm.id && state.season - h.season <= 2)) eng.selfReview = true;
     hist.push({ process: eng.process, line: eng.line, season: state.season, firmId: state.firm.id });
-    note(notes, 'eng.started', { client: eng.clientId }, { engId: eng.id });
+    note(notes, 'eng.started', { n: state.week, client: eng.clientId }, { engId: eng.id });
     if (eng.selfReview) note(notes, 'eng.selfReview', {}, { engId: eng.id });
   }
   // Phase label key for the UI: engType override, ISOX roll-forward label in weeks 41–44, else phase.<id>.
@@ -456,13 +456,13 @@
       while (guard++ < 6 && eng.phase !== 'closed') {
         const need = num(eng.phaseWork[eng.phase], PHASE_WORK[eng.phase]);
         if (eng.work < need) break;
-        if (PHASE_MATCH[eng.phase]) { if (!eng.matchDue) { eng.matchDue = w + 1; eng.matchType = PHASE_MATCH[eng.phase]; scheduleMatch(state, eng.id, PHASE_MATCH[eng.phase], w + 1); note(notes, 'toast.matchScheduled', { week: w + 1 }, { engId: eng.id }); } break; }
+        if (PHASE_MATCH[eng.phase]) { if (!eng.matchDue) { eng.matchDue = w + 1; eng.matchType = PHASE_MATCH[eng.phase]; scheduleMatch(state, eng.id, PHASE_MATCH[eng.phase], w + 1); note(notes, 'toast.matchScheduled', { week: w + 1, type: matchTypeDef(PHASE_MATCH[eng.phase]).hebrew || PHASE_MATCH[eng.phase] }, { engId: eng.id }); } break; }
         eng.work -= need; leavePlanning(state, eng, notes); eng.phase = PHASES[PHASES.indexOf(eng.phase) + 1];
       }
       if (w > eng.deadline && eng.phase !== 'closed' && eng.season === state.season) {
         eng.overdueWeeks = num(eng.overdueWeeks) + 1;
         applyEffect(state, { confidence: -6, 'trust.contact': -4 }, { engId: eng.id });
-        addInbox(state, { type: 'news', key: 'overdue', params: { weeks: eng.overdueWeeks }, engId: eng.id, sender: eng.managerId || 'system' });
+        addInbox(state, { type: 'news', key: 'overdue', params: { n: eng.overdueWeeks, weeks: eng.overdueWeeks }, engId: eng.id, sender: eng.managerId || 'system' });
       }
     }
   }
@@ -477,8 +477,8 @@
   }
   function closeEngagement(state, eng, notes) {
     eng.phase = 'closed'; eng.status = 'closed'; eng.closedWeek = state.week; eng.onTime = state.week <= eng.deadline; eng.matchDue = null;
-    if (eng.quality >= 60 && state.player.integrity >= 60) { const gain = clamp(Math.round((eng.quality - 50) / 10), 1, 5); applyEffect(state, { rep: gain }, { engId: eng.id }); note(notes, 'eng.repGain', { n: gain }, { engId: eng.id }); }
-    else note(notes, 'eng.closed', {}, { engId: eng.id });
+    if (eng.quality >= 60 && state.player.integrity >= 60) { const gain = clamp(Math.round((eng.quality - 50) / 10), 1, 5); applyEffect(state, { rep: gain }, { engId: eng.id }); note(notes, 'eng.repGain', { n: gain, q: eng.quality }, { engId: eng.id }); }
+    else note(notes, 'eng.closed', { n: eng.quality }, { engId: eng.id });
   }
   const isOverdue = (state, e) => e.status === 'active' && e.phase !== 'closed' && state.week > e.deadline && e.season === state.season;
 
@@ -500,7 +500,7 @@
     } else if (kind === 'network') {
       const p = person(state, target.personId); if (!p) return err('budget.pickPerson');
       const gain = round1(3 * firmOf(state).trustMult); p.trust = clamp(round1(p.trust + gain), 0, 100); p.idleSince = absWeek(state); b.network++; out.trust = p.trust; out.gain = gain;
-    } else if (kind === 'scout') { state.player.scout += 1; b.scout++; out.scout = state.player.scout; }
+    } else if (kind === 'scout') { state.player.scout += 1; b.scout++; out.scout = state.player.scout; out.note = { key: 'toast.scout', params: { n: Math.min(2, state.player.scout) } }; }
     else if (kind === 'rest') { b.rest++; }
     b.hours -= cost; b.log.push({ kind, target: target.engId || target.skillId || target.personId || null, hours: cost });
     return out;
@@ -634,7 +634,7 @@
     drawEvents(state, notes);
     state.lastDraw = { n, items: items.map(i => i.id), rungs: items.map(i => i.rung) };
   }
-  // Events: fixed-week events fire on their week; others at p=1/3 per week; scoutable events arrive as «מבט קדימה» with halved negatives.
+  // Events: fixed-week events fire on their week; others at p=1/3 per week; scoutable events arrive as a look-ahead card (scout.ahead) with halved negatives.
   function drawEvents(state, notes) {
     const w = state.week, cl = cal(), abs = absWeek(state);
     const seenSeason = state.stats.eventsSeen || (state.stats.eventsSeen = {});
@@ -646,7 +646,7 @@
       if (!requiresOk(state, ev, eng)) return false;
       seenSeason[ev.id] = w; state.seen[ev.id] = abs;
       const applied = applyEffect(state, scouted ? halveNegatives(ev.effect) : ev.effect, { engId: eng ? eng.id : null });
-      addInbox(state, { type: ev.type === 'regulation' || ev.type === 'circular' ? 'news' : 'news', scenarioId: ev.id, eventId: ev.id, engId: eng ? eng.id : null, sender: ev.sender || 'system', scouted, applied, key: scouted ? 'scout.ahead' : null });
+      addInbox(state, { type: ev.type === 'regulation' || ev.type === 'circular' ? 'news' : 'news', scenarioId: ev.id, eventId: ev.id, engId: eng ? eng.id : null, sender: ev.sender || 'system', scouted, applied, key: scouted ? 'scout.ahead' : null, params: scouted ? { title: ev.title || '', n: num(ev.leadWeeks, 3) } : {} });
       return true;
     };
     for (const ev of C.events) { if (ev.week === w && ok(ev)) fire(ev, false); }
@@ -654,12 +654,12 @@
     const ranged = C.events.filter(ev => ok(ev) && ev.week == null && (!Array.isArray(ev.weekRange) || (w >= ev.weekRange[0] && w <= ev.weekRange[1])) && (!ev.requires || !Array.isArray(ev.requires.week) || (w >= ev.requires.week[0] && w <= ev.requires.week[1])));
     if (state.player.scout >= 2) {
       const lead = C.events.filter(ev => ok(ev) && ev.scoutable && ev.week == null && Array.isArray(ev.weekRange) && w < ev.weekRange[0] && w >= ev.weekRange[0] - num(ev.leadWeeks, 3));
-      if (lead.length && fire(pick(state, lead), true)) { state.player.scout -= 2; note(notes, 'toast.scout'); }
+      if (lead.length && fire(pick(state, lead), true)) { state.player.scout -= 2; note(notes, 'scout.ahead', { n: 2 }); }
     }
     if (ranged.length && rand(state) < 1 / 3) { const ev = pick(state, ranged); fire(ev, false); }
     // calendar incidents and inspections become matches next week
-    if (state.calendar.incidents.includes(w) && act.length) { const eng = pick(state, act); scheduleMatch(state, eng.id, 'incident', w + 1); note(notes, 'toast.matchScheduled', { week: w + 1 }, { engId: eng.id }); }
-    if (state.calendar.inspections.includes(w)) { const fin = act.filter(e => isFin(e.sector)); if (fin.length) { const eng = pick(state, fin); scheduleMatch(state, eng.id, 'inspection', w + 3); addInbox(state, { type: 'news', key: 'match.notice', params: { week: w + 3, type: 'inspection' }, engId: eng.id, sender: roleIds(state, eng.id).regulator || 'system' }); } }
+    if (state.calendar.incidents.includes(w) && act.length) { const eng = pick(state, act); scheduleMatch(state, eng.id, 'incident', w + 1); note(notes, 'toast.matchScheduled', { week: w + 1, type: matchTypeDef('incident').hebrew || 'incident' }, { engId: eng.id }); }
+    if (state.calendar.inspections.includes(w)) { const fin = act.filter(e => isFin(e.sector)); if (fin.length) { const eng = pick(state, fin); scheduleMatch(state, eng.id, 'inspection', w + 3); addInbox(state, { type: 'news', key: 'match.notice', params: { week: w + 3, n: 3, type: matchTypeDef('inspection').hebrew || 'inspection' }, engId: eng.id, sender: roleIds(state, eng.id).regulator || 'system' }); } }
   }
   // Prune: resolved items, read news after a week, unread news after 3 weeks, stale decisions after 4 weeks, expired offers.
   function pruneInbox(state) {
@@ -693,9 +693,9 @@
     const eng = engById(state, item ? item.engId : (match ? match.engId : null));
     const flags = Object.assign({}, eng ? eng.infoFlags : {}, item && item.draft ? item.draft.infoFlags : {});
     const lock = (key, params) => ({ key: opt.gateText ? null : key, params: params || {}, text: opt.gateText || null });
-    for (const f of listOf(need.info)) if (!flags[f]) { const s = item ? scenarioById(item.scenarioId) : null; const inf = s ? listOf(s.info).find(i => i.sets === f) : null; return lock('gate.info', { label: inf ? inf.label : f, flag: f }); }
-    if (need.prep != null && (!match || num(match.prep) < need.prep)) return lock('gate.prep', { prep: need.prep });
-    if (need.trust) { const id = resolvePerson(state, need.trust.id, eng); const p = id ? personDef(id) : null; if (!id || trustOf(state, id) < num(need.trust.min)) return lock('gate.trust', { name: p ? p.name : need.trust.id, min: need.trust.min }); }
+    for (const f of listOf(need.info)) if (!flags[f]) { const s = item ? scenarioById(item.scenarioId) : null; const inf = s ? listOf(s.info).find(i => i.sets === f) : null; return lock('gate.info', { info: inf ? inf.label : f, label: inf ? inf.label : f, flag: f }); }
+    if (need.prep != null && (!match || num(match.prep) < need.prep)) return lock('gate.prep', { n: need.prep, prep: need.prep });
+    if (need.trust) { const id = resolvePerson(state, need.trust.id, eng); const p = id ? personDef(id) : null; if (!id || trustOf(state, id) < num(need.trust.min)) return lock('gate.trust', { n: need.trust.min, name: p ? p.name : need.trust.id, min: need.trust.min }); }
     return null;
   }
   // The generic shortcut option injected at energy < 30 when the scenario has none authored.
@@ -794,10 +794,10 @@
     if (entry.kind === 'light') state.budget.light++;
     item.done = true; removeInbox(state, item.id);
     if (s.lesson) (state.stats.lessons = state.stats.lessons || {})[s.lesson] = 1;
-    const mentor = state.firm.mentorId; if (rubric.P < 50 && mentor && trustOf(state, mentor) >= 70) addInbox(state, { type: 'news', key: 'mentor.note', params: { p: rubric.P }, journalId: entry.id, sender: mentor });
+    const mentor = state.firm.mentorId; if (rubric.P < 50 && mentor && trustOf(state, mentor) >= 70) addInbox(state, { type: 'news', key: 'mentor.note', params: { p: rubric.P, week: state.week, rule: (opt.feedback && opt.feedback.rule) || '' }, journalId: entry.id, sender: mentor });
     const p = Math.round((good ? pGood : 1 - pGood) * 100);
     const luck = rubric.P >= 70 && !good ? { key: 'luck.goodProcessBadOutcome', params: { p } } : rubric.P <= 40 && good ? { key: 'luck.badProcessGoodOutcome', params: { p } } : { key: good ? 'luck.good' : 'luck.bad', params: { p } };
-    return { ok: true, entry, luck, result: res ? { good, text: res.text || null, key: res.key || null } : { good, text: null, key: null }, feedback: opt.feedback || {}, friday: { key: 'friday.line', params: { outcome: O, process: Math.round(rubric.P / 10), O, P: rubric.P } }, lesson: s.lesson || null, engId: item.engId, ctx: ctxFor(state, item.engId) };
+    return { ok: true, entry, luck, result: res ? { good, text: res.text || null, key: res.key || null } : { good, text: null, key: null }, feedback: opt.feedback || {}, friday: { key: 'friday.line', params: { o: O, p: Math.round(rubric.P / 10), O, P: rubric.P } }, lesson: s.lesson || null, engId: item.engId, ctx: ctxFor(state, item.engId) };
   }
   // Delayed consequences: all rolls made now and stored; recurring ones pre-rolled per occurrence.
   function enqueueDelayed(state, entry, opt, abs) {
@@ -817,7 +817,7 @@
     for (const id of Object.keys(tagged)) if (!PROCESS.includes(id) && state.player.skills[id]) { entry.skills[id] = mastery(state, id, rubric.craft, { w: tagged[id], difficulty: diff }); scheduler(state, id, rubric.craft); }
     for (const row of PROCESS) { const sc = rubric.process[row]; if (sc == null || !state.player.skills[row]) continue; entry.skills[row] = mastery(state, row, sc, { w: tagged[row] != null ? tagged[row] : 0.5, difficulty: diff }); scheduler(state, row, sc); }
   }
-  // Answer the מעקב item: calibration against the record (did the picked signal materialise?), feeds the memo skill at half strength.
+  // Answer the follow-up item: calibration against the record (did the picked signal materialise?), feeds the memo skill at half strength.
   function answerFollowup(state, inboxId, yes) {
     const item = inboxItem(state, inboxId); if (!item || item.type !== 'followup') return err('room.missing');
     const entry = journalById(state, item.journalId); if (!entry) { removeInbox(state, inboxId); return err('room.missing'); }
@@ -835,7 +835,7 @@
   function markRead(state, inboxId) { const i = inboxItem(state, inboxId); if (i) i.read = true; return { ok: !!i }; }
 
   // ───────────────────────── queue ─────────────────────────
-  // Tick step 1: fire due consequences (effects, inbox «השלכה», journal `applied` update) and deliver follow-ups.
+  // Tick step 1: fire due consequences (effects, inbox consequence item, journal `applied` update) and deliver follow-ups.
   function fireQueue(state, abs, notes) {
     const due = state.queue.filter(q => q.due <= abs).sort((a, b) => a.due - b.due);
     state.queue = state.queue.filter(q => q.due > abs);
@@ -854,7 +854,7 @@
         if (pending) { state.queue = state.queue.filter(x => x !== pending); deliverFollowup(state, pending, notes); }
       }
       addInbox(state, { type: 'consequence', journalId: q.journalId || null, scenarioId: q.scenarioId || null, engId: q.engId || null, text: q.text || null, key: q.key || null, params: q.params || {}, applied, failureMode: q.failureMode || null, sender: q.sender || (q.engId ? (engById(state, q.engId) || {}).contactId : null) || 'system' });
-      note(notes, 'consequence.landed', {}, { journalId: q.journalId || null, engId: q.engId || null });
+      note(notes, 'consequence.landed', { week: entry ? entry.week : state.week, title: entry ? render(state, entry.title || '', entry.engId) : '' }, { journalId: q.journalId || null, engId: q.engId || null });
     }
   }
   function deliverFollowup(state, q, notes) {
@@ -904,7 +904,7 @@
     }
     return out;
   }
-  // Prep (מוכנות) and fit from the approach toggles and the last 3 weeks of work on the engagement.
+  // Prep (readiness) and fit from the approach toggles and the last 3 weeks of work on the engagement.
   function computePrep(state, m, approach) {
     const eng = engById(state, m.engId); const mtd = matchTypeDef(m.type); const abs = absWeek(state);
     const fitTable = mtd.fit || {}; const vals = ['basis', 'transparency', 'escalation'].map(k => num(fitTable[k] ? fitTable[k][approach[k]] : 1, 1));
@@ -974,7 +974,7 @@
     const done = m.momentIdx >= m.moments.length;
     return { ok: true, entry, result: res ? { good, text: res.text || null } : { good, text: null }, feedback: opt.feedback || {}, hostility: host, done, breakNow: !m.breakUsed && m.moments.length >= 5 && m.momentIdx === 2, next: done ? null : matchView(state, matchId).moment, summary: done ? resolveMatch(state, matchId) : null };
   }
-  // הפסקה: change one toggle (prep/fit recomputed, remaining hostility rerolled) or bring a colleague for the next hint.
+  // Half-time break: change one toggle (prep/fit recomputed, remaining hostility rerolled) or bring a colleague for the next hint.
   function matchBreak(state, matchId, change) {
     const m = matchById(state, matchId); if (!m || !m.started || m.played) return err('match.missing');
     if (m.breakUsed || m.moments.length < 5 || m.momentIdx !== 2) return err('match.noBreak');
@@ -1006,14 +1006,14 @@
     const tone = player >= 7 ? 'good' : player <= 4 ? 'bad' : 'neutral';
     state.firm.market.unshift({ season: state.season, week: state.week, key: 'firm.market.' + tone, params: { client: eng ? eng.clientId : '', rating: player }, matchId: m.id }); if (state.firm.market.length > 20) state.firm.market.pop();
     for (const i of state.inbox) if (i.matchId === m.id) i.done = true; state.inbox = state.inbox.filter(i => !i.done);
-    const summary = { ok: true, matchId: m.id, type: m.type, auto: !!opts.auto, ratings: m.ratings, deltas, engQuality: eng ? eng.quality : null, findings: eng ? eng.findings : [], tone, headline: { key: 'firm.market.' + tone, params: { rating: player } }, note: opts.auto ? { key: 'match.autoResolved', params: {} } : null, prep: m.prep, fit: m.fit };
+    const summary = { ok: true, matchId: m.id, type: m.type, auto: !!opts.auto, ratings: m.ratings, deltas, engQuality: eng ? eng.quality : null, findings: eng ? eng.findings : [], tone, headline: { key: 'firm.market.' + tone, params: { rating: player } }, note: opts.auto ? { key: 'match.autoResolved', params: { type: matchTypeDef(m.type).hebrew || m.type } } : null, prep: m.prep, fit: m.fit };
     return summary;
   }
   // Tick step 3a: matches from last week still unplayed auto-resolve at neutral hostility with quality-1 choices.
   function autoResolveMatches(state, notes) {
     for (const m of state.matches) {
       const absM = (m.season - 1) * WEEKS + m.week;
-      if (!m.played && m.placed && absM < absWeek(state)) { resolveMatch(state, m.id, { auto: true }); note(notes, 'match.autoResolved', {}, { matchId: m.id, engId: m.engId }); }
+      if (!m.played && m.placed && absM < absWeek(state)) { resolveMatch(state, m.id, { auto: true }); note(notes, 'match.autoResolved', { type: matchTypeDef(m.type).hebrew || m.type }, { matchId: m.id, engId: m.engId }); }
     }
     if (state.matches.length > 60) state.matches = state.matches.filter(m => !m.played || m.season >= state.season - 1);
   }
@@ -1134,14 +1134,14 @@
     state.firm.confidenceHistory.push({ season: state.season, week: state.week, value: pl.confidence });
     state.counters.lowConfQuarters = pl.confidence < 25 ? state.counters.lowConfQuarters + 1 : 0;
     const since = absWeek(state) - 12; const es = state.journal.filter(e => e.kind !== 'moment' && e.abs > since).sort((a, b) => a.P - b.P).slice(0, 3);
-    addInbox(state, { type: 'news', key: 'quarter.talk', params: { week: state.week, n: es.length }, journalIds: es.map(e => e.id), sender: state.firm.managerId || 'system' });
+    addInbox(state, { type: 'news', key: 'quarter.talk', params: { week: state.week, n: es.length, list: es.map(e => render(state, e.title || '', e.engId)).join(' · ') }, journalIds: es.map(e => e.id), sender: state.firm.managerId || 'system' });
     if (state.counters.lowConfQuarters >= 2) dismiss(state, 'dismissal.confidence', notes);
   }
   // Schedule the quarterly AC set piece for next week: the active financial engagement with the earliest deadline, else any active.
   function scheduleQuarterAC(state, notes) {
     const act = activeEngs(state).sort((a, b) => a.deadline - b.deadline); const fin = act.filter(e => isFin(e.sector));
     const eng = fin[0] || act[0]; if (!eng) { note(notes, 'quarter.acSkipped'); return; }
-    scheduleMatch(state, eng.id, 'ac', state.week + 1); note(notes, 'toast.matchScheduled', { week: state.week + 1 }, { engId: eng.id });
+    scheduleMatch(state, eng.id, 'ac', state.week + 1); note(notes, 'toast.matchScheduled', { week: state.week + 1, type: matchTypeDef('ac').hebrew || 'ac' }, { engId: eng.id });
   }
   // Transfer window (weeks 1–6): one offer card per other firm with p = clamp((rep − minRep)/40, 0, 0.9) × need.
   function rollOffers(state, notes) {
@@ -1216,7 +1216,7 @@
     const awards = computeAwards(state, seasonScore); for (const a of awards) if (a.winner === 'player') state.stats.awards.push(a);
     const sponsor = findSponsor(state); state.firm.sponsorId = sponsor;
     const reasons = []; const tier = pl.tier; const pd = num(firm.promoDelta);
-    if (seasonScore < 62 + 4 * (tier - 1) + pd) reasons.push('season.reason.score');
+    const needScore = 62 + 4 * (tier - 1) + pd; if (seasonScore < needScore) reasons.push('season.reason.score');
     if (pl.confidence < 70 + pd) reasons.push('season.reason.confidence');
     const hasGate = !!C.deliverables.find(d => (d.kind || 'gate') === 'gate' && num(d.tier) === tier);
     if (hasGate && (pl.gate == null || pl.gate < 65)) reasons.push(pl.gate == null ? 'season.reason.noGate' : 'season.reason.gate');
@@ -1234,13 +1234,13 @@
     state.stats.seasons.push(report); state.report = report;
     state.cv.push({ kind: 'season', season, firm: state.firm.id, tier, score: seasonScore, promoted, awards: awards.filter(a => a.winner === 'player').map(a => a.key) });
     pl.integrity = clamp(pl.integrity + 1, 0, 100);
-    note(notes, verdict, { score: seasonScore, tier: pl.tier }, { report: true });
+    note(notes, verdict, { score: seasonScore, tier: pl.tier, n: needScore, list: Object.keys(mins).filter(id => pl.skills[id] && pl.skills[id].mastery < mins[id]).map(id => t('skill.' + id)).join(', '), reasons: reasons.map(k => t(k, { n: needScore, list: Object.keys(mins).filter(id => pl.skills[id] && pl.skills[id].mastery < mins[id]).map(id => t('skill.' + id)).join(', ') })).join(', ') }, { report: true, reasonKeys: reasons });
     state.season++; state.week = 1;
     startSeason(state, notes);
   }
 
   // ───────────────────────── the tick ─────────────────────────
-  // «סיום שבוע»: the deterministic weekly step in the §14 order. Returns { notes, week, season, energyDelta }.
+  // End of week: the deterministic weekly step in the §14 order. Returns { notes, week, season, energyDelta }.
   function tick(state, opts) {
     opts = opts || {}; const notes = [];
     if (state.ended) return { notes: [note(null, state.ended.key)], week: state.week, season: state.season, ended: state.ended };

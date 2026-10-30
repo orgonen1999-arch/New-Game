@@ -327,9 +327,10 @@ test('draw fallback ladder: exact match rung 0, wildcard-only rung 4, no active 
   st.inbox = []; assert.equal(MM.drawOne(st), null) // nothing left: the cooldown-relax rung never serves an id seen this season
   for (let i = 1; i <= 4; i++) delete st.seen['wild-' + i]; it = MM.drawOne(st); assert.equal(it.rung, 0); assert.ok(it.scenarioId.startsWith('wild-')) // wildcards match any active engagement
   // tier relax: a tier-3 player with only tier-1/2 content
-  st = game({ seed: 12, tier: 3 }); st.scriptedLeft = []; st.inbox = []; MM.tick(st); st.inbox = []
-  it = MM.drawOne(st); assert.ok(it); assert.equal(it.rung, 5); assert.equal(st.contentEndShown, true); assert.equal(st.inbox.filter(i => i.key === 'content.endsHere').length, 1)
-  st.inbox = []; MM.drawOne(st); assert.equal(st.inbox.filter(i => i.key === 'content.endsHere').length, 0)
+  st = game({ seed: 12, tier: 3 }) // the week-1 draw already had to relax the tier → the card is shown once
+  assert.equal(st.contentEndShown, true); assert.equal(st.inbox.filter(i => i.key === 'content.endsHere').length, 1); assert.equal(st.inbox.find(i => i.type === 'decision').rung, 5)
+  st.scriptedLeft = []; st.inbox = []; MM.tick(st); st.inbox = []
+  it = MM.drawOne(st); assert.ok(it); assert.equal(it.rung, 5); assert.equal(st.inbox.filter(i => i.key === 'content.endsHere').length, 0)
   // cooldown relax never returns an id seen this season
   st = game({ seed: 13 }); st.scriptedLeft = []; st.inbox = []; MM.tick(st)
   const drawn = new Set(); for (let i = 0; i < 12; i++) { st.inbox = []; const d = MM.drawOne(st); if (!d) break; assert.equal(drawn.has(d.scenarioId), false); drawn.add(d.scenarioId) }

@@ -2,7 +2,6 @@
   "app.title": "מרקטינג מנג'ר: הדרך לשותפות",
   "app.tagline": "כל החלטה נרשמת. כל ממצא זוכר.",
   "app.motto": "תהליך טוב, תוצאה רעה: זה קורה. תהליך רע, תוצאה טובה: זה מזל.",
-
   "nav.board": "לוח",
   "nav.inbox": "דואר",
   "nav.cases": "תיקים",
@@ -16,7 +15,6 @@
   "nav.offers": "הצעות",
   "nav.cv": "קורות חיים",
   "nav.settings": "הגדרות",
-
   "screen.start": "פתיחה",
   "screen.board": "לוח הבקרה",
   "screen.inbox": "תיבת הדואר",
@@ -35,7 +33,6 @@
   "screen.cv": "קורות חיים",
   "screen.settings": "הגדרות",
   "screen.practice": "הפרקטיקה שלי",
-
   "ui.endWeek": "סיום שבוע ▶",
   "ui.continue": "המשך ▸",
   "ui.hours": "{n} שעות",
@@ -78,7 +75,6 @@
   "ui.filter": "סינון",
   "ui.expand": "הרחבה",
   "ui.collapse": "כיווץ",
-
   "newgame.title": "קריירה חדשה",
   "newgame.name": "שם",
   "newgame.namePlaceholder": "איך קוראים לך?",
@@ -101,7 +97,6 @@
   "newgame.slot.delete": "למחוק",
   "newgame.slot.overwrite": "השמירה הזו תידרס.",
   "newgame.legacy": "מורשת",
-
   "board.title": "לוח הבקרה",
   "board.energy": "אנרגיה",
   "board.confidence": "אמון הפירמה",
@@ -116,7 +111,6 @@
   "board.gateOpen": "חלון ההגשה פתוח",
   "board.endWeekBlocked": "יש אירוע שלא שוחק. לסיים בכל זאת?",
   "board.endWeekUnread": "יש {n} החלטות שלא נפתחו. הן יחכו, אבל השעות לא.",
-
   "budget.title": "תקציב השבוע",
   "budget.hours": "{used} מתוך {total} שעות",
   "budget.left": "נותרו {n} שעות",
@@ -141,7 +135,6 @@
   "budget.restDone": "מנוחה: אנרגיה +15",
   "budget.undo": "לבטל פעולה",
   "budget.needsEngagement": "צריך תיק פעיל בשביל זה.",
-
   "inbox.type.decision": "החלטה",
   "inbox.type.moment": "רגע מפתח",
   "inbox.type.consequence": "השלכה",
@@ -164,7 +157,6 @@
   "overdue": "התיק באיחור: {client} עבר את הדדליין ב-{n} שבועות. אנרגיה −8, אמון הפירמה −6, אמון הלקוח −4.",
   "mentor.note": "{mentor} {mentor:כותב|כותבת} שתי שורות: \"ראיתי את ההחלטה בשבוע {week}. {rule} — פעם הבאה {אתה מתחיל|את מתחילה} מהשאלה, לא מהתשובה.\"",
   "quarter.talk": "{manager} {manager:פותח|פותחת} את שלוש ההחלטות עם ציון התהליך הנמוך ביותר ברבעון: {list}. \"לא על התוצאות אנחנו מדברים. על הדרך.\"",
-
   "room.title": "חדר ההחלטה",
   "room.light.title": "החלטה מהירה",
   "room.energyFull": "חדר החלטה מלא: אנרגיה −3",
@@ -223,18 +215,15 @@
   "room.rubric.followup": "מועד מעקב",
   "room.pushback": "דחיפה חזרה",
   "friday.line": "תוצאה {o}/10 · תהליך {p}/10",
-
   "luck.roll": "הטלת המזל: {p}% לתוצאה טובה",
   "luck.good": "ההחלטה הייתה טובה, והמזל שיחק לטובתך ({p}%).",
   "luck.bad": "ההחלטה הייתה חלשה, והמזל לא חיפה עליה ({p}%).",
   "luck.goodProcessBadOutcome": "ההחלטה הייתה טובה; הפעם המזל לא שיחק לטובתך ({p}%).",
   "luck.badProcessGoodOutcome": "ההחלטה הייתה חלשה, אבל המזל חיפה עליה ({p}%). זה לא שיטה.",
-
   "gate.info": "דורש: {info}",
   "gate.prep": "דורש מוכנות {n} ומעלה",
   "gate.trust": "דורש אמון {n} ומעלה אצל {name}",
   "gate.locked": "נעול",
-
   "shortcut.option": "קיצור דרך: לסגור את זה היום ולהתקדם",
   "shortcut.why": "באנרגיה נמוכה כל קיצור דרך נראה סביר. הוא מקדם את התיק ביחידת עבודה אחת ומוריד את איכותו, וזה בדיוק מה שהרגולטור מוצא אחר כך.",
   "shortcut.expert": "{שם לב|שמה לב} שהעייפות מדברת, {לוקח|לוקחת} בלוק מנוחה, {וחוזר|וחוזרת} לשאלה.",
@@ -242,7 +231,6 @@
   "shortcut.rule": "עייפות היא מידע, לא סיבה לקצר.",
   "shortcut.result.good": "עבר בשקט. בינתיים.",
   "shortcut.result.bad": "מישהו שם לב שדילגתם על שלב.",
-
   "match.title": "אירוע חי",
   "match.prep": "הכנה לאירוע",
   "match.prepScore": "מוכנות {n}",
@@ -287,7 +275,6 @@
   "match.deltaQuality": "איכות התיק {n}",
   "match.autoResolved": "האירוע {type} אצל {client} התקיים בלעדיך. הצוות הסתדר, בקושי: אמון הפירמה −3.",
   "match.deadlineMissed": "הגעתם לאירוע באיחור של {n} שבועות על הדדליין. זה היה הנושא הראשון.",
-
   "eng.title": "תיקים",
   "eng.client": "לקוח",
   "eng.type": "סוג",
@@ -315,7 +302,6 @@
   "eng.empty": "אין תיקים פעילים. עד לפורטפוליו הבא הדואר מביא מקרים כלליים.",
   "eng.phaseTimeline": "ציר השלבים",
   "eng.matchPending": "אירוע בשבוע הבא: {type}",
-
   "phase.planning": "תכנון",
   "phase.fieldwork": "עבודת שטח",
   "phase.findings": "ממצאים",
@@ -336,14 +322,12 @@
   "phase.isox.report.rollforward": "עדכון לסוף שנה (roll-forward)",
   "phase.compliance.fieldwork": "בדיקות ציות",
   "phase.control-review.fieldwork": "מיפוי בקרות",
-
   "engType.audit": "ביקורת פנימית",
   "engType.compliance": "ציות",
   "engType.risk-survey": "סקר סיכונים",
   "engType.control-review": "סקירת בקרות",
   "engType.policy-writing": "כתיבת נוהל",
   "engType.isox": "ISOX",
-
   "domain.compliance": "ציות",
   "domain.risk": "סיכונים",
   "domain.control": "בקרה פנימית וביקורת",
@@ -351,7 +335,6 @@
   "domain.decision": "קבלת החלטות",
   "domain.strategy": "אסטרטגיה",
   "domain.marketing": "שיווק ופיתוח עסקי",
-
   "sector.bank": "בנק",
   "sector.insurer": "חברת ביטוח",
   "sector.provident": "קופת גמל",
@@ -360,7 +343,6 @@
   "sector.muni": "רשות מקומית",
   "sector.govco": "חברה ממשלתית",
   "sector.statutory": "תאגיד סטטוטורי",
-
   "profile.title": "הפרופיל המקצועי",
   "profile.group.craft": "מלאכה",
   "profile.group.process": "תהליך",
@@ -410,13 +392,11 @@
   "skill.bd": "פיתוח עסקי",
   "skill.positioning": "מיצוב ובידול",
   "skill.datastory": "סיפור בנתונים",
-
   "tier.1.title": "{אנליסט|אנליסטית}",
   "tier.2.title": "{אנליסט בכיר|אנליסטית בכירה}",
   "tier.3.title": "{מנהל|מנהלת} פרויקטים",
   "tier.4.title": "{מוביל|מובילת} התקשרות",
   "tier.5.title": "{שותף|שותפה} · {ראש|ראשת} פרקטיקה",
-
   "people.title": "האנשים שלי",
   "people.trust": "אמון {n}",
   "people.memory": "זיכרון",
@@ -474,7 +454,6 @@
   "role.acChair.f": "יו\"ר ועדת ביקורת",
   "role.dg.m": "מנכ\"ל משרד",
   "role.dg.f": "מנכ\"לית משרד",
-
   "journal.title": "יומן ההחלטות",
   "journal.timeline": "ציר זמן",
   "journal.patterns": "דפוסים",
@@ -543,7 +522,6 @@
   "journal.export.decided": "מה החלטתי",
   "journal.export.signal": "מה יוכיח שטעיתי",
   "journal.export.when": "מתי בודקים",
-
   "pattern.late-escalation-by-domain": "ב-{k} מתוך {n} החלטות בתחום {domain} הסלמת מאוחר מדי",
   "pattern.early-escalation": "ב-{k} מתוך {n} החלטות הסלמת מוקדם מדי — זאב-זאב",
   "pattern.info-skipped-decisive-missed": "ב-{pct}% מהמקרים שבהם לא אספת מידע, בחרת חלופה חלשה",
@@ -556,7 +534,6 @@
   "pattern.crunch-dip": "בשבועות עם שני חדרי החלטה ואירוע, התהליך שלך יורד ב-{d} נקודות",
   "pattern.good-process-bad-luck": "{k} פעמים תהליך ≥ 70 הסתיים בתוצאה ≤ 4 — זה מזל, לא {אתה|את}",
   "pattern.bad-process-good-luck": "{k} פעמים תהליך ≤ 40 הסתיים בתוצאה ≥ 7 — זה מזל, לא שיטה",
-
   "followup.title": "מעקב",
   "followup.question": "האם הסימן שציינת התממש?",
   "followup.yes": "כן, התממש",
@@ -572,22 +549,18 @@
   "followup.late": "נענה באיחור",
   "followup.unanswered": "לא נענה",
   "followup.whatHappened": "מה קרה בינתיים",
-
   "consequence.landed": "השלכה מהחלטה בשבוע {week}: {title}",
   "consequence.recurring": "זה עלול לחזור.",
   "consequence.premortemHit": "הפרה-מורטם שלך ניבא את זה.",
   "consequence.regulatorAsks": "הרגולטור שואל מי כתב את הנוהל.",
-
   "independence.flag": "התיק מסומן כסקירה עצמית",
   "independence.rule": "פירמה שכתבה את הנוהל לא מבקרת אותו בלי גילוי.",
   "independence.history": "הפירמה עשתה עבודת קו 2 על {process} אצל {client} בעונה {season}",
-
   "quarter.title": "שיחת רבעון",
   "quarter.close": "סגירת רבעון {q}",
   "quarter.acSkipped": "אין תיק פעיל: ועדת הביקורת הרבעונית לא התקיימה.",
   "quarter.line": "שבוע {week}: תהליך {p} — «{rule}»",
   "quarter.confidenceWarning": "אמון הפירמה מתחת ל-25. עוד רבעון כזה ונפרדים.",
-
   "season.title": "סיכום עונה {season}",
   "season.score": "ציון עונה {n}",
   "season.score.formula": "40% איכות תיקים · 35% תהליך · 25% אמון הפירמה",
@@ -620,7 +593,6 @@
   "season.newPortfolio": "הפורטפוליו החדש נפתח. חלון ההצעות פתוח בשבועות 1–6.",
   "season.continue": "להמשיך לעונה {n}",
   "season.gateScore": "הגשת הדרגה: {n}",
-
   "awards.title": "טקס הפרסים",
   "awards.winner": "{award}: {name}",
   "awards.none": "לא הוענק",
@@ -632,7 +604,6 @@
   "award.escalation": "ההסלמה של העונה",
   "award.finding": "הממצא של העונה",
   "award.wolf": "זאב-זאב",
-
   "ending.title": "סוף פרק",
   "ending.newCareer": "קריירה חדשה",
   "ending.continue": "להמשיך",
@@ -652,7 +623,6 @@
   "dismissal.materialFailure": "פיטורים באותו שבוע: כשל מהותי בתיק, והמוניטין לא הספיק כדי לספוג אותו.",
   "dismissal.postmortem": "ההחלטות שהובילו לכאן",
   "leave.forced": "ארבעה שבועות עם אנרגיה מתחת ל-10. חופשה כפויה של 4 שבועות; כל התכונות −0.5, אמון הפירמה −5.",
-
   "deliverable.title": "הגשת הדרגה",
   "deliverable.window": "החלון להגשה פתוח: שבועות 44–47",
   "deliverable.notEligible": "עדיין לא זכאים להגשה.",
@@ -702,7 +672,6 @@
   "deliverable.t4": "נרטיב לוועדת ביקורת",
   "deliverable.t5": "ממו מיצוב הפרקטיקה",
   "deliverable.procedureBuilder": "כתיבת נוהל",
-
   "library.title": "ספריית הידע",
   "library.drills": "תרגולים",
   "library.drill.cost": "4 שעות · אנרגיה −1",
@@ -724,7 +693,6 @@
   "library.builder.report": "דוח סקר סיכונים",
   "library.builder.procedure": "כתיבת נוהל",
   "library.empty": "אין תרגול זמין השבוע.",
-
   "calendar.title": "לוח השנה",
   "calendar.now": "השבוע",
   "calendar.holiday": "חג",
@@ -756,7 +724,6 @@
   "holiday.shavuot": "שבועות",
   "holiday.roshHashana": "ראש השנה",
   "holiday.kippurSukkot": "יום כיפור וסוכות",
-
   "firm.title": "הפירמה",
   "firm.confidence": "אמון הפירמה",
   "firm.confidenceHistory": "היסטוריית אמון",
@@ -778,7 +745,6 @@
   "firm.metric.rep": "מוניטין",
   "firm.metric.onTime": "תיקים שנסגרו בזמן",
   "firm.metric.findings": "מספר ממצאים",
-
   "offers.title": "חלון ההצעות",
   "offers.window": "חלון ההצעות פתוח עד שבוע 6",
   "offers.closed": "חלון ההצעות סגור. ייפתח בשבועות 1–6.",
@@ -793,7 +759,6 @@
   "offers.accepted": "עברת ל{firm}. אמון הפירמה מתאפס ל-50; היומן, התכונות וזיכרון האנשים נשארים.",
   "offers.sponsorWarning": "הספונסר לא עובר איתך.",
   "offers.smallFirm": "פירמה קטנה: סולם מהיר, יוקרה נמוכה",
-
   "cv.title": "קורות חיים",
   "cv.firms": "פירמות",
   "cv.seasons": "עונות",
@@ -802,7 +767,6 @@
   "cv.season.line": "עונה {season} · {firm} · דרגה {tier} · ציון {score}",
   "cv.objectives": "יעדים שהושגו: {k} מתוך {n}",
   "cv.empty": "הקריירה רק מתחילה.",
-
   "settings.title": "הגדרות",
   "settings.theme": "ערכת נושא",
   "settings.theme.auto": "אוטומטי",
@@ -824,7 +788,6 @@
   "settings.simNote": "הוסיפו ?sim=200 לכתובת כדי להריץ את סימולציית האיזון בדפדפן.",
   "settings.about": "אודות",
   "settings.version": "גרסה {v}",
-
   "toast.saved": "נשמר",
   "toast.loaded": "נטען",
   "toast.saveFailed": "השמירה נכשלה: אחסון הדפדפן חסום",
@@ -843,13 +806,11 @@
   "toast.deadlineMoved": "הדדליין זז בגלל חג: שבוע {n}",
   "toast.lessonUnlocked": "שיעור חדש בספרייה: {title}",
   "toast.followupDue": "מעקב ממתין בדואר",
-
   "energy.low": "אנרגיה נמוכה",
   "energy.crunch": "כבר {n} שבועות של לחץ",
   "energy.holiday": "חג: אנרגיה +10",
   "energy.august": "אוגוסט: אנרגיה +4",
   "energy.overdue": "תיק באיחור: אנרגיה −8",
-
   "empty.inbox": "תיבת הדואר ריקה. אפשר לסיים את השבוע.",
   "empty.engagements": "אין תיקים פעילים.",
   "empty.journal": "היומן ריק.",
@@ -859,5 +820,23 @@
   "empty.people": "עוד לא פגשת אף אחד.",
   "empty.findings": "אין ממצאים.",
   "empty.lessons": "עוד לא נפתחו שיעורים. הם נפתחים דרך החלטות.",
-  "empty.calendar": "לוח השנה יתמלא עם הפורטפוליו."
+  "empty.calendar": "לוח השנה יתמלא עם הפורטפוליו.",
+  "match.notice": "הודעה: {type} בשבוע {week}, בעוד {n} שבועות. כדאי להתכונן.",
+  "firm.market.good": "בשוק מדברים: {client} מרוצים מהעבודה של הפירמה (דירוג {rating}).",
+  "firm.market.bad": "בשוק מדברים: ב{client} לא מרוצים מהפירמה (דירוג {rating}).",
+  "firm.market.neutral": "בשוק שקט לגבי {client} (דירוג {rating}).",
+  "drill.none": "אין תרגול זמין למיומנות הזאת עדיין.",
+  "room.missing": "ההחלטה הזאת כבר לא בתיבה.",
+  "room.badFraming": "בחירת מסגור לא תקינה.",
+  "room.badInfo": "פעולת מידע לא מוכרת.",
+  "room.badMode": "מצב כשל לא מוכר.",
+  "room.badOption": "חלופה לא מוכרת.",
+  "room.noOption": "קודם {בחר|בחרי} חלופה.",
+  "match.missing": "האירוע לא נמצא.",
+  "match.played": "האירוע הזה כבר הסתיים.",
+  "match.notStarted": "האירוע עוד לא התחיל.",
+  "match.notDone": "האירוע עדיין בעיצומו.",
+  "match.noMoment": "אין רגע פעיל כרגע.",
+  "match.noBreak": "ההפסקה כבר נוצלה.",
+  "budget.unknown": "פעולה לא מוכרת בתקציב השבועי."
 }

@@ -924,7 +924,7 @@
     const avg = mean(CRAFT.map(id => state.player.skills[id] ? state.player.skills[id].mastery : 7));
     const tc = eng && eng.contactId ? trustOf(state, eng.contactId) : 35;
     const p = clamp(0.20 + 0.03 * avg + 0.004 * (eng ? eng.quality : 50) + 0.002 * tc + 0.002 * m.prep + 0.05 * m.fit - 0.10 * (state.player.energy < 30 ? 1 : 0), 0.08, 0.95);
-    const out = []; for (let i = 0; i < count; i++) { const r = rand(state); out.push(r < p ? 'friendly' : r < p + 0.25 ? 'neutral' : 'hostile'); }
+    const out = []; for (let i = 0; i < count; i++) { const r = rand(state); let h = r < p ? 'friendly' : r < p + 0.25 ? 'neutral' : 'hostile'; if (tc < 30 && h === 'friendly') h = 'neutral'; out.push(h); } // trust < 30: hostile variants
     m.pFriendly = round2(p);
     return out;
   }
@@ -1181,6 +1181,7 @@
   function losingConditions(state, notes) {
     const pl = state.player; if (state.ended) return;
     if (pl.integrity < 20) { state.ended = { key: 'ending.ethics', season: state.season, week: state.week }; note(notes, 'ending.ethics'); return; }
+    if (hasFlag(state, 'crossroads_accepted')) { state.ended = { key: 'ending.otherSide', season: state.season, week: state.week }; note(notes, 'ending.otherSide'); return; }
     if (hasFlag(state, 'material_failure') && pl.rep < 30) { delete pl.flags.material_failure; dismiss(state, 'dismissal.materialFailure', notes); if (state.ended) return; }
     state.counters.lowEnergyWeeks = pl.energy < 10 ? state.counters.lowEnergyWeeks + 1 : 0;
     if (state.counters.lowEnergyWeeks >= 4) { state.counters.lowEnergyWeeks = 0; state.leaveUntil = absWeek(state) + 4; for (const id of SKILLS) { const sk = pl.skills[id]; sk.mastery = round2(Math.max(1, sk.mastery - 0.5)); } applyEffect(state, { confidence: -5 }); for (const e of activeEngs(state)) e.deadline = adjustHoliday(e.deadline + 4); addInbox(state, { type: 'news', key: 'leave.forced', params: { weeks: 4 }, sender: state.firm.mentorId || 'system', card: true }); note(notes, 'leave.forced', { weeks: 4 }); }
@@ -1235,6 +1236,7 @@
     const deltas = {}; for (const id of SKILLS) deltas[id] = round1(pl.skills[id].mastery - num(state.stats.skillsAtSeasonStart[id], pl.skills[id].mastery));
     const report = { season, firmId: state.firm.id, tier, score: seasonScore, meanQ: m.meanQ, meanP: m.meanP, confidence: pl.confidence, rep: pl.rep, objectives: objs, awards, promoted, verdict, reasons, sponsorId: sponsor, rivalPromoted, gate: pl.gate, topDecisions: topDecisions(state, season), patterns: patterns(state, { season }), attrDeltas: deltas, engagements: state.engagements.filter(e => e.season === season).map(e => ({ id: e.id, clientId: e.clientId, type: e.type, quality: e.quality, onTime: e.onTime, closed: e.phase === 'closed' })), metrics: metrics(state, season), dismissals: state.stats.dismissals };
     state.stats.seasons.push(report); state.report = report;
+    for (const e of state.engagements) if (e.season === season && e.phase !== 'closed') { e.phase = 'closed'; e.status = 'closed'; e.closedWeek = WEEKS; e.onTime = false; e.matchDue = null; } // unfinished work is frozen at year end, no rep
     state.cv.push({ kind: 'season', season, firm: state.firm.id, tier, score: seasonScore, promoted, awards: awards.filter(a => a.winner === 'player').map(a => a.key) });
     pl.integrity = clamp(pl.integrity + 1, 0, 100);
     note(notes, verdict, { score: seasonScore, tier: pl.tier, n: needScore, list: Object.keys(mins).filter(id => pl.skills[id] && pl.skills[id].mastery < mins[id]).map(id => t('skill.' + id)).join(', '), reasons: reasons.map(k => t(k, { n: needScore, list: Object.keys(mins).filter(id => pl.skills[id] && pl.skills[id].mastery < mins[id]).map(id => t('skill.' + id)).join(', ') })).join(', ') }, { report: true, reasonKeys: reasons });

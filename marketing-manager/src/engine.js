@@ -1041,27 +1041,61 @@
     state.player.pendingDrill = null;
     return { ok: true, score: sc, correct, total: items.length, delta, detail, skillId };
   }
-  const kendallTau = (a, b) => { const pos = {}; b.forEach((id, i) => pos[id] = i); let c = 0, d = 0; for (let i = 0; i < a.length; i++) for (let j = i + 1; j < a.length; j++) { const x = pos[a[i]], y = pos[a[j]]; if (x == null || y == null) continue; if (x < y) c++; else if (x > y) d++; } const n = a.length; const tot = n * (n - 1) / 2; return tot ? (c - d) / tot : 1; };
-  // Score one deliverable part by kind (slots / ratings / order / match), 0–100.
+  const kendallTau = (a, b) => { const pos = {}; b.forEach((id, i) => pos[id] = i); let c = 0, d = 0; for (let i = 0; i < a.length; i++) for (let j = i + 1; j < a.length; j++) { const x = pos[a[i]], y = pos[a[j]], ok = x != null && y != null; if (!ok) continue; if (x < y) c++; else if (x > y) d++; } const n = a.length; const tot = n * (n - 1) / 2; return tot ? (c - d) / tot : 1; };
+  const SLOT_PTS = [0, 5, 10, 20]; // choice quality 0..3 → points (§10: best 20, slot-confused 10, vague 5, wrong 0)
+  // Score one deliverable part (content shape: slots[].choices, ratings items[].answer by layer/dim, order items/answer, match targets/items). Returns { score, feedback }.
   function scorePart(part, ans) {
-    ans = ans || {};
-    if (part.kind === 'slots') { const slots = listOf(part.slots); if (!slots.length) return 0; let s = 0; for (const sl of slots) { const c = byId(listOf(sl.candidates), ans[sl.id]); s += c ? num(c.pts) : 0; } return clamp(Math.round(s / (20 * slots.length) * 100), 0, 100); }
-    if (part.kind === 'ratings') { const items = listOf(part.items); const maxD = num(part.maxDelta, num(part.max, 5) - 1) || 1; const vals = []; for (const it of items) { const a = ans[it.id] || {}; for (const cell of Object.keys(it.answer || {})) { const got = a[cell]; vals.push(got == null ? 0 : 1 - Math.min(maxD, Math.abs(got - it.answer[cell])) / maxD); } } return vals.length ? Math.round(100 * mean(vals)) : 0; }
-    if (part.kind === 'order') { const want = listOf(part.answer); const got = listOf(ans.order || ans); if (!want.length) return 0; return clamp(Math.round(100 * (1 + kendallTau(got.filter(x => want.includes(x)), want)) / 2), 0, 100); }
-    if (part.kind === 'match') { const pairs = listOf(part.pairs); const got = listOf(ans.pairs || ans); let s = 0; for (const p of pairs) { const g = got.find(x => x && x.left === p.left); if (!g) continue; const hasReason = p.reason != null; if (g.right === p.right) s += hasReason ? 10 : 20; if (hasReason && g.reason === p.reason) s += 10; } return clamp(s, 0, 100); }
-    return 0;
+    ans = ans || {}; const fb = [];
+    if (part.kind === 'slots') {
+      const slots = listOf(part.slots); if (!slots.length) return { score: 0, feedback: fb }; let s = 0;
+      for (const sl of slots) { const cs = listOf(sl.choices); const idx = num(ans[sl.id], -1); const c = cs[idx] || null; const q = c ? clamp(Math.round(num(c.quality)), 0, 3) : 0; const pts = c ? SLOT_PTS[q] : 0; s += pts; const bestIdx = cs.reduce((b, x, i) => num(x.quality) > num((cs[b] || {}).quality) ? i : b, 0); fb.push({ id: sl.id, chosen: c ? idx : null, quality: q, pts, why: c ? c.why || null : null, best: bestIdx, bestWhy: cs[bestIdx] ? cs[bestIdx].why || null : null }); }
+      return { score: clamp(Math.round(s / (20 * slots.length) * 100), 0, 100), feedback: fb };
+    }
+    if (part.kind === 'ratings') {
+      const sc = part.scale || {}; const maxD = Math.max(1, num(sc.max, 5) - num(sc.min, 1)); const vals = [];
+      for (const it of listOf(part.items)) { const got = ans[it.id] || {}; const cells = []; for (const layer of Object.keys(it.answer || {})) { const row = it.answer[layer]; if (row && typeof row === 'object') { for (const dim of Object.keys(row)) { const g = got[layer] ? got[layer][dim] : undefined; const v = g == null ? 0 : 1 - Math.min(maxD, Math.abs(num(g) - num(row[dim]))) / maxD; vals.push(v); cells.push({ layer, dim, got: g == null ? null : g, want: row[dim] }); } } else { const g = got[layer]; const v = g == null ? 0 : 1 - Math.min(maxD, Math.abs(num(g) - num(row))) / maxD; vals.push(v); cells.push({ layer, got: g == null ? null : g, want: row }); } } fb.push({ id: it.id, cells, why: it.why || null }); }
+      return { score: vals.length ? Math.round(100 * mean(vals)) : 0, feedback: fb };
+    }
+    if (part.kind === 'order') {
+      const want = listOf(part.answer); const got = listOf(Array.isArray(ans) ? ans : ans.order); if (!want.length) return { score: 0, feedback: fb };
+      const tau = kendallTau(got.filter(x => want.includes(x)), want);
+      return { score: clamp(Math.round(100 * (1 + tau) / 2), 0, 100), feedback: [{ id: part.id, tau: round2(tau), answer: want.slice(), why: part.why || null }] };
+    }
+    if (part.kind === 'match') {
+      const items = listOf(part.items); if (!items.length) return { score: 0, feedback: fb }; const per = 100 / items.length; let s = 0;
+      for (const it of items) { const g = ans[it.id] || {}; const reasons = listOf(it.reasons); const hasReason = reasons.length > 0; const target = g.target != null ? g.target : (typeof g === 'string' ? g : null); const okT = target != null && target === it.answer; const rIdx = num(g.reason, -1); const okR = hasReason && !!(reasons[rIdx] && reasons[rIdx].correct); let pts = 0; if (okT) pts += hasReason ? per / 2 : per; if (okT && okR) pts += per / 2; s += pts; fb.push({ id: it.id, target, correct: okT, reason: rIdx >= 0 ? rIdx : null, reasonCorrect: okR, answer: it.answer, pts: round1(pts) }); }
+      return { score: clamp(Math.round(s), 0, 100), feedback: fb.concat([{ id: part.id, why: part.why || null }]) };
+    }
+    return { score: 0, feedback: fb };
   }
-  // Deliverable definition for the UI, answers stripped.
-  function deliverable(state, id) { const d = byId(C.deliverables, id); if (!d) return null; return { id: d.id, kind: d.kind || 'gate', tier: d.tier, title: d.title, parts: listOf(d.parts).map(p => { const q = Object.assign({}, p); if (q.kind === 'slots') q.slots = listOf(q.slots).map(sl => ({ id: sl.id, label: sl.label, candidates: listOf(sl.candidates).map(c => ({ id: c.id, text: c.text })) })); if (q.kind === 'ratings') q.items = listOf(q.items).map(it => ({ id: it.id, text: it.text, cells: Object.keys(it.answer || {}) })); if (q.kind === 'order') { q.items = listOf(q.items).length ? q.items : listOf(q.answer).slice(); delete q.answer; } if (q.kind === 'match') { q.lefts = listOf(q.pairs).map(p => ({ id: p.left, text: p.leftText || p.left })); q.rights = listOf(q.pairs).map(p => ({ id: p.right, text: p.rightText || p.right })); q.reasons = listOf(q.reasons); delete q.pairs; } return q; }) }; }
-  const gateAvailable = state => { const g = cal().gate; return state.week >= g[0] && state.week <= g[1] && state.player.gate == null && !!C.deliverables.find(d => (d.kind || 'gate') === 'gate' && num(d.tier) === state.player.tier); };
-  // Score a deliverable; a gate deliverable for the player's tier in the window records the season's gate score.
+  // Deliverable definition for the UI with answers and explanations stripped (choices keep text and index only).
+  function deliverable(state, id) {
+    const d = byId(C.deliverables, id); if (!d) return null;
+    const parts = listOf(d.parts).map(p => {
+      const q = { id: p.id, kind: p.kind, weight: num(p.weight), prompt: p.prompt || null };
+      if (p.kind === 'slots') q.slots = listOf(p.slots).map(sl => ({ id: sl.id, label: sl.label || null, choices: listOf(sl.choices).map((c, i) => ({ index: i, t: c.t || '' })) }));
+      if (p.kind === 'ratings') { q.scale = p.scale || { min: 1, max: 5 }; q.dims = listOf(p.dims); q.layers = listOf(p.layers); q.items = listOf(p.items).map(it => ({ id: it.id, text: it.text || '', evidence: it.evidence || null })); }
+      if (p.kind === 'order') q.items = listOf(p.items).length ? p.items.slice() : listOf(p.answer).slice();
+      if (p.kind === 'match') { q.n = num(p.n, listOf(p.items).length); q.targets = listOf(p.targets); q.items = listOf(p.items).map(it => ({ id: it.id, text: it.text || '', reasons: listOf(it.reasons).map((r, i) => ({ index: i, t: r.t || '' })) })); }
+      return q;
+    });
+    return { id: d.id, kind: d.kind || 'gate', practice: !!d.practice || d.kind === 'practice', tier: num(d.tier), title: d.title || null, intro: d.intro || null, engType: listOf(d.engType), scale: d.scale || null, window: Array.isArray(d.window) ? d.window.slice() : null, passThreshold: d.passThreshold === undefined ? (d.kind === 'practice' ? null : 65) : d.passThreshold, parts };
+  }
+  const isGateDef = d => d && (d.kind || 'gate') === 'gate' && !d.practice;
+  const inWindow = (state, d) => { const w = Array.isArray(d.window) ? d.window : cal().gate; return state.week >= w[0] && state.week <= w[1]; };
+  // Gate deliverable for the player's tier, if any.
+  const gateFor = state => C.deliverables.find(d => isGateDef(d) && num(d.tier) === state.player.tier) || null;
+  const gateAvailable = state => { const d = gateFor(state); return !!d && inWindow(state, d) && state.player.gate == null; };
+  // Score a deliverable; the tier's gate deliverable submitted inside its window records the season's gate score (and feeds writing).
   function submitDeliverable(state, id, answers) {
     const d = byId(C.deliverables, id); if (!d) return err('deliverable.notEligible');
-    answers = answers || {}; const parts = listOf(d.parts).map((p, i) => ({ index: i, kind: p.kind, weight: num(p.weight, 100 / Math.max(1, listOf(d.parts).length)), score: scorePart(p, answers[p.id] || answers[i]) }));
+    answers = answers || {}; const defs = listOf(d.parts);
+    const parts = defs.map((p, i) => { const r = scorePart(p, answers[p.id] !== undefined ? answers[p.id] : answers[i]); return { id: p.id, index: i, kind: p.kind, weight: num(p.weight, 100 / Math.max(1, defs.length)), score: r.score, feedback: r.feedback }; });
     const tw = parts.reduce((s, p) => s + p.weight, 0) || 1; const total = Math.round(parts.reduce((s, p) => s + p.score * p.weight, 0) / tw);
-    const isGate = (d.kind || 'gate') === 'gate' && num(d.tier) === state.player.tier && gateAvailable(state);
+    const isGate = isGateDef(d) && num(d.tier) === state.player.tier && inWindow(state, d) && state.player.gate == null;
+    const threshold = d.passThreshold === undefined ? (isGateDef(d) ? 65 : null) : d.passThreshold;
     if (isGate) { state.player.gate = total; if (state.player.skills.writing) mastery(state, 'writing', total, { w: 0.5 }); }
-    return { ok: true, score: total, parts, gate: isGate, pass: total >= 65 };
+    return { ok: true, id: d.id, score: total, parts, gate: isGate, practice: !isGateDef(d), threshold, pass: threshold == null ? null : total >= threshold };
   }
 
   // ───────────────────────── patterns (12 detectors) ─────────────────────────
@@ -1222,7 +1256,7 @@
     const reasons = []; const tier = pl.tier; const pd = num(firm.promoDelta);
     const needScore = 62 + 4 * (tier - 1) + pd; if (seasonScore < needScore) reasons.push('season.reason.score');
     if (pl.confidence < 70 + pd) reasons.push('season.reason.confidence');
-    const hasGate = !!C.deliverables.find(d => (d.kind || 'gate') === 'gate' && num(d.tier) === tier);
+    const hasGate = !!gateFor(state);
     if (hasGate && (pl.gate == null || pl.gate < 65)) reasons.push(pl.gate == null ? 'season.reason.noGate' : 'season.reason.gate');
     if (!sponsor) reasons.push('season.reason.sponsor');
     const mins = TIER_MINS[tier + 1] || {}; if (Object.keys(mins).some(id => pl.skills[id] && pl.skills[id].mastery < mins[id])) reasons.push('season.reason.attrs');
@@ -1357,7 +1391,7 @@
       else if (item.type === 'offer') { if (policy === 'best' && num(firmDef(item.firmId).prestige) > num(firmOf(st).prestige)) acceptOffer(st, item.id); }
       else markRead(st, item.id);
     }
-    if (gateAvailable(st)) { const d = C.deliverables.find(x => (x.kind || 'gate') === 'gate' && num(x.tier) === st.player.tier); if (d) submitDeliverable(st, d.id, simDeliverableAnswers(d, policy, R)); }
+    if (gateAvailable(st)) { const d = gateFor(st); if (d) submitDeliverable(st, d.id, simDeliverableAnswers(d, policy, R)); }
   }
   function simDecision(st, item, policy, R) {
     if (policy === 'lazy' && R() < 0.5) return;
@@ -1386,13 +1420,13 @@
     }
   }
   function simDeliverableAnswers(d, policy, R) {
-    const ans = {};
+    const ans = {}; const best = policy === 'best';
     for (const p of listOf(d.parts)) {
       let a = null;
-      if (p.kind === 'slots') { a = {}; for (const sl of listOf(p.slots)) { const cs = listOf(sl.candidates); const c = policy === 'best' ? cs.slice().sort((x, y) => num(y.pts) - num(x.pts))[0] : cs[Math.floor(R() * cs.length)]; if (c) a[sl.id] = c.id; } }
-      else if (p.kind === 'ratings') { a = {}; for (const it of listOf(p.items)) { a[it.id] = {}; for (const c of Object.keys(it.answer || {})) a[it.id][c] = policy === 'best' ? it.answer[c] : 1 + Math.floor(R() * 5); } }
-      else if (p.kind === 'order') { a = listOf(p.answer).slice(); if (policy !== 'best') a.sort(() => R() - 0.5); }
-      else if (p.kind === 'match') { a = listOf(p.pairs).map(x => ({ left: x.left, right: policy === 'best' ? x.right : listOf(p.pairs)[Math.floor(R() * listOf(p.pairs).length)].right, reason: x.reason })); }
+      if (p.kind === 'slots') { a = {}; for (const sl of listOf(p.slots)) { const cs = listOf(sl.choices); if (!cs.length) continue; a[sl.id] = best ? cs.reduce((b, x, i) => num(x.quality) > num(cs[b].quality) ? i : b, 0) : Math.floor(R() * cs.length); } }
+      else if (p.kind === 'ratings') { a = {}; const sc = p.scale || { min: 1, max: 5 }; for (const it of listOf(p.items)) { a[it.id] = {}; for (const layer of Object.keys(it.answer || {})) { const row = it.answer[layer]; if (row && typeof row === 'object') { a[it.id][layer] = {}; for (const dim of Object.keys(row)) a[it.id][layer][dim] = best ? row[dim] : num(sc.min, 1) + Math.floor(R() * (num(sc.max, 5) - num(sc.min, 1) + 1)); } else a[it.id][layer] = best ? row : num(sc.min, 1) + Math.floor(R() * (num(sc.max, 5) - num(sc.min, 1) + 1)); } } }
+      else if (p.kind === 'order') { a = listOf(p.answer).slice(); if (!best) a.sort(() => R() - 0.5); }
+      else if (p.kind === 'match') { a = {}; const ts = listOf(p.targets); for (const it of listOf(p.items)) { const rs = listOf(it.reasons); a[it.id] = { target: best ? it.answer : (ts[Math.floor(R() * ts.length)] || {}).id, reason: rs.length ? (best ? rs.findIndex(r => r.correct) : Math.floor(R() * rs.length)) : null }; } }
       ans[p.id] = a;
     }
     return ans;
@@ -1413,7 +1447,7 @@
     buyInfo, chooseFraming, choose, choosePremortem, submitMemo, answerFollowup, setLearned, markRead, gateStatus, infoCost,
     scheduleMatch, placeMatches, startMatch, setApproach, matchView, playMoment, matchBreak, resolveMatch, computePrep,
     applyEffect, outcome, score, mastery, scheduler, skillNote, band, bandKey, integrityKey, tierKey, tierCeiling, patterns, metrics, exportJournal,
-    spendBlock, energyStep, energyTrajectory, startDrill, runDrill, deliverable, gateAvailable, submitDeliverable, scorePart,
+    spendBlock, energyStep, energyTrajectory, startDrill, runDrill, deliverable, gateFor, gateAvailable, submitDeliverable, scorePart,
     acceptOffer, declineOffer, rollOffers, seasonEnd, quarterClose, objectives, objectiveMetrics, findSponsor, dismiss, losingConditions,
     save, load, slotSummary, migrate, migrations, exportJSON, importJSON,
     t, fill, msg, render, ctxFor, roleIds, person, trustOf, trustUnlocks, absWeek, firmOf, engagement: engById, match: matchById, inboxItem, journalEntry: journalById,

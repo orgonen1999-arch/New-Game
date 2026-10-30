@@ -40,7 +40,7 @@ function fixtureContent() {
     cast: [{ id: 'naama', name: 'N', gender: 'f', role: 'mentor', firmId: 'ofek', trust0: 55 }, { id: 'uri', name: 'U', gender: 'm', role: 'manager', firmId: 'ofek', trust0: 45 }, { id: 'tom', name: 'T', gender: 'm', role: 'rival', firmId: 'ofek' }, { id: 'regulator', name: 'R', gender: 'm', role: 'regulator' }],
     stakeholders: [{ id: 'anat', name: 'A', gender: 'f', clientId: 'bank-alon' }, { id: 'alon-ia', name: 'M', gender: 'f', clientId: 'bank-alon' }, { id: 'yossi', name: 'Y', gender: 'm', clientId: 'muni-north' }],
     clients: [{ id: 'bank-alon', name: 'bank', sector: 'bank', isox: true, contacts: ['anat'], iaId: 'alon-ia' }, { id: 'muni-north', name: 'muni', sector: 'muni', contacts: ['yossi'] }],
-    deliverables: [{ id: 'gate-t1', kind: 'gate', tier: 1, parts: [{ id: 'p1', kind: 'slots', weight: 100, slots: [1, 2, 3, 4, 5].map(i => ({ id: 's' + i, candidates: [{ id: 'a', pts: 20 }, { id: 'b', pts: 10 }, { id: 'c', pts: 5 }, { id: 'd', pts: 0 }] })) }] }],
+    deliverables: [{ id: 'gate-t1', kind: 'gate', tier: 1, practice: false, passThreshold: 65, window: [44, 47], parts: [{ id: 'p1', kind: 'slots', weight: 100, slots: [1, 2, 3, 4, 5].map(i => ({ id: 's' + i, label: 's', choices: [{ t: 'a', quality: 3 }, { t: 'b', quality: 2 }, { t: 'c', quality: 1 }, { t: 'd', quality: 0 }] })) }] }],
     drills: MM.CRAFT.map(id => ({ id: 'd-' + id, skill: id, items: [1, 2, 3, 4, 5].map(i => ({ q: 'q', options: [{ text: 'a', correct: true }, { text: 'b' }, { text: 'c' }, { text: 'd' }] })) })),
     strings: {}
   }

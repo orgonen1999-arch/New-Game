@@ -102,7 +102,12 @@ function fixture(over) {
     'scenarios.other': [light('t2-only', { tier: [2], sector: ['bank'], phase: 'planning' }), light('bank-planning', { phase: 'planning', sector: ['bank'], engType: ['compliance'] })],
     moments: [moment('mo-1'), moment('mo-2'), moment('mo-3'), moment('mo-4'), moment('mo-5')],
     events: [{ id: 'ev-fixed', bank: 'event', journal: 'none', week: 3, tier: [1], title: 'fixed', text: 't', sender: 'system', effect: { energy: -1, 'flag.ev_fixed': 1 } }],
-    deliverables: [{ id: 'gate-t1', kind: 'gate', tier: 1, parts: [{ id: 'p1', kind: 'slots', weight: 100, slots: [{ id: 's1', candidates: [{ id: 'c1', pts: 20 }, { id: 'c2', pts: 10 }] }, { id: 's2', candidates: [{ id: 'c3', pts: 20 }, { id: 'c4', pts: 0 }] }] }] }],
+    deliverables: [
+      { id: 'gate-t1', title: 'g', tier: 1, kind: 'gate', practice: false, passThreshold: 65, window: [44, 47], engType: ['audit'], parts: [{ id: 'finding', kind: 'slots', weight: 100, slots: [
+        { id: 'condition', label: 'c', choices: [{ t: 'best', quality: 3, why: 'w3' }, { t: 'confused', quality: 2, why: 'w2' }, { t: 'vague', quality: 1, why: 'w1' }, { t: 'wrong', quality: 0, why: 'w0' }] },
+        { id: 'criteria', label: 'k', choices: [{ t: 'wrong', quality: 0, why: 'w0' }, { t: 'best', quality: 3, why: 'w3' }] }] }] },
+      { id: 'practice-x', title: 'p', tier: 1, kind: 'practice', practice: true, passThreshold: null, engType: ['policy-writing'], parts: [{ id: 's', kind: 'slots', weight: 100, slots: [{ id: 'a', choices: [{ t: 'x', quality: 3, why: 'w' }] }] }] }
+    ],
     drills: [{ id: 'd-testing', skill: 'testing', items: [1, 2, 3, 4, 5].map(i => ({ q: 'q' + i, options: [{ text: 'a', correct: true }, { text: 'b' }] })) }],
     baseRates: [{ id: 'attr-25-1-90', n: 25, dev: 1, conf: 90, upper: 15, source: 's' }]
   }
@@ -413,15 +418,24 @@ test('offers: transfer window probability, accept resets confidence and keeps at
   assert.equal(st.firm.mentorId, null) // no mentor at the new firm → no sponsor
 })
 
-test('deliverables: slots scoring and gate recording in weeks 44–47; order/ratings/match part scorers', () => {
+test('deliverables: content shape (slots choices → 20/10/5/0, ratings closeness, order τ, match target + reason), gate recording in the window', () => {
   load(); const st = game(); st.week = 44
-  assert.equal(MM.gateAvailable(st), true)
-  const r = MM.submitDeliverable(st, 'gate-t1', { p1: { s1: 'c1', s2: 'c4' } }); assert.equal(r.score, 50); assert.equal(r.gate, true); assert.equal(st.player.gate, 50); assert.equal(MM.gateAvailable(st), false)
-  assert.equal(MM.scorePart({ kind: 'order', answer: ['a', 'b', 'c', 'd'] }, ['a', 'b', 'c', 'd']), 100)
-  assert.equal(MM.scorePart({ kind: 'order', answer: ['a', 'b', 'c', 'd'] }, ['d', 'c', 'b', 'a']), 0)
-  assert.equal(MM.scorePart({ kind: 'ratings', max: 5, items: [{ id: 'i', answer: { l: 4, i: 2 } }] }, { i: { l: 4, i: 4 } }), 75)
-  assert.equal(MM.scorePart({ kind: 'match', pairs: [{ left: 'f1', right: 'r1', reason: 'ok' }, { left: 'f2', right: 'r2', reason: 'no' }] }, [{ left: 'f1', right: 'r1', reason: 'ok' }, { left: 'f2', right: 'r1', reason: 'no' }]), 30)
-  const def = MM.deliverable(st, 'gate-t1'); assert.equal(def.parts[0].slots[0].candidates[0].pts, undefined)
+  assert.equal(MM.gateAvailable(st), true); assert.equal(MM.gateFor(st).id, 'gate-t1')
+  const r = MM.submitDeliverable(st, 'gate-t1', { finding: { condition: 1, criteria: 0 } }) // slot-confused (10) + wrong (0) of 40
+  assert.equal(r.score, 25); assert.equal(r.gate, true); assert.equal(r.pass, false); assert.equal(r.threshold, 65); assert.equal(st.player.gate, 25); assert.equal(MM.gateAvailable(st), false)
+  assert.equal(r.parts[0].feedback[0].why, 'w2'); assert.equal(r.parts[0].feedback[0].best, 0); assert.equal(r.parts[0].feedback[1].bestWhy, 'w3')
+  st.player.gate = null; st.week = 43; assert.equal(MM.gateAvailable(st), false); assert.equal(MM.submitDeliverable(st, 'gate-t1', { finding: { condition: 0, criteria: 1 } }).gate, false) // outside the window: scored, not recorded
+  const pr = MM.submitDeliverable(st, 'practice-x', { s: { a: 0 } }); assert.equal(pr.score, 100); assert.equal(pr.practice, true); assert.equal(pr.pass, null); assert.equal(pr.threshold, null)
+  assert.equal(MM.scorePart({ kind: 'order', answer: ['a', 'b', 'c', 'd'] }, ['a', 'b', 'c', 'd']).score, 100)
+  assert.equal(MM.scorePart({ kind: 'order', answer: ['a', 'b', 'c', 'd'] }, ['d', 'c', 'b', 'a']).score, 0)
+  assert.equal(MM.scorePart({ kind: 'order', answer: ['a', 'b', 'c', 'd'] }, ['b', 'a', 'c', 'd']).score, 83)
+  const ratings = { kind: 'ratings', scale: { min: 1, max: 5 }, items: [{ id: 'i', answer: { inherent: { likelihood: 4, impact: 2 }, residual: { likelihood: 3, impact: 2 } } }] }
+  assert.equal(MM.scorePart(ratings, { i: { inherent: { likelihood: 4, impact: 4 }, residual: { likelihood: 3, impact: 2 } } }).score, 88) // one cell off by 2 of 4
+  assert.equal(MM.scorePart(ratings, { i: { inherent: { likelihood: 4, impact: 2 }, residual: { likelihood: 3, impact: 2 } } }).score, 100)
+  const match = { kind: 'match', n: 2, targets: [{ id: 'in' }, { id: 'out' }], items: [{ id: 'f1', answer: 'in', reasons: [{ t: 'ok', correct: true }, { t: 'no' }] }, { id: 'f2', answer: 'out', reasons: [{ t: 'no' }, { t: 'ok', correct: true }] }] }
+  assert.equal(MM.scorePart(match, { f1: { target: 'in', reason: 0 }, f2: { target: 'out', reason: 1 } }).score, 100)
+  assert.equal(MM.scorePart(match, { f1: { target: 'in', reason: 1 }, f2: { target: 'in', reason: 1 } }).score, 25) // right target, wrong reason = half of one item
+  const def = MM.deliverable(st, 'gate-t1'); assert.equal(def.parts[0].slots[0].choices[0].quality, undefined); assert.equal(def.parts[0].slots[0].choices[1].t, 'confused'); assert.deepEqual(def.window, [44, 47]); assert.equal(def.passThreshold, 65)
 })
 
 test('save/load through a storage adapter, migration by state.v, stale-save import drops unknown ids', () => {

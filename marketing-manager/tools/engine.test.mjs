@@ -199,7 +199,7 @@ test('needsInfo / gate gating: greyed with reason, chooseable after the info is 
 
 test('full room end to end: journal entry, applied deltas, outcome score, follow-up queued', () => {
   load(); const st = game(); const item = st.inbox.find(i => i.scenarioId === S7.id)
-  const eng = engOf(st, 'bank-alon'); const q0 = eng.quality
+  const eng = st.engagements.find(e => e.id === item.engId); const q0 = eng.quality
   const res = perfectPath(st, item)
   assert.equal(res.ok, true); assert.equal(res.entry.P, 100); assert.equal(res.entry.kind, 'full')
   assert.equal(st.budget.rooms, 1); assert.equal(st.journal.length, 1)
@@ -325,7 +325,7 @@ test('match play: prep/fit, hostility rolled at start, gate.prep and gate.trust,
 })
 
 test('draw fallback ladder: exact match rung 0, wildcard-only rung 4, no active engagement starts at 4, tier relax rung 5 shows the content-ends card once', () => {
-  load(); let st = game({ seed: 11 }); st.scriptedLeft = []; st.inbox = []
+  load(); let st = game({ seed: 11 }); st.scriptedLeft = []; st.inbox = []; st.engagements = st.engagements.filter(e => !e.short)
   // week 1: no active engagement → wildcard rung
   let it = MM.drawOne(st); assert.ok(it); assert.equal(it.rung, 4); assert.ok(it.scenarioId.startsWith('wild-'))
   MM.tick(st); st.inbox = []; const eng = engOf(st, 'bank-alon'); eng.phase = 'fieldwork'
@@ -499,7 +499,7 @@ test('object-shaped banks (lessons, tags, ratingScales) stay objects; id-keyed b
 })
 
 test('board objectives: a target <= 1 is a fraction of the percentage metric (onTime 0.9 → 90)', () => {
-  load(); const st = game(); MM.tick(st)
+  load(); const st = game(); MM.tick(st); st.engagements = st.engagements.filter(e => !e.short)
   const firm = MM.firmDef('ofek'); const saved = firm.boardObjectives
   firm.boardObjectives = [{ metric: 'onTime', target: 0.8 }, { metric: 'meanQ', target: 60 }]
   try {
@@ -507,6 +507,17 @@ test('board objectives: a target <= 1 is a fraction of the percentage metric (on
     let o = MM.objectives(st); assert.equal(o[0].target, 80); assert.equal(o[0].value, 100); assert.equal(o[0].met, true); assert.equal(o[1].met, false)
     st.engagements[0].onTime = false; o = MM.objectives(st); assert.equal(o[0].value, 50); assert.equal(o[0].met, false)
   } finally { firm.boardObjectives = saved }
+})
+
+test('a sector-specific scenario never lands on another sector: no match → a 3-week short assignment that closes quietly', () => {
+  load(); const st = game({ seed: 3 })
+  const item = st.inbox.find(i => i.scenarioId === S7.id); const e = st.engagements.find(x => x.id === item.engId)
+  assert.ok(e); assert.equal(e.sector, 'bank')
+  if (e.short) {
+    assert.equal(e.status, 'active'); assert.equal(e.deadline, st.week + 3)
+    const conf = st.player.confidence; for (let i = 0; i < 5; i++) MM.tick(st)
+    assert.equal(e.status, 'closed'); assert.equal(st.inbox.some(i => i.key === 'overdue' && i.engId === e.id), false); assert.ok(st.player.confidence >= conf - 12)
+  }
 })
 
 test('no literal Hebrew and no closing script tag in engine.js', async () => {

@@ -461,6 +461,7 @@
     for (const eng of state.engagements) {
       if (eng.status === 'pending' && eng.season === state.season && w >= eng.startWeek) startEngagement(state, eng, notes);
       if (eng.status !== 'active' || eng.phase === 'closed') continue;
+      if (eng.short) { if (w > eng.deadline) { eng.phase = 'closed'; eng.status = 'closed'; eng.closedWeek = w; eng.onTime = true; } continue; }
       let guard = 0;
       while (guard++ < 6 && eng.phase !== 'closed') {
         const need = num(eng.phaseWork[eng.phase], PHASE_WORK[eng.phase]);
@@ -555,6 +556,32 @@
     const upcoming = state.engagements.filter(e => e.status === 'pending' && (!s || (mt(s.sector, e.sector) && mt(s.engType, e.type)))).sort((a, b) => a.startWeek - b.startWeek);
     return upcoming[0] || closed[0] || state.engagements[0] || null;
   }
+  // A sector-specific scenario attaches only to a matching engagement (and the contact role it names via contactHint);
+  // when none is active, the analyst gets a 3-week short assignment at a client of that sector.
+  const concreteOf = list => listOf(list).filter(x => x && x !== '*');
+  const contactFits = (e, hint) => !hint || (e.contactId != null && String(e.contactId).indexOf(hint) >= 0);
+  function attachFor(state, s) {
+    if (!s) return null;
+    const hint = s.contactHint || null;
+    const act = activeEngs(state).filter(e => mt(s.sector, e.sector) && mt(s.engType, e.type) && contactFits(e, hint));
+    if (act.length) return pick(state, act);
+    const sectors = concreteOf(s.sector);
+    if (!sectors.length && !hint && !concreteOf(s.engType).includes('isox')) return null;
+    return shortAssignment(state, s, sectors, hint);
+  }
+  function shortAssignment(state, s, sectors, hint) {
+    const type = concreteOf(s.engType)[0] || 'audit';
+    let pool = C.clients.filter(c => !sectors.length || sectors.includes(c.sector));
+    if (type === 'isox') { const ix = pool.filter(c => c.isox); if (ix.length) pool = ix; }
+    if (hint) { const h = pool.filter(c => listOf(c.contacts).some(id => String(id).indexOf(hint) >= 0)); if (h.length) pool = h; }
+    const client = pick(state, pool); if (!client) return null;
+    const contactId = hint ? listOf(client.contacts).find(id => String(id).indexOf(hint) >= 0) : undefined;
+    const eng = makeEngagement(state, { clientId: client.id, type, startWeek: state.week, duration: 3, contactId: contactId || undefined, managerId: state.firm.managerId });
+    eng.short = true; eng.status = 'active'; eng.phase = 'fieldwork'; eng.deadline = state.week + 3;
+    state.engagements.push(eng); return eng;
+  }
+  // True when a scenario with named sectors would land on an engagement of another sector (or with the wrong contact role).
+  const misfit = (s, e) => !e || (concreteOf(s.sector).length && !mt(s.sector, e.sector)) || !mt(s.engType, e.type) || !contactFits(e, s.contactHint);
   // Place a drawn scenario in the inbox; records seen/familySeen/draw stats and the content-ends card on the tier-relax rung.
   function placeScenario(state, s, eng, meta) {
     const abs = absWeek(state);
@@ -578,8 +605,7 @@
       if (!s) { state.scriptedLeft.shift(); return drawOne(state, o); }
       if (noFull && s.journal === 'full') return null;
       state.scriptedLeft.shift();
-      const act = activeEngs(state).filter(e => mt(s.sector, e.sector) && mt(s.engType, e.type));
-      return placeScenario(state, s, act.length ? pick(state, act) : attachFallback(state, s), { rung: 0, scripted: true });
+      return placeScenario(state, s, attachFor(state, s) || attachFallback(state, s), { rung: 0, scripted: true });
     }
     const active = activeEngs(state);
     const base = C.scenarios.filter(s => isDecisionBank(s) && !inboxIds.has(s.id) && !(noFull && s.journal === 'full') && (!s.ambiguous || scenarioBand(state, s) >= 4));
@@ -611,7 +637,7 @@
         else { engs = active.filter(e => rg.eng(s, e) && requiresOk(state, s, e)); if (!engs.length) continue; }
         cands.push({ s, engs });
       }
-      if (cands.length) { const c = pickWeighted(state, cands, x => drawWeight(state, x.s)); return placeScenario(state, c.s, pick(state, c.engs), { rung: r }); }
+      if (cands.length) { const c = pickWeighted(state, cands, x => drawWeight(state, x.s)); let e = pick(state, c.engs); if (misfit(c.s, e)) e = attachFor(state, c.s) || e; return placeScenario(state, c.s, e, { rung: r }); }
     }
     return null;
   }
@@ -626,7 +652,8 @@
     const s = pickWeighted(state, variants.length ? variants : cands, x => drawWeight(state, x, true));
     const fs = state.familySeen[s.family] || []; const prev = fs.length ? fs[fs.length - 1].id : null;
     const act = activeEngs(state).filter(e => mt(e.sector, '*') || (mt(s.sector, e.sector) && mt(s.engType, e.type)));
-    return placeScenario(state, s, act.length ? pick(state, act) : attachFallback(state, s), { rung: 0, repeat: true, variantOf: prev });
+    let e = act.length ? pick(state, act) : attachFallback(state, s); if (misfit(s, e)) e = attachFor(state, s) || e;
+    return placeScenario(state, s, e, { rung: 0, repeat: true, variantOf: prev });
   }
   // Tick step 7: draws per week (base 1, +1 at p=0.35 with no match, calendar modifiers), repeats, events.
   function drawInbox(state, notes) {
@@ -1236,7 +1263,7 @@
   }
   // Board objectives for the firm screen and the annual review.
   function objectiveMetrics(state) {
-    const engs = state.engagements.filter(e => e.season === state.season); const es = state.journal.filter(e => e.season === state.season && e.kind !== 'moment');
+    const engs = state.engagements.filter(e => e.season === state.season && !e.short); const es = state.journal.filter(e => e.season === state.season && e.kind !== 'moment');
     const closed = engs.filter(e => e.phase === 'closed');
     return { meanQ: Math.round(mean(engs.map(e => e.quality))), meanP: Math.round(mean(es.map(e => e.P))), confidence: state.player.confidence, rep: state.player.rep, onTime: closed.length ? Math.round(100 * closed.filter(e => e.onTime).length / closed.length) : 0, findings: engs.reduce((s, e) => s + e.findings.length, 0) };
   }

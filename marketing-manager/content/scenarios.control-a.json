@@ -1290,7 +1290,8 @@
           "rule": "מסלימים עם תוצאה, לא עם חריגה."
         }
       }
-    ]
+    ],
+    "contactHint": "cfo"
   },
   {
     "id": "ctrl-design-vs-operating-recon-v1",

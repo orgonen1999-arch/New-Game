@@ -240,7 +240,7 @@ function deltaPills(applied, ctx) {
   return out.length ? '<div class="deltas">' + out.join('') + '</div>' : '';
 }
 function ratingPill(scaleId, ratingId) { const pills = CT.scalePills(scaleId); const i = pills.findIndex(p => p.id === ratingId); const p = pills[i]; const cls = i < 0 ? '' : i >= pills.length - 1 ? 'pill-danger' : i === 0 ? 'pill-ok' : 'pill-gold'; return pill(p ? esc(p.label) : esc(ratingId || ''), cls); }
-function lineBadge(eng) { return eng && eng.line ? pill(t('eng.line.' + eng.line), eng.line === 3 ? 'pill-navy' : 'pill-outline') : ''; }
+function lineBadge(eng) { return (eng && eng.line ? pill(t('eng.line.' + eng.line), eng.line === 3 ? 'pill-navy' : 'pill-outline') : '') + (eng && eng.short ? pill(t('eng.short'), 'pill-outline') : ''); }
 function engTitle(eng) { const c = eng ? CT.client(eng.clientId) : null; return esc(c ? c.name : (eng && eng.clientId) || ''); }
 function engTypeLabel(eng) { return t('engType.' + (eng.type || 'audit')); }
 function empty(key) { return '<div class="empty">' + t(key) + '</div>'; }

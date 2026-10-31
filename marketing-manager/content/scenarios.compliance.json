@@ -386,7 +386,8 @@
       "escalation": 10,
       "memo": 5,
       "followup": 5
-    }
+    },
+    "contactHint": "compliance"
   },
   {
     "id": "aml-kyc-population-completeness-v2",
@@ -1743,16 +1744,16 @@
         "id": "r2",
         "text": "טובת הנאה ממציע לחבר ועדה במכרז פתוח היא אירוע שמחייב את המבקר הפנימי וההנהלה לדעת עכשיו, לא בדוח.",
         "fits": [
-          "c",
-          "e"
+          "c"
         ]
       },
       {
         "id": "r3",
-        "text": "הדרך ההוגנת היא לתת לאדם להסביר לפני שמערבים מישהו.",
+        "text": "הדרך ההוגנת היא לתת לאדם הזדמנות להסביר או לתקן בעצמו לפני שמערבים מישהו.",
         "fits": [
           "b",
-          "d"
+          "d",
+          "e"
         ]
       }
     ],
@@ -2050,7 +2051,8 @@
       "escalation": 10,
       "memo": 5,
       "followup": 5
-    }
+    },
+    "contactHint": "procurement"
   },
   {
     "id": "institutional-gifts-conference-trip-v2",
@@ -2990,7 +2992,8 @@
       "escalation": 10,
       "memo": 5,
       "followup": 5
-    }
+    },
+    "contactHint": "dpo"
   },
   {
     "id": "privacy-no-dpo-appointed-v2",

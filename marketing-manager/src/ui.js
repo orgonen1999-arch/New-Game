@@ -186,7 +186,7 @@ function safe(fn, arg) { try { return fn(arg); } catch (e) { console.warn('rende
 function topbar(st) { const e = st.player.energy ?? 0; return '<header class="topbar"><span class="week-chip">' + weekChip(st) + '</span><span class="grow"></span><span class="energy-mini"><span>' + t('board.energy') + '</span>' + barHTML(e, e < 30 ? 'danger' : 'ok') + n(e) + '</span></header>'; }
 function toastsHTML() { return '<div class="toasts" aria-live="polite">' + ui.toasts.map(x => '<div class="toast">' + x.html + '</div>').join('') + '</div>'; }
 function toast(key, params, ctx) { pushToast(t(key, params, ctx)); }
-function pushToast(html) { if (!html) return; const o = { html }; ui.toasts.push(o); if (ui.toasts.length > 4) ui.toasts.shift(); refreshToasts(); setTimeout(() => { ui.toasts = ui.toasts.filter(x => x !== o); refreshToasts(); }, 3600); }
+function pushToast(html) { if (!html) return; const o = { html }; ui.toasts.push(o); if (ui.toasts.length > 3) ui.toasts.shift(); refreshToasts(); setTimeout(() => { ui.toasts = ui.toasts.filter(x => x !== o); refreshToasts(); }, 2800); }
 function refreshToasts() { const el = root && root.querySelector('.toasts'); if (el) el.outerHTML = toastsHTML(); }
 const QUIET_NOTES = new Set(['eng.started', 'season.newPortfolio', 'scout.ahead', 'toast.followupDue', 'offers.window']);
 function showMessages(list) { for (const m of (list || []).slice(0, 4)) if (m && m.key && !QUIET_NOTES.has(m.key) && hasKey(m.key)) pushToast(t(m.key, m.params, m.engId ? ctxFor(state, m.engId) : undefined)); }
@@ -204,6 +204,8 @@ function renderSheet() {
   host.innerHTML = '<div class="sheet-backdrop" data-act="' + (c.noClose ? 'noop' : 'sheet-close') + '"></div><div class="sheet" role="dialog" aria-modal="true" aria-label="' + esc(c.titleText || '') + '"><div class="sheet-h"><h2>' + (c.title || '') + '</h2>' + (c.noClose ? '' : '<button type="button" class="close" data-act="sheet-close" aria-label="' + esc(tp('ui.close')) + '">✕</button>') + '</div>' + (c.stepper || '') + '<div class="sheet-body">' + (c.body || '') + '</div>' + (c.footer ? '<div class="sheet-f">' + c.footer + '</div>' : '') + '</div>';
   const body = host.querySelector('.sheet-body'); if (body && !ui.sheet.resetScroll) body.scrollTop = ui.sheetScroll;
   ui.sheet.resetScroll = false;
+  const curStep = host.querySelector('.stepper .step.cur'); const sp = curStep && curStep.parentElement;
+  if (sp) { const sr = sp.getBoundingClientRect(), cr = curStep.getBoundingClientRect(); sp.scrollLeft += (cr.left + cr.width / 2) - (sr.left + sr.width / 2); }
 }
 function sheetContent(sh) {
   switch (sh.kind) {

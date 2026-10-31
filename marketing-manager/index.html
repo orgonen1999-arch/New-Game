@@ -604,6 +604,8 @@ textarea.mono { font-family: ui-monospace, Menlo, Consolas, monospace; direction
 .toasts { position: fixed; inset-inline: 0; inset-block-end: calc(var(--tabbar-h) + 14px + env(safe-area-inset-bottom, 0px)); z-index: 80; display: flex; flex-direction: column; align-items: center; gap: 6px; pointer-events: none; padding-inline: 16px; }
 .toast { background: var(--navy); color: var(--navy-ink); padding: 8px 14px; border-radius: 999px; font-size: .88rem; box-shadow: var(--shadow-2); animation: rise var(--t-fast) var(--ease); max-inline-size: 100%; }
 @media (min-width: 900px) { .toasts { inset-block-end: 20px; } }
+/* while a sheet is open, toasts move to the top so they never cover the options */
+body:has(.sheet-root:not([hidden])) .toasts { inset-block-end: auto; inset-block-start: calc(10px + env(safe-area-inset-top, 0px)); }
 
 /* season / awards */
 .award { display: flex; gap: 10px; align-items: center; padding: 10px 12px; border: 1px solid var(--gold); border-radius: var(--r-md); background: var(--gold-soft); }
@@ -2296,7 +2298,7 @@ function safe(fn, arg) { try { return fn(arg); } catch (e) { console.warn('rende
 function topbar(st) { const e = st.player.energy ?? 0; return '<header class="topbar"><span class="week-chip">' + weekChip(st) + '</span><span class="grow"></span><span class="energy-mini"><span>' + t('board.energy') + '</span>' + barHTML(e, e < 30 ? 'danger' : 'ok') + n(e) + '</span></header>'; }
 function toastsHTML() { return '<div class="toasts" aria-live="polite">' + ui.toasts.map(x => '<div class="toast">' + x.html + '</div>').join('') + '</div>'; }
 function toast(key, params, ctx) { pushToast(t(key, params, ctx)); }
-function pushToast(html) { if (!html) return; const o = { html }; ui.toasts.push(o); if (ui.toasts.length > 4) ui.toasts.shift(); refreshToasts(); setTimeout(() => { ui.toasts = ui.toasts.filter(x => x !== o); refreshToasts(); }, 3600); }
+function pushToast(html) { if (!html) return; const o = { html }; ui.toasts.push(o); if (ui.toasts.length > 3) ui.toasts.shift(); refreshToasts(); setTimeout(() => { ui.toasts = ui.toasts.filter(x => x !== o); refreshToasts(); }, 2800); }
 function refreshToasts() { const el = root && root.querySelector('.toasts'); if (el) el.outerHTML = toastsHTML(); }
 const QUIET_NOTES = new Set(['eng.started', 'season.newPortfolio', 'scout.ahead', 'toast.followupDue', 'offers.window']);
 function showMessages(list) { for (const m of (list || []).slice(0, 4)) if (m && m.key && !QUIET_NOTES.has(m.key) && hasKey(m.key)) pushToast(t(m.key, m.params, m.engId ? ctxFor(state, m.engId) : undefined)); }
@@ -2314,6 +2316,8 @@ function renderSheet() {
   host.innerHTML = '<div class="sheet-backdrop" data-act="' + (c.noClose ? 'noop' : 'sheet-close') + '"></div><div class="sheet" role="dialog" aria-modal="true" aria-label="' + esc(c.titleText || '') + '"><div class="sheet-h"><h2>' + (c.title || '') + '</h2>' + (c.noClose ? '' : '<button type="button" class="close" data-act="sheet-close" aria-label="' + esc(tp('ui.close')) + '">✕</button>') + '</div>' + (c.stepper || '') + '<div class="sheet-body">' + (c.body || '') + '</div>' + (c.footer ? '<div class="sheet-f">' + c.footer + '</div>' : '') + '</div>';
   const body = host.querySelector('.sheet-body'); if (body && !ui.sheet.resetScroll) body.scrollTop = ui.sheetScroll;
   ui.sheet.resetScroll = false;
+  const curStep = host.querySelector('.stepper .step.cur'); const sp = curStep && curStep.parentElement;
+  if (sp) { const sr = sp.getBoundingClientRect(), cr = curStep.getBoundingClientRect(); sp.scrollLeft += (cr.left + cr.width / 2) - (sr.left + sr.width / 2); }
 }
 function sheetContent(sh) {
   switch (sh.kind) {

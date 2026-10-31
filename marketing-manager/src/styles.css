@@ -593,6 +593,8 @@ textarea.mono { font-family: ui-monospace, Menlo, Consolas, monospace; direction
 .toasts { position: fixed; inset-inline: 0; inset-block-end: calc(var(--tabbar-h) + 14px + env(safe-area-inset-bottom, 0px)); z-index: 80; display: flex; flex-direction: column; align-items: center; gap: 6px; pointer-events: none; padding-inline: 16px; }
 .toast { background: var(--navy); color: var(--navy-ink); padding: 8px 14px; border-radius: 999px; font-size: .88rem; box-shadow: var(--shadow-2); animation: rise var(--t-fast) var(--ease); max-inline-size: 100%; }
 @media (min-width: 900px) { .toasts { inset-block-end: 20px; } }
+/* while a sheet is open, toasts move to the top so they never cover the options */
+body:has(.sheet-root:not([hidden])) .toasts { inset-block-end: auto; inset-block-start: calc(10px + env(safe-area-inset-top, 0px)); }
 
 /* season / awards */
 .award { display: flex; gap: 10px; align-items: center; padding: 10px 12px; border: 1px solid var(--gold); border-radius: var(--r-md); background: var(--gold-soft); }

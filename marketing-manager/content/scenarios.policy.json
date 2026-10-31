@@ -234,7 +234,7 @@
         "immediate": { "energy": -2, "eng.quality": 8, "trust.contact": 2, "trust.manager": 3, "flag.ministry_owner_decided": 1 },
         "result": { "pGood": 0.75,
           "good": { "text": "מנהלת האגף למינהל: \"זה ממילא אצלי, לפחות שיהיה כתוב.\" {contact} {contact:מעביר|מעבירה} למנכ\"ל; השדה מתמלא, המסמך עובר לסבב הערות עם כתובת.", "effect": { "rep": 2, "trust.contact": 3 } },
-          "bad": { "text": "מנהלת האגף למינהל {מבקשת} קודם \"תקן ועוזר\". השם נכון, אבל ההסכמה תיקח עוד סבב.", "effect": { "eng.work": -1 } } },
+          "bad": { "text": "מנהלת האגף למינהל מבקשת קודם \"תקן ועוזר\". השם נכון, אבל ההסכמה תיקח עוד סבב.", "effect": { "eng.work": -1 } } },
         "delayed": [
           { "after": 4, "prob": 0.35, "failureMode": "m2", "text": "בסבב ההערות מנהלת האגף למינהל כותבת: \"לא סוכם איתי סופית שאני הבעלים.\" שיחה אחת פותרת, אבל היא לוקחת שבוע.", "effect": { "eng.work": -1 } }
         ],
@@ -252,7 +252,7 @@
         "immediate": { "energy": -1, "trust.contact": -8, "trust.manager": -3, "flag.ministry_owner_decided": 1 },
         "result": { "pGood": 0.4,
           "good": { "text": "המנכ\"ל עונה בשורה: \"מנהלת האגף למינהל.\" הבעיה נפתרה, ה{contact:איש|אשת} קשר שלכם נפגע.", "effect": {} },
-          "bad": { "text": "המנכ\"ל {מעביר|מעביר} את המייל ל{contact} עם השאלה \"למה זה מגיע אליי ישירות?\" {contact} {contact:מתקשר|מתקשרת} ל{manager}.", "effect": { "confidence": -3 } } },
+          "bad": { "text": "המנכ\"ל מעביר את המייל ל{contact} עם השאלה \"למה זה מגיע אליי ישירות?\" {contact} {contact:מתקשר|מתקשרת} ל{manager}.", "effect": { "confidence": -3 } } },
         "delayed": [
           { "after": 3, "prob": 0.55, "failureMode": "m3", "text": "{contact} {contact:מפסיק|מפסיקה} לענות על מיילים. כל בקשת חומר עוברת עכשיו דרך {manager}.", "effect": { "eng.work": -1, "eng.quality": -3 } }
         ],

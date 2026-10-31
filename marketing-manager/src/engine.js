@@ -565,6 +565,9 @@
     const hint = s.contactHint || null;
     const act = activeEngs(state).filter(e => mt(s.sector, e.sector) && mt(s.engType, e.type) && contactFits(e, hint));
     if (act.length) return pick(state, act);
+    // an engagement of the right kind that starts within 3 weeks takes the scenario (no duplicate short assignment)
+    const soon = state.engagements.filter(e => e.status === 'pending' && e.season === state.season && e.startWeek - state.week <= 3 && mt(s.sector, e.sector) && mt(s.engType, e.type) && contactFits(e, hint)).sort((a, b) => a.startWeek - b.startWeek);
+    if (soon.length) return soon[0];
     const sectors = concreteOf(s.sector);
     if (!sectors.length && !hint && !concreteOf(s.engType).includes('isox')) return null;
     return shortAssignment(state, s, sectors, hint);

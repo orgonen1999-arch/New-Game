@@ -168,7 +168,7 @@ button:focus:not(:focus-visible) { outline: none; }
   margin-block-end: 14px;
 }
 .topbar .grow { flex: 1 1 auto; min-inline-size: 0; }
-.brand { font-family: var(--font-display); font-size: 1.05rem; color: var(--navy); white-space: nowrap; }
+.brand { font-family: var(--font-display); font-size: 1.05rem; color: var(--navy); line-height: 1.25; text-wrap: balance; }
 .week-chip {
   display: inline-flex; align-items: center; gap: 6px;
   background: var(--navy); color: var(--navy-ink);
@@ -615,3 +615,38 @@ body:has(.sheet-root:not([hidden])) .toasts { inset-block-end: auto; inset-block
 .lesson.locked { opacity: .5; }
 .confirm-box { text-align: center; padding-block: 8px; }
 .kbd { font-size: .78rem; color: var(--faint); }
+
+/* ── stage 1: lower cognitive load, guidance ── */
+.next-card { background: var(--surface); border: 1px solid var(--line); border-inline-start: 4px solid var(--gold); border-radius: var(--r-md); padding: 14px 16px; display: grid; gap: 6px; box-shadow: var(--shadow-1); }
+.next-card h2 { font-size: 1.15rem; line-height: 1.35; text-wrap: balance; }
+.next-card .btns { margin-block-start: 4px; }
+.eyebrow { font-size: .78rem; font-weight: 600; letter-spacing: .02em; color: var(--gold-ink); }
+.presets { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 8px; margin-block-start: 8px; }
+.preset { display: grid; gap: 2px; text-align: start; padding: 10px 12px; border: 1px solid var(--line); border-radius: var(--r-sm); background: var(--surface-2); color: var(--text); font: inherit; cursor: pointer; }
+.preset:hover:not([disabled]) { border-color: var(--gold); }
+.preset[disabled] { opacity: .5; cursor: not-allowed; }
+.card.locked { background: var(--surface-2); border-style: dashed; }
+details.manual > summary { cursor: pointer; font-size: .88rem; color: var(--muted); }
+.coach { display: flex; gap: 12px; align-items: flex-start; background: var(--surface); border: 1px solid var(--line); border-inline-start: 4px solid var(--navy); border-radius: var(--r-md); padding: 12px 14px; margin-block-end: 12px; font-size: .92rem; }
+.coach b { display: block; margin-block-end: 2px; }
+.guide { background: var(--surface-2); border-radius: var(--r-sm); padding: 8px 12px; margin-block-end: 12px; font-size: .9rem; display: grid; gap: 4px; }
+.guide-lbl { font-weight: 600; }
+.guide-trap { color: var(--muted); font-size: .85rem; }
+.term { border-block-end: 1px dashed currentColor; cursor: help; text-decoration: none; }
+.term:hover, .term:focus-visible { color: var(--gold-ink); outline: none; }
+.body-text bdi.n, .reveal bdi.n, .fb bdi.n, .next-card bdi.n { font-weight: 600; }
+.fb-rule { border: 1px solid var(--line); border-inline-start: 4px solid var(--gold); background: var(--surface); border-radius: var(--r-sm); padding: 12px 14px; font-size: 1.05rem; font-weight: 600; line-height: 1.45; }
+.fb-rule .lbl { display: block; font-size: .78rem; font-weight: 600; color: var(--gold-ink); margin-block-end: 2px; }
+details.fb-more > summary { cursor: pointer; font-size: .88rem; color: var(--muted); padding-block: 4px; }
+details.fb-more[open] { display: grid; gap: 8px; }
+.stats { display: grid; gap: 4px; margin-block: 8px 6px; }
+.stat { display: grid; grid-template-columns: 5.5em 1fr; align-items: center; gap: 8px; }
+.firm-card .pills { display: flex; flex-wrap: wrap; gap: 4px; margin-block-end: 6px; }
+.firm-detail { margin-block-start: 12px; padding: 10px 12px; border-radius: var(--r-sm); background: var(--surface-2); }
+.me-tabs { margin-block-end: 12px; }
+.dash { padding-block-end: 8px; }
+.sticky-end { justify-content: flex-end; pointer-events: none; }
+.sticky-end .btn { pointer-events: auto; min-block-size: 44px; padding-inline: 20px; font-size: 1rem; }
+.coach { flex-wrap: wrap; }
+.coach .grow { flex: 1 1 14em; min-inline-size: 0; }
+.coach .btn { flex: none; white-space: nowrap; align-self: flex-start; }

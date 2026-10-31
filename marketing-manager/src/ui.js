@@ -105,7 +105,7 @@ function defaultState(opts) {
 function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); }
 function bdiWrap(html) {
   if (!html || html.indexOf('<bdi') !== -1) return html;
-  return html.split(/(<[^>]+>|&[#\w]+;)/g).map(part => (part[0] === '<' || part[0] === '&') ? part : part.replace(/(\d[\d.,:%\/−–-]*|[A-Za-z][A-Za-z0-9.\-]*)/g, '<bdi>$1</bdi>')).join('');
+  return html.split(/(<[^>]+>|&[#\w]+;)/g).map(part => (part[0] === '<' || part[0] === '&') ? part : part.replace(/(\d[\d.,:%\/−–-]*|[A-Za-z][A-Za-z0-9.\-]*)/g, m => /^\d/.test(m) ? '<bdi class="n">' + m + '</bdi>' : '<bdi>' + m + '</bdi>')).join('');
 }
 function localFill(str, params, ctx) {
   params = params || {}; ctx = ctx || { gender: 'm', genders: {}, params: {} };
@@ -121,6 +121,26 @@ function hasKey(key) { return CT.strings()[key] != null; }
 function t(key, params, ctx) { if (!hasKey(key)) return '<span class="faint">' + esc(key) + '</span>'; return bdiWrap(esc(tp(key, params, ctx))); }
 function tx(str, ctx, params) { return bdiWrap(esc(fillRaw(str, params, ctx || curCtx()))); }
 function txp(str, ctx, params) { return fillRaw(str, params, ctx || curCtx()); }
+/* Glossary: the first occurrence of a professional term in a block becomes a tappable explanation. */
+const GL = { re: null, map: {}, byId: {} };
+function glossaryInit() {
+  const g = (typeof window !== 'undefined' && window.MM_CONTENT && Array.isArray(window.MM_CONTENT.glossary)) ? window.MM_CONTENT.glossary : [];
+  const terms = []; GL.map = {}; GL.byId = {};
+  for (const e of g) { GL.byId[e.id] = e; for (const term of e.terms || []) { GL.map[esc(term)] = e.id; terms.push(esc(term)); } }
+  terms.sort((a, b) => b.length - a.length);
+  GL.re = terms.length ? new RegExp('(^|[^\u05D0-\u05EAA-Za-z0-9])([\u05D5\u05D4\u05D1\u05DC\u05DE\u05E9\u05DB]{0,2})(' + terms.map(x => x.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|') + ')(?![\u05D0-\u05EAA-Za-z0-9])', 'g') : null;
+}
+function linkTerms(html, used) {
+  if (!GL.re || !html) return html; used = used || new Set();
+  return html.split(/(<[^>]+>)/g).map(part => part[0] === '<' ? part : part.replace(GL.re, (m, pre, px, term) => { const id = GL.map[term]; if (!id || used.has(id)) return m; used.add(id); return pre + px + '<span class="term" role="button" tabindex="0" data-act="term" data-id="' + esc(id) + '">' + term + '</span>'; })).join('');
+}
+function txl(str, ctx, used, params) { return bdiWrap(linkTerms(esc(fillRaw(str, params, ctx || curCtx())), used)); }
+/* Coach marks: one card per screen, shown until dismissed (per viewer, in local storage). */
+function hintsSeen() { try { const v = JSON.parse(storage.getItem('mm.hints') || '[]'); return Array.isArray(v) ? v : []; } catch (e) { return []; } }
+function hintCard(id) {
+  if (!hasKey('hint.' + id + '.title') || hintsSeen().includes(id)) return '';
+  return '<div class="coach" role="note"><div class="grow"><b>' + t('hint.' + id + '.title') + '</b><div>' + t('hint.' + id + '.body') + '</div></div><button type="button" class="btn btn-sm" data-act="hint-dismiss" data-id="' + esc(id) + '">' + t('hint.dismiss') + '</button></div>';
+}
 function tm(m, ctx) { if (!m) return ''; if (typeof m === 'string') return tx(m, ctx); return m.key ? t(m.key, m.params, ctx) : ''; }
 function n(v, d) { if (v == null || v === '' || (typeof v === 'number' && isNaN(v))) return '<bdi>–</bdi>'; const x = typeof v === 'number' ? (typeof d === 'number' ? v.toFixed(d) : String(Math.round(v))) : String(v); return '<bdi class="num">' + esc(x) + '</bdi>'; }
 function signed(v) { const r = Math.round(v * 10) / 10; return (r > 0 ? '+' : '') + r; }
@@ -166,20 +186,24 @@ function autosave() { if (state) saveSlot(ui.slot || 1, state); }
 let state = null;
 const ui = { screen: 'open', slot: 1, sheet: null, toasts: [], engId: null, ctxCache: null, filters: { skill: '', domain: '' }, open: { name: '', gender: 'f', firmId: null }, sheetScroll: 0, exportMd: '', exportJson: '' };
 const root = document.getElementById('app');
-const TABS = [['dash', 'nav.board', '▦'], ['inbox', 'nav.inbox', '✉'], ['files', 'nav.cases', '▤'], ['journal', 'nav.journal', '✎'], ['more', 'nav.more', '⋯']];
-const MORE = [['profile', 'nav.profile', '◉'], ['people', 'nav.people', '☺'], ['learn', 'nav.library', '✦'], ['calendar', 'nav.calendar', '▦'], ['firm', 'nav.firm', '⌂'], ['offers', 'nav.offers', '✉'], ['season', 'screen.season', '★'], ['cv', 'nav.cv', '▤'], ['settings', 'nav.settings', '⚙']];
+const TABS = [['dash', 'nav.board', '▦'], ['inbox', 'nav.inbox', '✉'], ['files', 'nav.cases', '▤'], ['me', 'nav.me', '◉'], ['more', 'nav.more', '⋯']];
+const ME = [['profile', 'nav.profile'], ['journal', 'nav.journal'], ['learn', 'nav.library']];
+const MORE = [['firm', 'nav.firm', '⌂'], ['people', 'nav.people', '☺'], ['calendar', 'nav.calendar', '▦'], ['offers', 'nav.offers', '✉'], ['season', 'screen.season', '★'], ['cv', 'nav.cv', '▤'], ['settings', 'nav.settings', '⚙']];
+const isMe = (id) => ME.some(m => m[0] === id);
 
-function go(screen) { ui.screen = screen; render(); try { window.scrollTo(0, 0); } catch (e) { /* noop */ } }
+function go(screen) { if (screen === 'me') screen = ui.meTab || 'profile'; if (isMe(screen)) ui.meTab = screen; ui.screen = screen; render(); try { window.scrollTo(0, 0); } catch (e) { /* noop */ } }
 function render() {
   if (!root) return;
   if (!state || ui.screen === 'open') { root.innerHTML = '<div class="content">' + safe(screenOpen) + '</div>' + toastsHTML(); renderSheet(); return; }
-  const navId = MORE.some(m => m[0] === ui.screen) ? 'more' : ui.screen;
+  const navId = isMe(ui.screen) ? 'me' : (ui.screen !== 'firm' && MORE.some(m => m[0] === ui.screen)) ? 'more' : ui.screen;
   const unread = S.unread(state);
   const navBtn = (id, key, ico) => '<button type="button" data-act="nav" data-screen="' + id + '"' + (navId === id || ui.screen === id ? ' aria-current="page"' : '') + '><span class="ico" aria-hidden="true">' + ico + '</span><span>' + t(key) + '</span>' + (id === 'inbox' && unread ? '<span class="badge">' + n(unread) + '</span>' : '') + '</button>';
-  const side = '<nav class="sidenav" aria-label="' + esc(tp('app.title')) + '"><div class="brand">' + t('app.title') + '</div>' + TABS.filter(x => x[0] !== 'more').map(x => navBtn(x[0], x[1], x[2])).join('') + '<div class="sep"></div>' + MORE.map(x => navBtn(x[0], x[1], x[2])).join('') + '</nav>';
+  const side = '<nav class="sidenav" aria-label="' + esc(tp('app.title')) + '"><div class="brand">' + t('app.title') + '</div>' + TABS.filter(x => x[0] !== 'more').map(x => navBtn(x[0], x[1], x[2])).join('') + navBtn('firm', 'nav.firm', '⌂') + '<div class="sep"></div>' + navBtn('more', 'nav.more', '⋯') + '</nav>';
   const tabs = '<nav class="tabbar" aria-label="' + esc(tp('app.title')) + '">' + TABS.map(x => navBtn(x[0], x[1], x[2])).join('') + '</nav>';
-  const screens = { dash: screenDash, inbox: screenInbox, files: screenFiles, journal: screenJournal, more: screenMore, profile: screenProfile, people: screenPeople, learn: screenLearn, calendar: screenCalendar, firm: screenFirm, offers: screenOffers, season: screenSeason, cv: screenCV, settings: screenSettings };
-  root.innerHTML = '<div class="shell">' + side + '<div class="content">' + topbar(state) + safe(screens[ui.screen] || screenDash, state) + '</div></div>' + tabs + toastsHTML();
+  const screens = { me: screenProfile, dash: screenDash, inbox: screenInbox, files: screenFiles, journal: screenJournal, more: screenMore, profile: screenProfile, people: screenPeople, learn: screenLearn, calendar: screenCalendar, firm: screenFirm, offers: screenOffers, season: screenSeason, cv: screenCV, settings: screenSettings };
+  const meTabs = isMe(ui.screen) ? '<div class="seg me-tabs" role="tablist">' + ME.map(m => '<button type="button" role="tab" data-act="nav" data-screen="' + m[0] + '" aria-pressed="' + (ui.screen === m[0]) + '">' + t(m[1]) + '</button>').join('') + '</div>' + hintCard('me') : '';
+  const hintFor = { inbox: 'inbox', files: 'files', firm: 'firm' }[ui.screen];
+  root.innerHTML = '<div class="shell">' + side + '<div class="content">' + topbar(state) + meTabs + (hintFor ? hintCard(hintFor) : '') + safe(screens[ui.screen] || screenDash, state) + '</div></div>' + tabs + toastsHTML();
   renderSheet();
 }
 function safe(fn, arg) { try { return fn(arg); } catch (e) { console.warn('render failed', e); return '<div class="empty">' + t('ui.renderError') + '<div class="xs faint">' + esc(e && e.message) + '</div></div>'; } }
@@ -209,11 +233,12 @@ function renderSheet() {
 }
 function sheetContent(sh) {
   switch (sh.kind) {
-    case 'room': return sheetRoom(sh); case 'match': return sheetMatch(sh); case 'item': return sheetItem(sh); case 'followup': return sheetFollowup(sh); case 'entry': return sheetEntry(sh);
+    case 'term': return sheetTerm(sh); case 'room': return sheetRoom(sh); case 'match': return sheetMatch(sh); case 'item': return sheetItem(sh); case 'followup': return sheetFollowup(sh); case 'entry': return sheetEntry(sh);
     case 'confirm': return sheetConfirm(sh); case 'picker': return sheetPicker(sh); case 'lesson': return sheetLesson(sh); case 'builder': return sheetBuilder(sh); case 'drill': return sheetDrill(sh); case 'offer': return sheetOffer(sh);
     default: return { title: '', body: soon(), footer: closeBtn() };
   }
 }
+function sheetTerm(sh) { const e = GL.byId[sh.id] || {}; return { title: bdiWrap(esc(e.title || tp('term.title'))), body: '<p>' + bdiWrap(esc(e.short || '')) + '</p>', footer: (e.lesson ? '<button type="button" class="btn" data-act="lesson-open" data-id="' + esc(e.lesson) + '">' + t('term.lesson') + '</button>' : '') + '<span class="grow"></span>' + closeBtn(true) }; }
 function closeBtn(primary) { return '<button type="button" class="btn' + (primary ? ' btn-primary' : '') + '" data-act="sheet-close">' + t('ui.close') + '</button>'; }
 function confirmBox(html, onYes, danger) { openSheet({ kind: 'confirm', html, onYes, danger }); }
 function sheetConfirm(sh) { return { title: t('ui.confirm'), body: '<div class="confirm-box"><p>' + sh.html + '</p></div>', footer: '<button type="button" class="btn" data-act="sheet-close">' + t('ui.cancel') + '</button><button type="button" class="btn ' + (sh.danger ? 'btn-danger' : 'btn-primary') + '" data-act="confirm-yes">' + t('ui.confirm') + '</button>' }; }
@@ -248,23 +273,64 @@ function soon() { return '<div class="soon">' + t('ui.soon') + '</div>'; }
 function findingRow(f, eng, ctx) { return '<div class="finding">' + ratingPill(f.scale || CT.scaleFor(eng), f.rating) + '<span>' + tx(f.title || f.text || f.id || '', ctx) + (f.week ? ' <span class="xs faint">' + t('ui.week', { n: f.week }) + '</span>' : '') + '</span></div>'; }
 
 /* ───────────────────────── 5. SCREENS ───────────────────────── */
+function statBar(label, v) { return '<div class="stat"><span class="xs muted">' + label + '</span>' + barHTML(Math.max(6, Math.min(100, v)), 'thin') + '</div>'; }
+function firmStats(f) { return '<div class="stats">' + statBar(t('firm.stat.prestige'), f.prestige || 0) + statBar(t('firm.stat.pay'), Math.round(((f.pay || 1) - 0.8) / 0.7 * 100)) + statBar(t('firm.stat.load'), Math.round((f.hoursPenalty || 0) / 4 * 100)) + '</div><div class="pills">' + (f.sectors || []).slice(0, 3).map(x => pill(t('sector.' + x), 'pill-outline')).join('') + ((f.sectors || []).length > 3 ? pill('+' + ((f.sectors || []).length - 3), 'pill-outline') : '') + '</div>'; }
 function screenOpen() {
   const firms = CT.list('firms'); const o = ui.open;
   if (!o.firmId) { const rec = firms.find(f => f.recommendedStart) || firms.find(f => f.id === 'ofek') || firms[0]; o.firmId = rec ? rec.id : null; }
-  const cards = firms.length ? firms.map(f => '<button type="button" class="firm-card' + (o.firmId === f.id ? ' sel' : '') + '" data-act="open-firm" data-id="' + esc(f.id) + '" aria-pressed="' + (o.firmId === f.id) + '">' + (f.recommendedStart || (f.id === 'ofek' && !firms.some(x => x.recommendedStart)) ? '<span class="rec">' + pill(t('newgame.recommended'), 'pill-gold') + '</span>' : '') + '<h3>' + esc(f.name) + '</h3><div class="row small muted">' + pill(t('newgame.firmPrestige', { n: f.prestige })) + pill(t('newgame.firmPay', { n: f.pay })) + '</div><p class="phil">' + tx(f.philosophy) + '</p>' + (f.culture ? '<p class="xs gold-ink">' + tx(f.culture) + '</p>' : '') + '</button>').join('') : empty('ui.none');
+  const cards = firms.length ? firms.map(f => '<button type="button" class="firm-card' + (o.firmId === f.id ? ' sel' : '') + '" data-act="open-firm" data-id="' + esc(f.id) + '" aria-pressed="' + (o.firmId === f.id) + '">' + (f.recommendedStart || (f.id === 'ofek' && !firms.some(x => x.recommendedStart)) ? '<span class="rec">' + pill(t('newgame.recommended'), 'pill-gold') + '</span>' : '') + '<h3>' + esc(f.name) + '</h3><div class="row small muted">' + pill(t('newgame.firmPrestige', { n: f.prestige })) + pill(t('newgame.firmPay', { n: f.pay })) + '</div>' + firmStats(f) + (f.culture ? '<p class="xs gold-ink">' + tx(f.culture) + '</p>' : '') + '</button>').join('') : empty('ui.none');
+  const sel = firms.find(f => f.id === o.firmId); const about = sel && sel.philosophy ? '<div class="firm-detail"><b class="small">' + t('newgame.firmAbout') + ' · ' + esc(sel.name) + '</b><p class="small">' + tx(sel.philosophy) + '</p></div>' : '';
   const slots = [1, 2, 3].map(i => { const m = slotMeta(i); const firm = m && (CT.firm(m.firmId || m.firm) || {}).name; return '<div class="slot">' + avatar(m && m.name ? m.name : String(i), m ? '' : 'muted') + '<div class="grow">' + (m ? '<div>' + t('newgame.slot.summary', { name: m.name || '', firm: firm || '', season: m.season, week: m.week }) + '</div><div class="small muted">' + tierTitle(null, m.tier || 1) + (m.ended ? ' · ' + t(m.ended.key || 'ending.title') : '') + '</div>' : '<span class="muted">' + t('newgame.slot.label', { n: i }) + ' · ' + t('newgame.slot.empty') + '</span>') + '</div>' + (m ? '<button type="button" class="btn btn-sm btn-navy" data-act="open-load" data-slot="' + i + '">' + t('newgame.slot.load') + '</button><button type="button" class="btn btn-sm btn-ghost" data-act="open-delete" data-slot="' + i + '">' + t('newgame.slot.delete') + '</button>' : '') + '</div>'; }).join('');
   return '<section data-screen="open"><div class="open-hero"><h1 class="title">' + t('app.title') + '</h1><div class="tag">' + t('app.tagline') + '</div></div>' +
     '<div class="card"><h2 class="mb">' + t('newgame.title') + '</h2><div class="field"><label for="pname">' + t('newgame.name') + '</label><input id="pname" type="text" data-act="open-name" value="' + esc(o.name) + '" placeholder="' + esc(tp('newgame.namePlaceholder')) + '" autocomplete="name" maxlength="40"></div>' +
     '<div class="field"><span class="muted small">' + t('newgame.gender') + '</span><div class="seg" role="group"><button type="button" data-act="open-gender" data-g="f" aria-pressed="' + (o.gender === 'f') + '">' + t('newgame.gender.f') + '</button><button type="button" data-act="open-gender" data-g="m" aria-pressed="' + (o.gender === 'm') + '">' + t('newgame.gender.m') + '</button></div><span class="xs faint">' + t('newgame.grammarNote') + '</span></div>' +
-    '<h3 class="mb mt">' + t('newgame.pickFirm') + '</h3><div class="grid-cards">' + cards + '</div><div class="btns end mt"><button type="button" class="btn btn-primary" data-act="open-start">' + t('newgame.start') + '</button></div>' + (has('newGame') ? '' : '<p class="soon mt">' + t('ui.soon') + '</p>') + '</div>' +
+    '<h3 class="mb mt">' + t('newgame.pickFirm') + '</h3><div class="grid-cards">' + cards + '</div>' + about + '<div class="btns end mt"><button type="button" class="btn btn-primary" data-act="open-start">' + t('newgame.start') + '</button></div>' + (has('newGame') ? '' : '<p class="soon mt">' + t('ui.soon') + '</p>') + '</div>' +
     '<div class="section-title"><h2>' + t('newgame.slots') + '</h2></div><div class="stack">' + slots + '</div></section>';
 }
 
+/* The single next step: an open item first (match, follow-up, decision, unread), else planning the week, else ending it. */
+function nextAction(st) {
+  if (st.ended) return null;
+  const items = S.inbox(st);
+  const it = items.find(i => i.type === 'moment') || items.find(i => i.type === 'followup') || items.find(i => i.type === 'decision') || items.find(i => !i.read);
+  if (it) { const info = itemInfo(st, it); const kind = ['moment', 'followup', 'decision'].includes(it.type) ? it.type : 'item'; const e = S.eng(st, it.engId); return { kind, item: it, title: (info && info.subject) || '', sub: e ? ((CT.client(e.clientId) || {}).name || '') : '' }; }
+  const pd = pendingDrillDef(st); if (pd) return { kind: 'drill', drill: pd };
+  if (!weekOneLock(st) && S.hoursLeft(st) >= 16) return { kind: 'plan' };
+  return { kind: 'end' };
+}
+function weekOneLock(st) { return (st.season || 1) === 1 && S.week(st) === 1 && S.tier(st) === 1; }
+const PRESETS = { field: [['work', 4], ['learn', 1], ['network', 1]], balanced: [['work', 3], ['learn', 1], ['network', 1], ['scout', 1]], recovery: [['work', 2], ['rest', 2], ['learn', 1]] };
+function presetHours(id) { const H = HOURS(); return (PRESETS[id] || []).reduce((a, [k, n]) => a + (H[k] || 0) * n, 0); }
+function presetsHTML(st) { const left = S.hoursLeft(st); return '<div class="presets">' + Object.keys(PRESETS).map(id => '<button type="button" class="preset" data-act="preset" data-id="' + id + '"' + (left < presetHours(id) ? ' disabled' : '') + '><b>' + t('preset.' + id + '.name') + '</b><span class="xs muted">' + t('preset.' + id + '.desc') + '</span></button>').join('') + '</div>'; }
+function weakestSkill() { const ids = new Set(); for (const d of CT.list('drills')) for (const x of (d.skills || [])) ids.add(typeof x === 'string' ? x : x.id); let best = null, bm = 99; for (const id of ids) { const sk = state.player.skills && state.player.skills[id]; const m = sk ? sk.mastery : 10; if (m < bm) { bm = m; best = id; } } return best; }
+function weakestContact() { let best = null, bt = 999; for (const e of S.active(state)) { if (!e.contactId) continue; const tr = S.trust(state, e.contactId) ?? 50; if (tr < bt) { bt = tr; best = e.contactId; } } return best || (state.firm && state.firm.managerId) || null; }
+function applyPreset(id) {
+  const plan = PRESETS[id]; if (!plan || !has('spendBlock')) return;
+  const engs = S.active(state).slice().sort((a, b) => (a.deadline || 99) - (b.deadline || 99));
+  let skipped = false, drill = null, wi = 0;
+  for (const [kind, times] of plan) for (let i = 0; i < times; i++) {
+    let target = {};
+    if (kind === 'work') { if (!engs.length) { skipped = true; continue; } target = { engId: engs[wi++ % engs.length].id }; }
+    else if (kind === 'learn') { const sk = weakestSkill(); if (sk) target = { skillId: sk }; }
+    else if (kind === 'network') { const pid = weakestContact(); if (!pid) continue; target = { personId: pid }; }
+    const r = call('spendBlock', state, kind, target); if (!okRes(r)) break; if (kind === 'learn' && r.drill) drill = r.drill;
+  }
+  toast('preset.applied', { name: tp('preset.' + id + '.name') }); if (skipped) toast('preset.noEngagements');
+  autosave(); render();
+}
+function pendingDrillDef(st) { const pd = st.player && st.player.pendingDrill; return pd ? CT.byId('drills', pd.id) : null; }
+function nextCardHTML(st) {
+  const na = nextAction(st); if (!na) return '';
+  if (na.kind === 'plan') return '<div class="next-card"><span class="eyebrow">' + t('next.label') + '</span><h2>' + t('next.plan.title') + '</h2><p class="small muted">' + t('next.plan.sub') + '</p>' + presetsHTML(st) + '</div>';
+  if (na.kind === 'drill') return '<div class="next-card"><span class="eyebrow">' + t('next.label') + ' · ' + t('next.eyebrow.drill') + '</span><h2>' + tx(na.drill.title || na.drill.id) + '</h2><p class="small muted">' + t('next.drill.sub') + '</p><div class="btns"><button type="button" class="btn btn-primary" data-act="drill-resume">' + t('next.open') + '</button></div></div>';
+  if (na.kind === 'end') return '<div class="next-card"><span class="eyebrow">' + t('next.label') + '</span><h2>' + t('next.end.title') + '</h2><p class="small muted">' + t('next.end.sub') + '</p><div class="btns"><button type="button" class="btn btn-primary" data-act="end-week"' + (st.ended ? ' disabled' : '') + '>' + t('ui.endWeek') + '</button></div></div>';
+  return '<div class="next-card"><span class="eyebrow">' + t('next.label') + ' · ' + t('next.eyebrow.' + na.kind) + '</span><h2>' + bdiWrap(esc(na.title)) + '</h2>' + (na.sub ? '<p class="small muted">' + bdiWrap(esc(na.sub)) + '</p>' : '') + '<div class="btns"><button type="button" class="btn btn-primary" data-act="item-open" data-id="' + esc(na.item.id) + '">' + t('next.open') + '</button></div></div>';
+}
 function screenDash(st) {
   const p = st.player; const b = S.budget(st); const left = S.hoursLeft(st); const used = 40 - left; const H = HOURS();
   const chips = Object.keys(H).map(k => '<button type="button" class="chip" data-act="block-add" data-kind="' + k + '"' + (left < H[k] ? ' disabled' : '') + '>' + t('budget.' + k) + ' <span class="cost">' + t('budget.chipHours', { n: H[k] }) + ' · ' + t('budget.energyPrice', { n: ENERGY_PRICE[k] }) + '</span></button>').join('');
   const log = Array.isArray(b.log) ? b.log : [];
-  const logList = log.length ? '<div class="plan-list">' + log.map(x => { const eng = S.eng(st, x.target); const who = !eng && x.target ? (hasKey('skill.' + x.target) ? skillName(x.target) : esc(personName(x.target))) : (eng ? engTitle(eng) : ''); return '<div class="plan-item"><span class="grow">' + t('budget.' + x.kind) + (who ? ' · ' + who : '') + '</span><span class="xs faint">' + t('budget.chipHours', { n: x.hours }) + '</span></div>'; }).join('') + '</div>' : '<div class="xs faint">' + t('budget.unspent') + '</div>';
+  const logList = log.length ? '<div class="plan-list mt">' + log.map(x => { const eng = S.eng(st, x.target); const who = !eng && x.target ? (hasKey('skill.' + x.target) ? skillName(x.target) : esc(personName(x.target))) : (eng ? engTitle(eng) : ''); return '<div class="plan-item"><span class="grow">' + t('budget.' + x.kind) + (who ? ' · ' + who : '') + '</span><span class="xs faint">' + t('budget.chipHours', { n: x.hours }) + '</span></div>'; }).join('') + '</div>' : '';
   const engs = S.active(st);
   const notices = [];
   if (p.energy < 30) notices.push('<div class="notice notice-danger">' + t('toast.energyLow') + '</div>');
@@ -272,13 +338,14 @@ function screenDash(st) {
   if ([12, 24, 36, 48].includes(S.week(st))) notices.push('<div class="notice">' + t(S.week(st) === 48 ? 'board.seasonEnd' : 'board.quarterClose') + '</div>');
   if (has('gateAvailable') && MMx().gateAvailable(st)) { const d = CT.list('deliverables').find(x => (x.kind || 'gate') === 'gate' && x.tier === S.tier(st)); notices.push('<div class="notice notice-ok"><div class="row between"><span>' + t('board.gateOpen') + ' · ' + t('deliverable.window') + '</span>' + (d ? '<button type="button" class="btn btn-sm btn-primary" data-act="builder-open" data-id="' + esc(d.id) + '">' + t('deliverable.title') + '</button>' : '') + '</div></div>'); }
   if (st.ended) notices.push('<div class="notice notice-danger"><b>' + t(st.ended.key) + '</b>' + (hasKey(st.ended.key + '.body') ? '<div class="small">' + t(st.ended.key + '.body') + '</div>' : '') + '</div>');
-  const unread = S.unread(st);
-  return '<section data-screen="dash"><div class="card-h"><h1 class="screen-title">' + t('board.title') + '</h1>' + pill(tierTitle(st), 'pill-navy') + pill(esc(S.firm(st).name || ''), 'pill-outline') + '</div>' + (notices.length ? '<div class="stack mb">' + notices.join('') + '</div>' : '') +
-    '<div class="grid-2"><div class="card"><div class="gauges">' + gauge('board.energy', p.energy, p.energy < 30 ? 'danger' : 'ok') + gauge('board.confidence', p.confidence, p.confidence < 40 ? 'danger' : '') + gauge('board.rep', p.rep, 'gold') + '<div class="gauge"><div class="lbl"><span>' + t('profile.integrity') + '</span><span class="gauge-n">' + integrityWord(p.integrity) + '</span></div></div></div>' + (p.scout ? '<p class="xs muted mt">' + t('budget.scoutPoints', { n: Math.min(2, p.scout) }) + '</p>' : '') + '</div>' +
-    '<div class="card"><div class="card-h"><h2>' + t('budget.title') + '</h2><span class="muted small">' + t('budget.left', { n: left }) + '</span></div>' + barHTML(used / 40 * 100, 'gold') + '<div class="xs faint mt">' + t('budget.hours', { used, total: 40 }) + '</div><div class="budget mt"><div class="budget-chips">' + chips + '</div>' + logList + '</div></div></div>' +
+  const unread = S.unread(st); const na = nextAction(st);
+  const budgetCard = weekOneLock(st) ? '<div class="card locked"><div class="card-h"><h2>' + t('budget.title') + '</h2></div><p class="small muted">' + t('budget.lockedWeek1') + '</p></div>' :
+    '<div class="card"><div class="card-h"><h2>' + t('budget.title') + '</h2><span class="muted small">' + t('budget.left', { n: left }) + '</span></div>' + barHTML(used / 40 * 100, 'gold') + (used > 0 ? '<p class="small mt">' + t('budget.plannedSummary', { n: used, list: log.map(x => tp('budget.' + x.kind)).filter((v, i, a) => a.indexOf(v) === i).join(', ') }) + '</p>' : '') + (used === 0 && !(na && na.kind === 'plan') ? '<div class="mt"><b class="small">' + t('budget.presets') + '</b>' + presetsHTML(st) + '</div>' : '') + '<details class="manual mt"><summary>' + t('budget.manual') + '</summary>' + logList + '<div class="budget-chips mt">' + chips + '</div></details></div>';
+  return '<section data-screen="dash" class="dash"><div class="card-h"><h1 class="screen-title">' + t('board.title') + '</h1>' + pill(tierTitle(st), 'pill-navy') + pill(esc(S.firm(st).name || ''), 'pill-outline') + '</div>' + hintCard('dash') + (notices.length ? '<div class="stack mb">' + notices.join('') + '</div>' : '') + nextCardHTML(st) +
+    '<div class="grid-2 mt"><div class="card"><div class="gauges">' + gauge('board.confidence', p.confidence, p.confidence < 40 ? 'danger' : '') + gauge('board.rep', p.rep, 'gold') + '<div class="gauge"><div class="lbl"><span>' + t('profile.integrity') + '</span><span class="gauge-n">' + integrityWord(p.integrity) + '</span></div></div></div>' + (p.scout ? '<p class="xs muted mt">' + t('budget.scoutPoints', { n: Math.min(2, p.scout) }) + '</p>' : '') + '</div>' + budgetCard + '</div>' +
     '<div class="section-title"><h2>' + t('board.engagements') + '</h2><button type="button" class="btn btn-sm btn-ghost" data-act="nav" data-screen="files">' + t('ui.all') + '</button></div>' + (engs.length ? '<div class="grid-2">' + engs.map(e => engCard(st, e, true)).join('') + '</div>' : empty('eng.empty')) +
     '<div class="section-title"><h2>' + t('nav.inbox') + '</h2>' + (unread ? pill(t('board.inboxUnread', { n: unread }), 'pill-gold') : '') + '<button type="button" class="btn btn-sm btn-ghost" data-act="nav" data-screen="inbox">' + t('ui.all') + '</button></div>' + inboxList(st, S.inbox(st).filter(i => !i.read).slice(0, 4)) +
-    '<div class="sticky-end"><button type="button" class="btn btn-primary" data-act="end-week"' + (st.ended ? ' disabled' : '') + '>' + t('ui.endWeek') + '</button></div></section>';
+    (na && na.kind === 'end' ? '' : '<div class="sticky-end"><button type="button" class="btn btn-primary" data-act="end-week"' + (st.ended ? ' disabled' : '') + '>' + t('ui.endWeek') + '</button></div>') + '</section>';
 }
 function engCard(st, e, compact) {
   const need = (e.phaseWork && e.phaseWork[e.phase]) || 1; const wk = S.week(st);
@@ -387,8 +454,11 @@ function journalMarkdown(st) {
   return S.journal(st).map(e => '## ' + tp('ui.week', { n: e.week }) + ' · ' + entryTitle(st, e) + '\n- ' + tp('journal.export.decided') + ': ' + (e.option ? txp(e.option.label, ctxFor(st, e.engId)) : '') + ' (P ' + e.P + ' · O ' + e.O + ')\n').join('\n');
 }
 function feedbackHTML(fb, ctx) {
-  if (!fb) return ''; const part = (k, cls) => { const v = fb[k] ? tx(fb[k], ctx) : (fb[k + 'Key'] ? t(fb[k + 'Key'], {}, ctx) : ''); return v ? '<div class="fb ' + (cls || '') + '"><b>' + t('room.feedback.' + k) + '</b>' + v + '</div>' : ''; };
-  return '<div class="feedback">' + part('why') + part('expert') + part('bias') + part('rule', 'rule') + '</div>';
+  if (!fb) return ''; const used = new Set();
+  const val = k => fb[k] ? txl(fb[k], ctx, used) : (fb[k + 'Key'] ? t(fb[k + 'Key'], {}, ctx) : '');
+  const rule = val('rule'), why = val('why'), expert = val('expert'), bias = val('bias');
+  return '<div class="feedback">' + (rule ? '<div class="fb-rule"><span class="lbl">' + t('room.feedback.rule') + '</span><div>' + rule + '</div></div>' : '') + (why ? '<div class="fb"><b>' + t('room.feedback.why') + '</b>' + why + '</div>' : '') +
+    (expert || bias ? '<details class="fb-more"><summary>' + t('room.feedback.more') + '</summary>' + (expert ? '<div class="fb"><b>' + t('room.feedback.expert') + '</b>' + expert + '</div>' : '') + (bias ? '<div class="fb"><b>' + t('room.feedback.bias') + '</b>' + bias + '</div>' : '') + '</details>' : '') + '</div>';
 }
 function sheetEntry(sh) {
   const e = S.entry(state, sh.id); if (!e) return { title: '', body: empty('journal.empty'), footer: closeBtn() };
@@ -497,6 +567,7 @@ function screenSettings(st) {
   return '<section data-screen="settings"><h1 class="screen-title mb">' + t('settings.title') + '</h1><div class="card"><h2 class="mb">' + t('settings.theme') + '</h2><div class="seg">' + seg('theme', 'settings.theme.auto', 'auto', theme) + seg('theme', 'settings.theme.light', 'light', theme) + seg('theme', 'settings.theme.dark', 'dark', theme) + '</div><h2 class="mb mt">' + t('settings.textSize') + '</h2><div class="seg">' + seg('size', 'settings.textSize.small', 'sm', size) + seg('size', 'settings.textSize.normal', 'md', size) + seg('size', 'settings.textSize.large', 'lg', size) + '</div></div>' +
     '<div class="card"><h2 class="mb">' + t('settings.slots') + '</h2><p class="xs faint">' + t('settings.autosave') + '</p><div class="stack">' + slots + '</div>' + (storage.setItem('mm.probe', '1') ? '' : '<p class="small danger mt">' + t('toast.saveFailed') + '</p>') + '</div>' +
     '<div class="card"><div class="card-h"><h2>' + t('settings.export') + '</h2><button type="button" class="btn btn-sm" data-act="export">' + t('journal.export') + '</button></div><p class="xs faint">' + t('settings.export.hint') + '</p><textarea class="mono" readonly aria-label="' + esc(tp('settings.export')) + '" data-role="export-json">' + esc(ui.exportJson || '') + '</textarea><div class="card-h mt"><h2>' + t('settings.import') + '</h2><button type="button" class="btn btn-sm btn-navy" data-act="import">' + t('settings.import.go') + '</button></div><textarea class="mono" aria-label="' + esc(tp('settings.import')) + '" data-role="import-json" placeholder="' + esc(tp('settings.import.placeholder')) + '"></textarea></div>' +
+    '<div class="card"><h2 class="mb">' + t('settings.hintsReset') + '</h2><div class="btns"><button type="button" class="btn" data-act="hints-reset">' + t('settings.hintsReset') + '</button></div></div>' +
     '<div class="card"><h2 class="mb">' + t('settings.reset') + '</h2><div class="btns"><button type="button" class="btn btn-danger" data-act="reset">' + t('settings.reset') + '</button><button type="button" class="btn" data-act="to-open">' + t('screen.start') + '</button></div><p class="xs faint mt">' + t('settings.simNote') + '</p><p class="xs faint">' + t('settings.version', { v: (MMx().VERSION || 1) }) + '</p></div></section>';
 }
 
@@ -519,7 +590,7 @@ function optionsHTML(opts, ctx, selId) {
 }
 function infoHTML(room) {
   const ctx = room.ctx; const left = S.hoursLeft(state);
-  return '<div class="option-list">' + (room.view.info || []).map(i => { const can = left >= i.hours; return '<button type="button" class="option' + (i.bought ? ' bought' : '') + '" data-act="room-info" data-id="' + esc(i.id) + '"' + (i.bought || !can ? ' aria-disabled="true"' : '') + '><span class="txt">' + tx(i.label, ctx) + (i.bought && i.reveal ? '<span class="reveal">' + tx(i.reveal, ctx) + '</span>' : '') + '</span><span class="cost">' + (i.bought ? t('room.info.bought') : t('room.info.cost', { n: i.hours })) + '</span></button>'; }).join('') + '</div>' + '<p class="xs faint mt">' + t('budget.left', { n: left }) + (room.view.lowEnergy ? ' · ' + t('room.info.doubled') : '') + '</p>';
+  return '<div class="option-list">' + (room.view.info || []).map(i => { const can = left >= i.hours; return '<button type="button" class="option' + (i.bought ? ' bought' : '') + '" data-act="room-info" data-id="' + esc(i.id) + '"' + (i.bought || !can ? ' aria-disabled="true"' : '') + '><span class="txt">' + tx(i.label, ctx) + (i.bought && i.reveal ? '<span class="reveal">' + txl(i.reveal, ctx) + '</span>' : '') + '</span><span class="cost">' + (i.bought ? t('room.info.bought') : t('room.info.cost', { n: i.hours })) + '</span></button>'; }).join('') + '</div>' + '<p class="xs faint mt">' + t('budget.left', { n: left }) + (room.view.lowEnergy ? ' · ' + t('room.info.doubled') : '') + '</p>';
 }
 function baseRateCard(br, ctx) { if (!br) return ''; const text = br.he || br.text ? tx(br.he || br.text, ctx, br) : ''; return '<div class="baserate"><b class="small muted">' + t('room.baseRate') + '</b><div>' + text + '</div>' + (br.source ? '<div class="src">' + t('room.baseRate.source', { source: br.source }) + '</div>' : '') + '</div>'; }
 function resultHTML(f, ctx, lessonId) {
@@ -528,21 +599,22 @@ function resultHTML(f, ctx, lessonId) {
     (fr ? '<div class="friday"><span>' + fr + '</span>' + (e.calibration ? pill(t('journal.calibration.' + e.calibration), e.calibration === 'right' ? 'pill-ok' : 'pill-danger') : '') + '</div>' : '') + deltaPills(e.applied, ctx) + ((e.delayed || []).some(d => d.rolled) ? '<p class="xs muted mt">' + t('room.result.delayed') + '</p>' : '') + feedbackHTML(f.feedback, ctx) +
     '<div class="btns mt">' + (lessonId ? '<button type="button" class="btn btn-sm" data-act="lesson-open" data-id="' + esc(lessonId) + '">' + t('room.lesson.link', { title: txp((CT.lesson(lessonId) || {}).title || lessonId) }) + '</button>' : '') + (e.id ? '<button type="button" class="btn btn-sm btn-ghost" data-act="entry-open" data-id="' + esc(e.id) + '">' + t('room.journal.show') + '</button>' : '') + '</div>';
 }
+function guideHTML(cur) { if (!hasKey('room.goal.' + cur)) return ''; const trap = S.journal(state).length < 10 && hasKey('room.trap.' + cur); return '<div class="guide"><div><span class="guide-lbl">' + t('room.guideLabel') + '</span> ' + t('room.goal.' + cur) + '</div>' + (trap ? '<div class="guide-trap">' + t('room.trap.' + cur) + '</div>' : '') + '</div>'; }
 function sheetRoom(room) {
-  const v = room.view; const ctx = room.ctx; const steps = roomSteps(room); const cur = steps[room.step]; const eng = S.eng(state, v.engId);
+  const v = room.view; const ctx = room.ctx; const used = new Set(); const steps = roomSteps(room); const cur = steps[room.step]; const eng = S.eng(state, v.engId);
   const next = (key, dis) => '<button type="button" class="btn btn-primary" data-act="room-next"' + (dis ? ' disabled' : '') + '>' + t(key || 'ui.continue') + '</button>';
   const back = room.step > 0 && cur !== 'result' && cur !== 'premortem' && cur !== 'memo' ? '<button type="button" class="btn btn-ghost" data-act="room-back">' + t('ui.back') + '</button>' : '';
   let body = '', footer = '';
   if (cur === 'context') {
-    body = '<div class="row small muted mb">' + (eng ? pill(engTitle(eng), 'pill-navy') + pill(engTypeLabel(eng), 'pill-outline') : '') + (v.repeat ? pill(t('repeat.label'), 'pill-gold') : '') + pill(t(v.journal === 'full' ? 'room.energyFull' : 'room.energyLight'), 'pill-outline') + '</div><div class="body-text">' + tx(v.body, ctx) + '</div>' +
-      (v.attachments || []).map(a => '<details class="attach"><summary>' + tx(a.label, ctx) + '</summary><div>' + tx(a.text, ctx) + '</div></details>').join('') + (v.pushback ? '<div class="body-text mt"><b class="xs muted">' + t('room.pushback') + '</b><div><i>' + tx(v.pushback, ctx) + '</i></div></div>' : '') +
-      (v.hint ? '<div class="hint"><b class="small muted">' + t('room.hint') + '</b><div>' + tx(v.hint, ctx) + '</div></div>' : '') + baseRateCard(v.baseRate, ctx) + ((v.frameworks || []).length ? '<div class="pills mt">' + v.frameworks.map(f => pill(bdiWrap(esc(CT.frameworkLabel(f))), 'pill-outline')).join('') + '</div>' : '');
+    body = '<div class="row small muted mb">' + (eng ? pill(engTitle(eng), 'pill-navy') + pill(engTypeLabel(eng), 'pill-outline') : '') + (ctx && ctx.params && ctx.params.contact ? pill(t('room.chip.contact', { name: ctx.params.contact }), 'pill-outline') : '') + pill(t('room.chip.hours', { n: S.hoursLeft(state) }), 'pill-outline') + (v.repeat ? pill(t('repeat.label'), 'pill-gold') : '') + pill(t(v.journal === 'full' ? 'room.energyFull' : 'room.energyLight'), 'pill-outline') + '</div><div class="body-text">' + txl(v.body, ctx, used) + '</div>' +
+      (v.attachments || []).map(a => '<details class="attach"><summary>' + tx(a.label, ctx) + '</summary><div>' + txl(a.text, ctx, used) + '</div></details>').join('') + (v.pushback ? '<div class="body-text mt"><b class="xs muted">' + t('room.pushback') + '</b><div><i>' + txl(v.pushback, ctx, used) + '</i></div></div>' : '') +
+      (v.hint ? '<div class="hint"><b class="small muted">' + t('room.hint') + '</b><div>' + txl(v.hint, ctx, used) + '</div></div>' : '') + baseRateCard(v.baseRate, ctx) + ((v.frameworks || []).length ? '<div class="pills mt">' + v.frameworks.map(f => pill(bdiWrap(esc(CT.frameworkLabel(f))), 'pill-outline')).join('') + '</div>' : '');
     footer = '<span class="grow"></span>' + next();
   } else if (cur === 'framing') {
     body = '<p class="muted small">' + t('room.framing.prompt') + '</p><div class="option-list">' + (v.framings || []).map((f, i) => '<button type="button" class="option' + (room.framingId === f.id ? ' sel' : '') + '" data-act="room-framing" data-id="' + esc(f.id) + '"><span class="ltr" aria-hidden="true">' + (i + 1) + '</span><span class="txt">' + tx(f.text, ctx) + '</span></button>').join('') + '</div>';
     footer = back + '<span class="grow"></span>' + next('ui.continue', !room.framingId);
   } else if (cur === 'info') { body = '<p class="muted small">' + t('room.info.prompt') + '</p>' + infoHTML(room); footer = back + '<span class="grow"></span>' + next((v.info || []).some(i => i.bought) ? 'ui.continue' : 'room.info.skip'); }
-  else if (cur === 'options') { body = '<p class="muted small">' + t('room.options.prompt') + '</p>' + optionsHTML(v.options || [], ctx, room.optionId); footer = back + '<span class="grow"></span>'; }
+  else if (cur === 'options') { body = (state.player.energy < 30 ? '<div class="notice notice-danger mb">' + t('room.lowEnergy', { n: state.player.energy }) + '</div>' : '') + '<p class="muted small">' + t('room.options.prompt') + '</p>' + optionsHTML(v.options || [], ctx, room.optionId); footer = back + '<span class="grow"></span>'; }
   else if (cur === 'premortem') { body = '<p class="muted small">' + t('room.premortem.prompt') + '</p><div class="option-list">' + (v.failureModes || []).map((f, i) => '<button type="button" class="option' + (room.failureModeId === f.id ? ' sel' : '') + '" data-act="room-fm" data-id="' + esc(f.id) + '"><span class="ltr" aria-hidden="true">' + (i + 1) + '</span><span class="txt">' + tx(f.text, ctx) + '</span></button>').join('') + '</div>'; footer = '<span class="grow"></span>' + next('ui.continue', !room.failureModeId); }
   else if (cur === 'memo') {
     const opt = (v.options || []).find(o => o.id === room.optionId) || {}; const fm = (v.failureModes || []).find(f => f.id === room.failureModeId) || {};
@@ -552,6 +624,7 @@ function sheetRoom(room) {
       '<div class="memo-field"><span class="lbl">' + t('room.memo.when') + '</span><div class="seg" role="group">' + (v.followupChoices || [2, 4, 8]).map(w => '<button type="button" data-act="room-followup" data-w="' + w + '" aria-pressed="' + (room.followup === w) + '">' + t('room.followup.' + w) + '</button>').join('') + '</div><div class="xs faint mt">' + t('room.memo.cost') + '</div></div>';
     footer = '<span class="grow"></span><button type="button" class="btn btn-primary" data-act="room-submit"' + (room.rationaleId && room.followup ? '' : ' disabled') + '>' + t('room.memo.submit') + '</button>';
   } else { body = room.final ? resultHTML(room.final, ctx, room.final.lesson || v.lesson) : soon(); footer = closeBtn(true); }
+  body = (cur === 'context' ? hintCard('room') : '') + guideHTML(cur) + body;
   return { title: tx(v.title, ctx), titleText: txp(v.title, ctx), stepper: stepperHTML(room), body, footer, noClose: cur === 'premortem' || cur === 'memo' || cur === 'result' };
 }
 function roomGo(room, d) { const steps = roomSteps(room); room.step = Math.max(0, Math.min(steps.length - 1, room.step + d)); room.resetScroll = true; renderSheet(); }
@@ -598,6 +671,7 @@ function sheetMatch(sh) {
       '<div class="card mt"><h3 class="mb">' + t('match.ratings') + '</h3><div class="ratings">' + rows.filter(x => x[1] != null).map(([id, val]) => { const name = id === 'player' ? (state.player.name || tp('awards.you')) : personName(id, ctx); return '<div class="rating-row">' + avatar(name, id === 'player' ? 'gold' : '') + '<span class="grow">' + esc(name) + (id === 'player' ? ' ' + pill(t('match.rating.you'), 'pill-gold') : '') + '</span><span class="rating-n ' + (val >= 7 ? 'b4' : val >= 5 ? 'b3' : val >= 3 ? 'b2' : 'b1') + '">' + n(val) + '</span></div>'; }).join('') + '</div>' + (s.deltas ? '<div class="mt">' + deltaPills({ confidence: s.deltas.confidence, rep: s.deltas.rep }, ctx) + '</div>' : '') + (s.engQuality != null ? '<p class="small mt">' + t('match.deltaQuality', { n: Math.round(s.engQuality) }) + '</p>' : '') + '</div>';
     footer = closeBtn(true);
   }
+  if (!v.started && !v.done) body = hintCard('match') + body;
   return { title: esc(label), titleText: label, body, footer, noClose };
 }
 function matchChoose(sh, optId) {
@@ -745,6 +819,11 @@ const actions = {
   'open-load': (el) => { const st = loadSlot(Number(el.dataset.slot)); if (!st) { toast('toast.importFailed'); return; } state = st; ui.ctxCache = null; ui.slot = Number(el.dataset.slot); storage.setItem('mm.slot', String(ui.slot)); toast('toast.loaded'); go('dash'); },
   'open-delete': (el) => { const i = Number(el.dataset.slot); confirmBox(t('newgame.slot.delete') + ' · ' + t('newgame.slot.label', { n: i }), () => { storage.removeItem(SLOT_KEY(i)); render(); }, true); },
   'end-week': () => endWeek(),
+  'drill-resume': () => { const d = pendingDrillDef(state); if (d) openSheet({ kind: 'drill', drill: d, i: 0, picked: null, correct: 0, answers: [], done: false }); },
+  'preset': (el) => { if (el.disabled) return; applyPreset(el.dataset.id); },
+  'hint-dismiss': (el) => { const seen = hintsSeen(); if (!seen.includes(el.dataset.id)) seen.push(el.dataset.id); storage.setItem('mm.hints', JSON.stringify(seen)); if (ui.sheet) renderSheet(); render(); },
+  'hints-reset': () => { storage.removeItem('mm.hints'); toast('toast.hintsReset'); render(); },
+  'term': (el) => { const parent = ui.sheet; openSheet({ kind: 'term', id: el.dataset.id, onClose: parent ? () => { ui.sheet = parent; parent.resetScroll = false; renderSheet(); } : null }); },
   'block-add': (el) => { const kind = el.dataset.kind; if (el.disabled) return; if (kind === 'work' && el.dataset.eng) return spend('work', { engId: el.dataset.eng }); if (kind === 'work' || kind === 'learn' || kind === 'network') { openSheet({ kind: 'picker', kindBlock: kind }); return; } spend(kind, {}); },
   'block-pick': (el) => { const kind = el.dataset.kind, id = el.dataset.id; ui.sheet = null; if (kind === 'work') spend('work', { engId: id }); else if (kind === 'network') spend('network', { personId: id }); else if (kind === 'learn') { const d = CT.byId('drills', id); if (d) startDrillFromContent(d); } render(); },
   'item-open': (el) => openInboxItem(el.dataset.id),
@@ -805,12 +884,12 @@ function onEvent(ev) {
   try { fn(el, ev); } catch (e) { console.warn('action failed', el.dataset.act, e); toast('ui.engineError'); }
 }
 root.addEventListener('click', onEvent); root.addEventListener('input', onEvent); root.addEventListener('change', onEvent);
-root.addEventListener('keydown', (ev) => { if (ev.key === 'Escape' && ui.sheet) { let c; try { c = sheetContent(ui.sheet); } catch (e) { c = {}; } if (!c.noClose) closeSheet(); } });
+root.addEventListener('keydown', (ev) => { if ((ev.key === 'Enter' || ev.key === ' ') && ev.target.classList && ev.target.classList.contains('term')) { ev.preventDefault(); ev.target.click(); return; } if (ev.key === 'Escape' && ui.sheet) { let c; try { c = sheetContent(ui.sheet); } catch (e) { c = {}; } if (!c.noClose) closeSheet(); } });
 
 /* ───────────────────────── 10. BOOT ───────────────────────── */
 function snapshot() { return { state, ui: { screen: ui.screen, slot: ui.slot, filters: ui.filters } }; }
 function start(data) {
-  CT.load(); applyTheme(storage.getItem('mm.theme') || 'auto'); applySize(storage.getItem('mm.size') || 'md');
+  CT.load(); glossaryInit(); applyTheme(storage.getItem('mm.theme') || 'auto'); applySize(storage.getItem('mm.size') || 'md');
   if (data && data.state && data.state.player) { state = data.state; Object.assign(ui, data.ui || {}); ui.sheet = null; if (ui.screen === 'open') ui.screen = 'dash'; }
   else { const slot = Number(storage.getItem('mm.slot')) || 0; const st = slot ? loadSlot(slot) : null; if (st) { state = st; ui.slot = slot; ui.screen = 'dash'; } else ui.screen = 'open'; }
   render();

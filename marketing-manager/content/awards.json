@@ -1,0 +1,47 @@
+[
+  {
+    "id": "analystOfYear",
+    "key": "award.analystOfYear",
+    "he": "{אנליסט|אנליסטית} השנה",
+    "shame": false,
+    "criteria": "season-score-top",
+    "rule": "player wins when season score >= 70 and confidence >= 65 at week 48; otherwise the rival wins and the ceremony names them",
+    "desc": "ציון העונה הגבוה ביותר בכיתה, בתנאי שאמון הפירמה לא נשבר"
+  },
+  {
+    "id": "bestMemo",
+    "key": "award.bestMemo",
+    "he": "הממו הכי טוב",
+    "shame": false,
+    "criteria": "max-process-score",
+    "rule": "the full-room journal entry with the highest process score P this season (ties: the later one); requires at least one full room",
+    "desc": "ההחלטה שבה התהליך היה הכי נקי: מסגור, מידע, חלופה, פרה-מורטם וממו"
+  },
+  {
+    "id": "escalation",
+    "key": "award.escalation",
+    "he": "ההסלמה של העונה",
+    "shame": false,
+    "criteria": "right-escalation-max-impact",
+    "rule": "among entries with calibration 'right' and chosen escalation of 'inform' or 'escalate', the one with the largest abs(applied.confidence) + abs(applied.rep) + abs(applied.engQuality); requires at least one such entry",
+    "desc": "הסלמה שנעשתה בזמן הנכון, ובזכותה משהו לא נשבר"
+  },
+  {
+    "id": "finding",
+    "key": "award.finding",
+    "he": "הממצא של העונה",
+    "shame": false,
+    "criteria": "max-finding-impact",
+    "rule": "the finding on a closed engagement with the highest rating level; ties broken by the engagement's final quality; requires at least one finding this season",
+    "desc": "הממצא שעמד מול הלקוח ומול הרגולטור, ונשאר כתוב כמו שנכתב"
+  },
+  {
+    "id": "wolf",
+    "key": "award.wolf",
+    "he": "זאב-זאב",
+    "shame": true,
+    "criteria": "most-early-calibrations",
+    "rule": "awarded when at least 3 entries this season carry calibration 'early'; the ceremony shows the count",
+    "desc": "פרס הבושה: הסלמות מוקדמות מדי, כשעוד לא היה מה להסלים"
+  }
+]

@@ -13,8 +13,22 @@
 | `prototypes/campaign-2022-twists.html` | תפניות בקמפיין 2022 | https://claude.ai/artifact/V86vEvwiPZqn2sRspDnFsx |
 | `prototypes/after-the-ballot.html` | אחרי הקלפי | https://claude.ai/artifact/3EZ6SJA9PSMX3vJds1GFYX |
 | `prototypes/new-negotiation-meeting.html` | פגישת מו״מ חדשה | https://claude.ai/artifact/9rKgJXJAN7JcD8KEsr58sZ |
+| `marketing-manager/index.html` | **מרקטינג מנג'ר: הדרך לשותפות** (משחק קריירה בסגנון Football Manager לאנליסט ביקורת פנימית, ציות וסיכונים; גרסה ראשונה, דרגה 1) | https://claude.ai/artifact/DxPSXENYn3VbiLhixFLBVC |
 | `design/` | כיווני עיצוב (סבב 1 וסבב 2) | https://claude.ai/artifact/6KXWFtGneq7X1mojFG9WFL |
 
 כל קובץ הוא דף HTML עצמאי: פותחים אותו ישירות בדפדפן.
 
 לשחק באינטרנט: https://orgonen1999-arch.github.io/New-Game/game/
+
+מרקטינג מנג'ר: https://orgonen1999-arch.github.io/New-Game/marketing-manager/ (אחרי מיזוג הענף `claude/marketing-manager`)
+
+## מרקטינג מנג'ר: איך בונים
+
+```
+node marketing-manager/build.mjs        # מאמת את התוכן ומאגד את src/ ו-content/ לקובץ index.html אחד
+node --test marketing-manager/tools/engine.test.mjs
+node marketing-manager/tools/sim.mjs    # סימולציית איזון
+node marketing-manager/tools/smoke.mjs  # בדיקת עשן ב-Playwright
+```
+
+מסמך העיצוב: `marketing-manager/DESIGN.md`. מדריך כתיבת תרחישים: `marketing-manager/CONTENT.md`.

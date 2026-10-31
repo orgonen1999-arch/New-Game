@@ -1,0 +1,102 @@
+[
+  {
+    "id": "ofek",
+    "name": "אופק ביקורת פנימית",
+    "prestige": 45,
+    "pay": 0.9,
+    "minRep": 0,
+    "need": 1.0,
+    "hoursPenalty": 0,
+    "promoDelta": -5,
+    "trustMult": 1.5,
+    "incidentRate": 1.0,
+    "tagMult": {},
+    "infoCostMult": {},
+    "skillGainMult": {},
+    "repMult": {},
+    "recommendedStart": true,
+    "philosophy": "מיקור חוץ של ביקורת פנימית לגופים ציבוריים לפי חוק הביקורת הפנימית התשנ״ב-1992 ופקודת העיריות. משרד קטן ומשפחתי: כולם מכירים את כולם, הגזברים מכירים אותנו, ולומדים כאן מהר כי אין מי שיעשה את זה במקומך.",
+    "culture": "«אצלנו לא מסתתרים מאחורי מתודולוגיה. יוצאים לשטח, מדברים עם הגזבר, וכותבים ממצא שאפשר לקרוא.»",
+    "sectors": ["muni", "ministry", "govco", "statutory"],
+    "boardObjectives": [
+      { "metric": "meanQ", "target": 60, "hebrew": "איכות ממוצעת של התיקים ≥ 60" },
+      { "metric": "confidence", "target": 60, "hebrew": "אמון הפירמה ≥ 60 בסוף העונה" },
+      { "metric": "onTime", "target": 0.8, "hebrew": "לפחות 80% מהתיקים נסגרים במועד" }
+    ]
+  },
+  {
+    "id": "goldstein",
+    "name": "גולדשטיין–ברק ושות׳",
+    "prestige": 90,
+    "pay": 1.4,
+    "minRep": 55,
+    "need": 0.6,
+    "hoursPenalty": 4,
+    "promoDelta": 0,
+    "trustMult": 1.0,
+    "incidentRate": 1.0,
+    "tagMult": { "documentation": 1.1, "initiative": 0.9 },
+    "infoCostMult": {},
+    "skillGainMult": {},
+    "repMult": {},
+    "recommendedStart": false,
+    "philosophy": "פירמה בסגנון ארבע הגדולות: בנקים, חברות ביטוח וגופים מדווחים תחת ISOX. מתודולוגיה כתובה לכל צעד, תיעוד לפני יוזמה, שבוע של 44 שעות, ויריבים רבים על כל קידום. מי שמגיע לכאן לומד להגן על כל משפט בנייר עבודה.",
+    "culture": "«נייר העבודה הוא הדוח. אם זה לא מתועד, זה לא קרה.»",
+    "sectors": ["bank", "insurer", "provident", "invest"],
+    "boardObjectives": [
+      { "metric": "meanQ", "target": 70, "hebrew": "איכות ממוצעת של התיקים ≥ 70" },
+      { "metric": "meanP", "target": 65, "hebrew": "ציון תהליך ממוצע ביומן ≥ 65" },
+      { "metric": "onTime", "target": 0.9, "hebrew": "לפחות 90% מהתיקים נסגרים במועד" }
+    ]
+  },
+  {
+    "id": "castel",
+    "name": "קסטל ניהול סיכונים",
+    "prestige": 65,
+    "pay": 1.1,
+    "minRep": 35,
+    "need": 0.7,
+    "hoursPenalty": 2,
+    "promoDelta": 0,
+    "trustMult": 1.0,
+    "incidentRate": 1.5,
+    "tagMult": {},
+    "infoCostMult": { "evidence": 1.5 },
+    "skillGainMult": { "risk": 1.3 },
+    "repMult": {},
+    "recommendedStart": false,
+    "philosophy": "בית של סקרי סיכונים: הוראות 310, 350 ו-361, RCSA, מפות חום וחשיפות ארגוניות. המתודולוגיה של המשרד מעריכה מהירות ותמונת-על, ולכן זמן שמושקע בראיות נחשב יקר. מי שאוהב סיכונים גדל כאן הכי מהר, ומי שלא נזהר נתקל ביותר תקריות.",
+    "culture": "«הלקוח לא משלם על עוד ראיה. הוא משלם על מפת חום שמנהלים מבינים.»",
+    "sectors": ["bank", "insurer", "provident", "invest", "govco"],
+    "boardObjectives": [
+      { "metric": "meanQ", "target": 65, "hebrew": "איכות ממוצעת של התיקים ≥ 65" },
+      { "metric": "findings", "target": 12, "hebrew": "לפחות 12 ממצאים מתועדים בעונה" },
+      { "metric": "confidence", "target": 65, "hebrew": "אמון הפירמה ≥ 65 בסוף העונה" }
+    ]
+  },
+  {
+    "id": "segev",
+    "name": "שגב–פרץ ציות ורגולציה",
+    "prestige": 70,
+    "pay": 1.2,
+    "minRep": 45,
+    "need": 0.5,
+    "hoursPenalty": 2,
+    "promoDelta": 5,
+    "trustMult": 1.0,
+    "incidentRate": 1.0,
+    "tagMult": {},
+    "infoCostMult": {},
+    "skillGainMult": {},
+    "repMult": { "regulator": 1.5 },
+    "recommendedStart": false,
+    "philosophy": "בוטיק של עורכי דין ורואי חשבון לציות ורגולציה: הוראה 308, הוראה 411, צווי איסור הלבנת הון ותיקון 13 לחוק הגנת הפרטיות. הסולם איטי ומדויק, אבל כל אזכור חיובי מהרגולטור שווה כאן כפליים. מי שרוצה להיות האדם שבנק ישראל מתקשר אליו, מגיע לכאן.",
+    "culture": "«הרגולטור קורא כל מילה. גם את אלה שלא כתבת.»",
+    "sectors": ["bank", "insurer", "invest", "provident"],
+    "boardObjectives": [
+      { "metric": "rep", "target": 50, "hebrew": "מוניטין מקצועי ≥ 50 בסוף העונה" },
+      { "metric": "meanP", "target": 70, "hebrew": "ציון תהליך ממוצע ביומן ≥ 70" },
+      { "metric": "confidence", "target": 60, "hebrew": "אמון הפירמה ≥ 60 בסוף העונה" }
+    ]
+  }
+]

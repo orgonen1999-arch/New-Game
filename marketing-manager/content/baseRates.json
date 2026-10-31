@@ -1,0 +1,74 @@
+[
+  {
+    "id": "attr-25-1-90",
+    "n": 25,
+    "dev": 1,
+    "conf": 90,
+    "upper": 15,
+    "source": "AICPA Audit Sampling, attribute evaluation table, 10% risk of overreliance",
+    "he": "בתעשייה, בדגימת תכונות של {n} פריטים עם חריגה אחת, הגבול העליון לשיעור החריגה באוכלוסייה הוא עד ~{upper}% ברמת ביטחון {conf}%. חריגה אחת היא שאלה, לא תשובה."
+  },
+  {
+    "id": "attr-25-0-90",
+    "n": 25,
+    "dev": 0,
+    "conf": 90,
+    "upper": 9,
+    "source": "AICPA Audit Sampling, attribute evaluation table, 10% risk of overreliance",
+    "he": "בתעשייה, בדגימת תכונות של {n} פריטים ללא חריגות, הגבול העליון לשיעור החריגה באוכלוסייה הוא עדיין עד ~{upper}% ברמת ביטחון {conf}%. מדגם נקי אינו אוכלוסייה נקייה."
+  },
+  {
+    "id": "attr-25-1-95",
+    "n": 25,
+    "dev": 1,
+    "conf": 95,
+    "upper": 18,
+    "source": "AICPA Audit Sampling, attribute evaluation table, 5% risk of overreliance",
+    "he": "בתעשייה, בדגימת תכונות של {n} פריטים עם חריגה אחת, הגבול העליון לשיעור החריגה באוכלוסייה הוא עד ~{upper}% ברמת ביטחון {conf}%. ביטחון גבוה יותר מאותו מדגם פירושו גבול עליון גבוה יותר."
+  },
+  {
+    "id": "attr-25-2-90",
+    "n": 25,
+    "dev": 2,
+    "conf": 90,
+    "upper": 20,
+    "source": "Binomial upper bound (AICPA attribute evaluation table, 10% risk of overreliance)",
+    "he": "בתעשייה, בדגימת תכונות של {n} פריטים עם {dev} חריגות, הגבול העליון לשיעור החריגה באוכלוסייה הוא עד ~{upper}% ברמת ביטחון {conf}%. שתי חריגות ב-25 הן כבר אינדיקציה לכשל בבקרה."
+  },
+  {
+    "id": "attr-15-0-90",
+    "n": 15,
+    "dev": 0,
+    "conf": 90,
+    "upper": 14,
+    "source": "Binomial upper bound",
+    "he": "בתעשייה, בדגימת תכונות של {n} פריטים ללא חריגות, הגבול העליון לשיעור החריגה באוכלוסייה הוא עד ~{upper}% ברמת ביטחון {conf}%. מדגם של 15 מתאים לבקרה רבעונית או חודשית, לא לבקרה יומית."
+  },
+  {
+    "id": "attr-40-0-90",
+    "n": 40,
+    "dev": 0,
+    "conf": 90,
+    "upper": 6,
+    "source": "AICPA Audit Sampling, attribute evaluation table, 10% risk of overreliance",
+    "he": "בתעשייה, בדגימת תכונות של {n} פריטים ללא חריגות, הגבול העליון לשיעור החריגה באוכלוסייה הוא עד ~{upper}% ברמת ביטחון {conf}%. זה המדגם המקובל לבקרה שפועלת פעמים רבות ביום."
+  },
+  {
+    "id": "attr-40-1-90",
+    "n": 40,
+    "dev": 1,
+    "conf": 90,
+    "upper": 9,
+    "source": "AICPA Audit Sampling, attribute evaluation table, 10% risk of overreliance",
+    "he": "בתעשייה, בדגימת תכונות של {n} פריטים עם חריגה אחת, הגבול העליון לשיעור החריגה באוכלוסייה הוא עד ~{upper}% ברמת ביטחון {conf}%. אם השיעור הנסבל הוא 5%, המדגם אינו תומך בהסתמכות."
+  },
+  {
+    "id": "attr-60-0-95",
+    "n": 60,
+    "dev": 0,
+    "conf": 95,
+    "upper": 5,
+    "source": "AICPA Audit Sampling, attribute evaluation table, 5% risk of overreliance",
+    "he": "בתעשייה, בדגימת תכונות של {n} פריטים ללא חריגות, הגבול העליון לשיעור החריגה באוכלוסייה הוא עד ~{upper}% ברמת ביטחון {conf}%. כך נראה מדגם שתומך בשיעור נסבל של 5% בבקרת מפתח."
+  }
+]

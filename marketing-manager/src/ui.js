@@ -184,7 +184,7 @@ function autosave() { if (state) saveSlot(ui.slot || 1, state); }
 
 /* ───────────────────────── 3. UI STATE, ROUTING, RENDER ───────────────────────── */
 let state = null;
-const ui = { screen: 'open', slot: 1, sheet: null, toasts: [], engId: null, ctxCache: null, filters: { skill: '', domain: '' }, open: { name: '', gender: 'f', firmId: null }, sheetScroll: 0, exportMd: '', exportJson: '' };
+const ui = { screen: 'open', slot: 1, sheet: null, toasts: [], engId: null, ctxCache: null, filters: { skill: '', domain: '' }, open: { name: '', gender: 'f', firmId: null, onboarding: true }, sheetScroll: 0, exportMd: '', exportJson: '' };
 const root = document.getElementById('app');
 const TABS = [['dash', 'nav.board', '▦'], ['inbox', 'nav.inbox', '✉'], ['files', 'nav.cases', '▤'], ['me', 'nav.me', '◉'], ['more', 'nav.more', '⋯']];
 const ME = [['profile', 'nav.profile'], ['journal', 'nav.journal'], ['learn', 'nav.library']];
@@ -207,7 +207,7 @@ function render() {
   renderSheet();
 }
 function safe(fn, arg) { try { return fn(arg); } catch (e) { console.warn('render failed', e); return '<div class="empty">' + t('ui.renderError') + '<div class="xs faint">' + esc(e && e.message) + '</div></div>'; } }
-function topbar(st) { const e = st.player.energy ?? 0; return '<header class="topbar"><span class="week-chip">' + weekChip(st) + '</span><span class="grow"></span><span class="energy-mini"><span>' + t('board.energy') + '</span>' + barHTML(e, e < 30 ? 'danger' : 'ok') + n(e) + '</span></header>'; }
+function topbar(st) { const e = st.player.energy ?? 0; const ob = obActive(st) ? obView(st) : null; return '<header class="topbar"><span class="week-chip">' + (ob && !ob.threw ? t('onboarding.chip', { week: ob.week, weeks: ob.weeks }) : weekChip(st)) + '</span><span class="grow"></span><span class="energy-mini"><span>' + t('board.energy') + '</span>' + barHTML(e, e < 30 ? 'danger' : 'ok') + n(e) + '</span></header>'; }
 function toastsHTML() { return '<div class="toasts" aria-live="polite">' + ui.toasts.map(x => '<div class="toast">' + x.html + '</div>').join('') + '</div>'; }
 function toast(key, params, ctx) { pushToast(t(key, params, ctx)); }
 function pushToast(html) { if (!html) return; const o = { html }; ui.toasts.push(o); if (ui.toasts.length > 3) ui.toasts.shift(); refreshToasts(); setTimeout(() => { ui.toasts = ui.toasts.filter(x => x !== o); refreshToasts(); }, 2800); }
@@ -233,7 +233,7 @@ function renderSheet() {
 }
 function sheetContent(sh) {
   switch (sh.kind) {
-    case 'term': return sheetTerm(sh); case 'room': return sheetRoom(sh); case 'match': return sheetMatch(sh); case 'item': return sheetItem(sh); case 'followup': return sheetFollowup(sh); case 'entry': return sheetEntry(sh);
+    case 'term': return sheetTerm(sh); case 'unit': return sheetUnit(sh); case 'ask': return sheetAsk(sh); case 'room': return sheetRoom(sh); case 'match': return sheetMatch(sh); case 'item': return sheetItem(sh); case 'followup': return sheetFollowup(sh); case 'entry': return sheetEntry(sh);
     case 'confirm': return sheetConfirm(sh); case 'picker': return sheetPicker(sh); case 'lesson': return sheetLesson(sh); case 'builder': return sheetBuilder(sh); case 'drill': return sheetDrill(sh); case 'offer': return sheetOffer(sh);
     default: return { title: '', body: soon(), footer: closeBtn() };
   }
@@ -284,6 +284,7 @@ function screenOpen() {
   return '<section data-screen="open"><div class="open-hero"><h1 class="title">' + t('app.title') + '</h1><div class="tag">' + t('app.tagline') + '</div></div>' +
     '<div class="card"><h2 class="mb">' + t('newgame.title') + '</h2><div class="field"><label for="pname">' + t('newgame.name') + '</label><input id="pname" type="text" data-act="open-name" value="' + esc(o.name) + '" placeholder="' + esc(tp('newgame.namePlaceholder')) + '" autocomplete="name" maxlength="40"></div>' +
     '<div class="field"><span class="muted small">' + t('newgame.gender') + '</span><div class="seg" role="group"><button type="button" data-act="open-gender" data-g="f" aria-pressed="' + (o.gender === 'f') + '">' + t('newgame.gender.f') + '</button><button type="button" data-act="open-gender" data-g="m" aria-pressed="' + (o.gender === 'm') + '">' + t('newgame.gender.m') + '</button></div><span class="xs faint">' + t('newgame.grammarNote') + '</span></div>' +
+    '<div class="field"><span class="muted small">' + t('newgame.onboarding.label') + '</span><div class="seg" role="group"><button type="button" data-act="open-ob" data-v="1" aria-pressed="' + (o.onboarding !== false) + '">' + t('newgame.onboarding.on') + '</button><button type="button" data-act="open-ob" data-v="0" aria-pressed="' + (o.onboarding === false) + '">' + t('newgame.onboarding.off') + '</button></div><span class="xs faint">' + t('newgame.onboarding.note') + '</span></div>' +
     '<h3 class="mb mt">' + t('newgame.pickFirm') + '</h3><div class="grid-cards">' + cards + '</div>' + about + '<div class="btns end mt"><button type="button" class="btn btn-primary" data-act="open-start">' + t('newgame.start') + '</button></div>' + (has('newGame') ? '' : '<p class="soon mt">' + t('ui.soon') + '</p>') + '</div>' +
     '<div class="section-title"><h2>' + t('newgame.slots') + '</h2></div><div class="stack">' + slots + '</div></section>';
 }
@@ -327,6 +328,7 @@ function nextCardHTML(st) {
   return '<div class="next-card"><span class="eyebrow">' + t('next.label') + ' · ' + t('next.eyebrow.' + na.kind) + '</span><h2>' + bdiWrap(esc(na.title)) + '</h2>' + (na.sub ? '<p class="small muted">' + bdiWrap(esc(na.sub)) + '</p>' : '') + '<div class="btns"><button type="button" class="btn btn-primary" data-act="item-open" data-id="' + esc(na.item.id) + '">' + t('next.open') + '</button></div></div>';
 }
 function screenDash(st) {
+  if (obActive(st)) return screenOnboarding(st);
   const p = st.player; const b = S.budget(st); const left = S.hoursLeft(st); const used = 40 - left; const H = HOURS();
   const chips = Object.keys(H).map(k => '<button type="button" class="chip" data-act="block-add" data-kind="' + k + '"' + (left < H[k] ? ' disabled' : '') + '>' + t('budget.' + k) + ' <span class="cost">' + t('budget.chipHours', { n: H[k] }) + ' · ' + t('budget.energyPrice', { n: ENERGY_PRICE[k] }) + '</span></button>').join('');
   const log = Array.isArray(b.log) ? b.log : [];
@@ -787,9 +789,78 @@ function spend(kind, target) {
   autosave(); render();
 }
 
+/* ───────────────────────── ONBOARDING («חפיפה») ───────────────────────── */
+const obActive = st => !!(st && st.onboarding && st.onboarding.active);
+function obUnitDef(id) { const o = CT.bank('onboarding'); return o && Array.isArray(o.units) ? o.units.find(u => u.id === id) || null : null; }
+function obView(st) { return has('onboardingView') ? call('onboardingView', st) : null; }
+function screenOnboarding(st) {
+  const v = obView(st); if (!v || v.threw) return soon();
+  const next = v.next ? obUnitDef(v.next) : null; const total = v.units.length; const doneN = v.units.filter(u => u.status === 'done').length;
+  let card = '';
+  if (v.examPassed) card = '<div class="next-card"><span class="eyebrow">' + t('onboarding.exam.eyebrow') + '</span><h2>' + t('onboarding.finish.title') + '</h2><p class="small muted">' + t('onboarding.finish.sub') + '</p><div class="btns"><button type="button" class="btn btn-primary" data-act="ob-finish">' + t('onboarding.finish.btn') + '</button></div></div>';
+  else if (next) card = '<div class="next-card"><span class="eyebrow">' + t(next.exam ? 'onboarding.exam.eyebrow' : 'onboarding.next.eyebrow') + '</span><h2>' + tx(next.title) + '</h2><p class="small muted">' + tx(next.concept || '') + '</p><div class="btns"><button type="button" class="btn btn-primary" data-act="unit-open" data-id="' + esc(next.id) + '">' + t('next.open') + '</button></div></div>';
+  else card = '<div class="next-card"><span class="eyebrow">' + t('onboarding.title') + '</span><h2>' + t('onboarding.weekDone.title') + '</h2><p class="small muted">' + t(v.units.some(u => u.week === v.week) ? 'onboarding.weekDone.sub' : 'onboarding.comingSoon') + '</p><div class="btns"><button type="button" class="btn btn-primary" data-act="end-week">' + t('onboarding.endWeek') + '</button></div></div>';
+  const map = v.units.map(u => { const d = obUnitDef(u.id) || {}; const status = u.status === 'done' ? pill(t('onboarding.status.done', { n: u.score }), 'pill-ok') : u.status === 'open' ? pill(t('onboarding.status.open'), 'pill-gold') : pill(t('onboarding.status.locked', { week: u.week }), 'pill-outline');
+    return '<button type="button" class="concept ' + u.status + '" data-act="unit-open" data-id="' + esc(u.id) + '"' + (u.status === 'locked' ? ' disabled' : '') + '><span class="xs muted">' + t('ui.week', { n: u.week }) + '</span><b>' + tx(d.concept || d.title || u.id) + '</b>' + status + '</button>'; }).join('');
+  return '<section data-screen="dash" class="dash"><div class="card-h"><h1 class="screen-title">' + t('onboarding.title') + '</h1>' + pill(t('onboarding.chip', { week: v.week, weeks: v.weeks }), 'pill-navy') + '</div>' + hintCard('onboarding') + '<p class="small muted mb">' + t('onboarding.intro') + '</p>' + card +
+    '<div class="section-title"><h2>' + t('onboarding.map') + '</h2><span class="muted small">' + t('onboarding.mapProgress', { n: doneN, total }) + '</span></div><div class="concept-map">' + map + '</div>' +
+    (v.week < v.weeks && next ? '<div class="sticky-end"><button type="button" class="btn" data-act="end-week">' + t('onboarding.endWeek') + '</button></div>' : '') + '</section>';
+}
+const UNIT_STEPS = ['scene', 'analogy', 'task', 'check', 'summary'];
+function openUnit(id) { const u = obUnitDef(id); if (!u) { toast('onboarding.missing'); return; } openSheet({ kind: 'unit', id, step: 0, bins: {}, picks: {}, check: null, taskChecked: false }); }
+function personTitle(who) { if (who === 'thought') return t('unit.thought'); const p = CT.person(who); return p ? esc(p.name) : esc(who); }
+function unitTaskScore(sh, u) {
+  const task = u.task || {};
+  if (task.kind === 'classify') { const items = task.items || []; return items.length ? items.filter((it, i) => sh.bins[i] === it.bin).length / items.length : 1; }
+  const qs = task.questions || []; return qs.length ? qs.filter((q, i) => sh.picks[i] != null && (q.options[sh.picks[i]] || {}).ok).length / qs.length : 1;
+}
+function unitScore(sh, u) { const c = u.check && sh.check != null && (u.check.options[sh.check] || {}).ok ? 1 : 0; return Math.round(100 * (0.7 * unitTaskScore(sh, u) + 0.3 * (u.check ? c : 1))); }
+function choiceHTML(q, picked, act, qi) {
+  return '<div class="uq">' + (q.q ? '<p class="uq-q">' + txl(q.q) + '</p>' : '') + '<div class="option-list">' + q.options.map((o, i) => { const shown = picked != null; const cls = shown ? (o.ok ? ' ok' : i === picked ? ' bad' : ' dim') : ''; return '<button type="button" class="option' + cls + '" data-act="' + act + '"' + (qi != null ? ' data-q="' + qi + '"' : '') + ' data-i="' + i + '"' + (shown ? ' aria-disabled="true"' : '') + '><span class="txt">' + txl(o.t) + (shown && (o.ok || i === picked) ? '<span class="why">' + (o.ok ? t('unit.correct') : t('unit.wrong')) + ' · ' + txl(o.why || '') + '</span>' : '') + '</span></button>'; }).join('') + '</div></div>';
+}
+function sheetUnit(sh) {
+  const u = obUnitDef(sh.id); if (!u) return { title: '', body: soon(), footer: closeBtn() };
+  const cur = UNIT_STEPS[sh.step]; const used = new Set(); let body = '', canNext = true;
+  const stepper = '<div class="stepper" role="list">' + UNIT_STEPS.map((s, i) => '<span class="step' + (i < sh.step ? ' done' : i === sh.step ? ' cur' : '') + '" role="listitem"><i>' + (i < sh.step ? '✓' : (i + 1)) + '</i>' + t('unit.step.' + s) + '</span>').join('') + '</div>';
+  if (cur === 'scene') body = '<div class="dialog">' + (u.scene || []).map(l => '<div class="line ' + (l.who === 'thought' ? 'thought' : '') + '">' + (l.who === 'thought' ? '' : avatar(CT.person(l.who) ? CT.person(l.who).name : l.who)) + '<div class="bubble"><b class="xs">' + personTitle(l.who) + '</b><div>' + txl(l.text, null, used) + '</div></div></div>').join('') + '</div>';
+  else if (cur === 'analogy') body = '<div class="analogy"><span class="eyebrow">' + t('unit.analogyLbl') + '</span><h3>' + tx(u.analogy ? u.analogy.title : '') + '</h3><p>' + txl(u.analogy ? u.analogy.text : '', null, used) + '</p></div>';
+  else if (cur === 'task') {
+    const task = u.task || {}; body = '<p class="small muted mb">' + txl(task.intro || '') + '</p>';
+    if (task.kind === 'classify') {
+      body += '<div class="classify">' + (task.items || []).map((it, i) => { const pick = sh.bins[i]; const res = sh.taskChecked ? (pick === it.bin ? ' ok' : ' bad') : ''; return '<div class="cl-item' + res + '"><div class="cl-text">' + txl(it.text) + '</div><div class="seg" role="group">' + (task.bins || []).map(b => '<button type="button" data-act="u-bin" data-i="' + i + '" data-v="' + esc(b.id) + '" aria-pressed="' + (pick === b.id) + '"' + (sh.taskChecked ? ' disabled' : '') + '>' + tx(b.label) + '</button>').join('') + '</div>' + (sh.taskChecked ? '<div class="why">' + (pick === it.bin ? t('unit.correct') : t('unit.wrong') + ' · ' + tx((task.bins.find(b => b.id === it.bin) || {}).label || '')) + ' · ' + txl(it.why || '') + '</div>' : '') + '</div>'; }).join('') + '</div>';
+      const all = (task.items || []).every((it, i) => sh.bins[i]); canNext = sh.taskChecked;
+      if (!sh.taskChecked) body += '<div class="btns mt"><button type="button" class="btn btn-navy" data-act="u-check-task"' + (all ? '' : ' disabled') + '>' + t('unit.check') + '</button></div>';
+    } else { body += (task.questions || []).map((q, qi) => choiceHTML(q, sh.picks[qi], 'u-opt', qi)).join(''); canNext = (task.questions || []).every((q, qi) => sh.picks[qi] != null); }
+  } else if (cur === 'check') { body = u.check ? choiceHTML(u.check, sh.check, 'u-chk', null) : ''; canNext = !u.check || sh.check != null; }
+  else {
+    const score = unitScore(sh, u); const fail = u.exam && score < num0(u.pass, 70);
+    body = '<div class="u-score">' + t('unit.score', { n: score }) + '</div>' + (u.exam ? '<p class="' + (fail ? 'notice notice-danger' : 'notice notice-ok') + '">' + t(fail ? 'unit.examFail' : 'unit.examPass') + '</p>' : '') +
+      '<div class="fb-rule mt"><span class="lbl">' + t('unit.takeaway') + '</span><div>' + tx(u.takeaway || '') + '</div></div>' +
+      ((u.terms || []).length ? '<p class="small muted mt">' + t('unit.terms') + '</p><div class="pills">' + u.terms.map(id => GL.byId[id] ? '<button type="button" class="pill pill-outline term-chip" data-act="term" data-id="' + esc(id) + '">' + bdiWrap(esc(GL.byId[id].title)) + '</button>' : '').join('') + '</div>' : '');
+    return { title: tx(u.title), titleText: txp(u.title), stepper, body, footer: '<button type="button" class="btn btn-ghost" data-act="u-ask">' + t('unit.ask') + '</button><span class="grow"></span>' + (fail ? '<button type="button" class="btn" data-act="u-retry">' + t('unit.retry') + '</button>' : '') + '<button type="button" class="btn btn-primary" data-act="u-finish">' + t('unit.finish') + '</button>' };
+  }
+  const footer = '<button type="button" class="btn btn-ghost" data-act="u-ask">' + t('unit.ask') + '</button><span class="grow"></span>' + (sh.step > 0 ? '<button type="button" class="btn btn-ghost" data-act="u-back">' + t('ui.back') + '</button>' : '') + '<button type="button" class="btn btn-primary" data-act="u-next"' + (canNext ? '' : ' disabled') + '>' + t('ui.continue') + '</button>';
+  return { title: tx(u.title), titleText: txp(u.title), stepper, body, footer };
+}
+function num0(v, d) { const x = Number(v); return isFinite(x) ? x : d; }
+function sheetAsk(sh) { const u = obUnitDef(sh.id) || {}; return { title: t('unit.ask'), body: '<p class="small muted">' + t('unit.askBody') + '</p>' + (u.terms || []).map(id => { const g = GL.byId[id]; return g ? '<div class="ask-term"><b>' + bdiWrap(esc(g.title)) + '</b><p class="small">' + bdiWrap(esc(g.short)) + '</p></div>' : ''; }).join(''), footer: closeBtn(true) }; }
+function unitGo(sh, d) { sh.step = Math.max(0, Math.min(UNIT_STEPS.length - 1, sh.step + d)); sh.resetScroll = true; renderSheet(); }
+function finishUnit(sh) {
+  const u = obUnitDef(sh.id); const score = unitScore(sh, u);
+  const r = call('completeUnit', state, sh.id, score); if (!okRes(r)) { errToast(r); return; }
+  toast('unit.done', { title: txp(u.title) }); autosave(); closeSheet(); render();
+}
+function finishOnboardingUI() { const r = call('finishOnboarding', state, { storage, slot: ui.slot }); if (!okRes(r)) { errToast(r); return; } showMessages(r.notes); autosave(); go('dash'); }
+
 /* ───────────────────────── 9. EVENTS (delegated on #app) ───────────────────────── */
 function endWeek() {
   if (!has('tick')) { toast('ui.soon'); return; }
+  if (obActive(state)) {
+    const v = obView(state); const open = v && !v.threw ? v.units.filter(u => u.status === 'open' && u.week === v.week).length : 0;
+    if (open && !ui.endWeekConfirmed) { confirmBox(t('onboarding.endWeekOpen', { n: open }), () => endWeek()); return; }
+    const r = call('tick', state, { storage, slot: ui.slot }); ui.ctxCache = null; if (!r || r.threw) { errToast(r); return; }
+    showMessages(r.notes); autosave(); ui.sheet = null; go('dash'); return;
+  }
   const unplayed = S.inbox(state).filter(i => i.type === 'moment').length; const unopened = S.inbox(state).filter(i => i.type === 'decision').length;
   if ((unplayed || unopened) && !ui.endWeekConfirmed) { ui.endWeekConfirmed = true; confirmBox((unplayed ? t('board.endWeekBlocked') + ' ' : '') + (unopened ? t('board.endWeekUnread', { n: unopened }) : ''), () => { endWeek(); ui.endWeekConfirmed = false; }); ui.endWeekConfirmed = false; ui.pendingEnd = true; return; }
   const r = call('tick', state, { storage, slot: ui.slot }); ui.ctxCache = null;
@@ -803,7 +874,7 @@ function applySize(v) { const h = document.documentElement; if (v === 'sm' || v 
 function startNewGame() {
   const o = ui.open; if (!o.name.trim()) { toast('newgame.nameRequired'); return; }
   let st = null;
-  if (has('newGame')) { st = call('newGame', { name: o.name.trim(), gender: o.gender, firmId: o.firmId }); if (!st || st.threw || !st.player) { errToast(st); return; } }
+  if (has('newGame')) { st = call('newGame', { name: o.name.trim(), gender: o.gender, firmId: o.firmId, onboarding: o.onboarding !== false }); if (!st || st.threw || !st.player) { errToast(st); return; } }
   else { st = defaultState({ name: o.name.trim(), gender: o.gender, firmId: o.firmId }); toast('ui.soon'); }
   state = st; ui.ctxCache = null; const free = [1, 2, 3].find(i => !slotMeta(i)); ui.slot = free || 1; autosave(); ui.sheet = null; go('dash');
 }
@@ -819,6 +890,18 @@ const actions = {
   'open-load': (el) => { const st = loadSlot(Number(el.dataset.slot)); if (!st) { toast('toast.importFailed'); return; } state = st; ui.ctxCache = null; ui.slot = Number(el.dataset.slot); storage.setItem('mm.slot', String(ui.slot)); toast('toast.loaded'); go('dash'); },
   'open-delete': (el) => { const i = Number(el.dataset.slot); confirmBox(t('newgame.slot.delete') + ' · ' + t('newgame.slot.label', { n: i }), () => { storage.removeItem(SLOT_KEY(i)); render(); }, true); },
   'end-week': () => endWeek(),
+  'open-ob': (el) => { ui.open.onboarding = el.dataset.v === '1'; render(); },
+  'unit-open': (el) => { if (el.disabled) return; openUnit(el.dataset.id); },
+  'u-next': () => { if (ui.sheet && ui.sheet.kind === 'unit') unitGo(ui.sheet, 1); },
+  'u-back': () => { if (ui.sheet && ui.sheet.kind === 'unit') unitGo(ui.sheet, -1); },
+  'u-bin': (el) => { const sh = ui.sheet; if (!sh || sh.taskChecked) return; sh.bins[Number(el.dataset.i)] = el.dataset.v; renderSheet(); },
+  'u-check-task': () => { const sh = ui.sheet; if (!sh) return; sh.taskChecked = true; renderSheet(); },
+  'u-opt': (el) => { const sh = ui.sheet; if (!sh) return; const q = Number(el.dataset.q); if (sh.picks[q] != null) return; sh.picks[q] = Number(el.dataset.i); renderSheet(); },
+  'u-chk': (el) => { const sh = ui.sheet; if (!sh || sh.check != null) return; sh.check = Number(el.dataset.i); renderSheet(); },
+  'u-retry': () => { const sh = ui.sheet; if (!sh) return; sh.bins = {}; sh.picks = {}; sh.check = null; sh.taskChecked = false; sh.step = UNIT_STEPS.indexOf('task'); sh.resetScroll = true; renderSheet(); },
+  'u-finish': () => { if (ui.sheet && ui.sheet.kind === 'unit') finishUnit(ui.sheet); },
+  'u-ask': () => { const parent = ui.sheet; if (!parent) return; if (has('askQuestion')) call('askQuestion', state); openSheet({ kind: 'ask', id: parent.id, onClose: () => { ui.sheet = parent; parent.resetScroll = false; renderSheet(); } }); },
+  'ob-finish': () => finishOnboardingUI(),
   'drill-resume': () => { const d = pendingDrillDef(state); if (d) openSheet({ kind: 'drill', drill: d, i: 0, picked: null, correct: 0, answers: [], done: false }); },
   'preset': (el) => { if (el.disabled) return; applyPreset(el.dataset.id); },
   'hint-dismiss': (el) => { const seen = hintsSeen(); if (!seen.includes(el.dataset.id)) seen.push(el.dataset.id); storage.setItem('mm.hints', JSON.stringify(seen)); if (ui.sheet) renderSheet(); render(); },

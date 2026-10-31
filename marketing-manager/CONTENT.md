@@ -471,3 +471,18 @@ When the player holds 2 scouting points the item appears `leadWeeks` early as «
 5. Every `failureMode.signal` is observable within the follow-up window.
 6. Public-sector scenarios cite פקודת העיריות / חוזרי מנכ"ל / רשות החברות, not only the 1992 law; bank scenarios cite the directive by number; ISOX scenarios use the `icfr` scale and no other.
 7. Player tokens `{masc|fem}` only for the player; NPCs get a prefix or a neutral form.
+
+## Onboarding units («חפיפה»)
+
+File: `content/onboarding.json` = `{ "weeks": 6, "units": [unit, ...] }`. A new career starts in onboarding unless the player picks «יש לי ניסיון, לדלג». The season clock waits at week 1; each «לשבוע הבא בחפיפה» advances only the onboarding week. Units unlock by `week`. The unit with `"exam": true` (week 6) must reach `pass` (default 70) before «לסיים את החפיפה» opens the season.
+
+Unit shape:
+- `id`, `week`, `title`, `concept` (short label for the concept map), `skills: [{id, w}]` (mastery update with the unit score), `terms: [glossary ids]`, `takeaway` (one transferable rule).
+- `scene: [{ who, text }]` where `who` is a cast id (`naama` mentor, `uri` manager, …) or `"thought"` for the plain-language layer «מה זה אומר בפשטות».
+- `analogy: { title, text }`: an everyday example before the jargon.
+- `task`: `{ intro, kind: "classify", bins: [{id, label}], items: [{text, bin, why}] }` or `{ intro, kind: "choice", questions: [{ q, options: [{t, ok, why}] }] }`.
+- `check: { q, options: [{t, ok, why}] }`: one understanding question.
+
+Score = 70% task (share correct) + 30% check. Rules: one new concept per unit, analogy before terminology, every option carries a `why`, player-gender tokens as everywhere else, no slash forms.
+
+Weeks 1–2 and the exam are authored. Planned for weeks 3–5: population and sample, what counts as evidence, working papers; walkthrough and interviews, the first email and document request list, the Israeli regulator map; finding anatomy, rating severity, when to escalate versus inform.

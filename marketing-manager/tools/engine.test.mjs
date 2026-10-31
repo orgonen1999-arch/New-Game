@@ -527,3 +527,23 @@ test('no literal Hebrew and no closing script tag in engine.js', async () => {
   assert.ok(src.trimEnd().endsWith("})(typeof globalThis !== 'undefined' ? globalThis : this);"))
   assert.ok(src.includes("if (typeof module !== 'undefined') module.exports = MM;"))
 })
+
+test('onboarding: a new game starts in a pre-season; units unlock by week; the exam opens the season; skipping draws the season inbox at once', () => {
+  load()
+  const ob = { weeks: 2, units: [{ id: 'u1', week: 1, skill: 'risk' }, { id: 'u2', week: 2, skill: 'controls' }, { id: 'ex', week: 2, exam: true, pass: 70, skill: 'writing' }] }
+  load({ onboarding: ob })
+  const st = MM.newGame({ name: 'נועה', gender: 'f', seed: 4 })
+  assert.equal(st.onboarding.active, true); assert.equal(st.inbox.filter(i => i.type === 'decision').length, 0)
+  let v = MM.onboardingView(st); assert.equal(v.weeks, 2); assert.equal(v.units.find(u => u.id === 'u2').status, 'locked')
+  assert.equal(MM.completeUnit(st, 'u2', 90).ok, false)
+  const r = MM.completeUnit(st, 'u1', 80); assert.equal(r.ok, true); assert.ok(r.deltas.risk >= 0)
+  const w = st.week; MM.tick(st); assert.equal(st.week, w); assert.equal(st.onboarding.week, 2)
+  assert.equal(MM.finishOnboarding(st).ok, false)
+  MM.completeUnit(st, 'ex', 60); assert.equal(st.onboarding.examPassed, false)
+  MM.completeUnit(st, 'ex', 85); assert.equal(st.onboarding.examPassed, true)
+  const f = MM.finishOnboarding(st); assert.equal(f.ok, true); assert.equal(st.onboarding.active, false); assert.equal(st.week, w)
+  assert.ok(st.inbox.some(i => i.type === 'decision'))
+  const sk = MM.newGame({ name: 'דן', gender: 'm', seed: 4, onboarding: false })
+  assert.equal(sk.onboarding.active, false); assert.equal(sk.onboarding.skipped, true); assert.ok(sk.inbox.some(i => i.type === 'decision'))
+  load()
+})

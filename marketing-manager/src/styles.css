@@ -650,3 +650,33 @@ details.fb-more[open] { display: grid; gap: 8px; }
 .coach { flex-wrap: wrap; }
 .coach .grow { flex: 1 1 14em; min-inline-size: 0; }
 .coach .btn { flex: none; white-space: nowrap; align-self: flex-start; }
+
+/* ── onboarding ── */
+.concept-map { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 8px; }
+.concept { display: grid; gap: 4px; align-content: start; text-align: start; padding: 10px 12px; border: 1px solid var(--line); border-radius: var(--r-sm); background: var(--surface); color: var(--text); font: inherit; cursor: pointer; }
+.concept.done { border-color: rgba(33, 122, 75, .35); }
+.concept.open { border-color: var(--gold); box-shadow: var(--shadow-1); }
+.concept.locked { background: var(--surface-2); color: var(--faint); cursor: default; }
+.concept .pill { justify-self: start; }
+.dialog { display: grid; gap: 10px; }
+.dialog .line { display: flex; gap: 10px; align-items: flex-start; }
+.dialog .bubble { background: var(--surface-2); border-radius: var(--r-md); padding: 8px 12px; min-inline-size: 0; flex: 1; }
+.dialog .bubble b { display: block; color: var(--muted); margin-block-end: 2px; }
+.dialog .line.thought .bubble { background: var(--gold-soft); border-inline-start: 4px solid var(--gold); font-weight: 500; }
+.dialog .line.thought .bubble b { color: var(--gold-ink); }
+.analogy { background: var(--surface-2); border-radius: var(--r-md); padding: 14px 16px; display: grid; gap: 6px; }
+.analogy h3 { font-size: 1.1rem; }
+.classify { display: grid; gap: 10px; }
+.cl-item { border: 1px solid var(--line); border-radius: var(--r-sm); padding: 10px 12px; display: grid; gap: 8px; background: var(--surface); }
+.cl-item.ok { border-color: rgba(33, 122, 75, .45); }
+.cl-item.bad { border-color: rgba(180, 35, 24, .45); }
+.cl-item .seg { flex-wrap: wrap; }
+.why { display: block; font-size: .86rem; color: var(--muted); margin-block-start: 4px; }
+.option.ok { border-color: rgba(33, 122, 75, .55); background: var(--ok-soft); }
+.option.bad { border-color: rgba(180, 35, 24, .45); background: var(--danger-soft); }
+.option.dim { opacity: .6; }
+.uq { margin-block-end: 14px; }
+.uq-q { font-weight: 600; margin-block-end: 6px; }
+.u-score { font-family: var(--font-display); font-size: 1.6rem; color: var(--navy); }
+.ask-term { border-block-end: 1px solid var(--line); padding-block: 8px; }
+.term-chip { cursor: pointer; font: inherit; }

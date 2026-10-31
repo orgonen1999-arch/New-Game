@@ -369,7 +369,10 @@
     };
     initSkills(state); initFirm(state, firm.id); initWorld(state);
     startSeason(state, []);
-    drawInbox(state, []);
+    // onboarding: a pre-season for a junior with no background; the season clock waits at week 1
+    const obOn = opts.onboarding !== false && obUnits().length > 0;
+    state.onboarding = obOn ? { active: true, week: 1, done: {}, asked: 0, examPassed: false, startedAbs: absWeek(state) } : { active: false, skipped: opts.onboarding === false };
+    if (!obOn) drawInbox(state, []);
     state.stats.energyLog.push(state.player.energy);
     return state;
   }
@@ -1325,8 +1328,50 @@
 
   // ───────────────────────── the tick ─────────────────────────
   // End of week: the deterministic weekly step in the §14 order. Returns { notes, week, season, energyDelta }.
+  // ───────────────────────── onboarding ─────────────────────────
+  // Content: content/onboarding.json { weeks, units: [{ id, week, skill, exam?, ... }] }. The engine only tracks progress;
+  // the unit's scene, task and check are rendered and scored by the UI, which reports a 0-100 score.
+  function obContent() { const o = C.onboarding; return (o && typeof o === 'object' && !Array.isArray(o)) ? o : { weeks: 0, units: asArray(o) }; }
+  function obUnits() { return asArray(obContent().units).filter(u => u && u.id); }
+  function obWeeks() { const w = num(obContent().weeks, 0); return w > 0 ? w : Math.max(0, ...obUnits().map(u => num(u.week, 1))); }
+  const obActive = state => !!(state && state.onboarding && state.onboarding.active);
+  function onboardingView(state) {
+    const ob = state.onboarding || {}; const weeks = obWeeks();
+    const units = obUnits().map(u => { const d = ob.done && ob.done[u.id]; return { id: u.id, week: num(u.week, 1), exam: !!u.exam, status: d ? 'done' : num(u.week, 1) <= num(ob.week, 1) ? 'open' : 'locked', score: d ? d.score : null }; });
+    const open = units.filter(u => u.status === 'open');
+    return { active: obActive(state), skipped: !!ob.skipped, week: num(ob.week, 1), weeks, units, next: open[0] ? open[0].id : null, examPassed: !!ob.examPassed, asked: num(ob.asked, 0), canFinish: !!ob.examPassed };
+  }
+  function completeUnit(state, unitId, score) {
+    if (!obActive(state)) return err('onboarding.inactive');
+    const u = obUnits().find(x => x.id === unitId); if (!u) return err('onboarding.missing', { id: unitId });
+    if (num(u.week, 1) > num(state.onboarding.week, 1)) return err('onboarding.locked', { week: u.week });
+    score = clamp(Math.round(num(score, 0)), 0, 100);
+    const prev = state.onboarding.done[unitId]; state.onboarding.done[unitId] = { score: prev ? Math.max(prev.score, score) : score, week: state.onboarding.week, tries: prev ? num(prev.tries, 1) + 1 : 1 };
+    const deltas = {};
+    for (const sk of listOf(u.skills || (u.skill ? [{ id: u.skill, w: 1 }] : []))) { const id = typeof sk === 'string' ? sk : sk.id; if (!state.player.skills[id]) continue; deltas[id] = mastery(state, id, score, { w: typeof sk === 'string' ? 1 : num(sk.w, 1), drill: true }); }
+    if (u.exam && score >= num(u.pass, 70)) state.onboarding.examPassed = true;
+    return { ok: true, score, deltas, examPassed: !!state.onboarding.examPassed };
+  }
+  function askQuestion(state) { if (state.onboarding) state.onboarding.asked = num(state.onboarding.asked, 0) + 1; return { ok: true, asked: state.onboarding ? state.onboarding.asked : 0 }; }
+  function finishOnboarding(state, opts) {
+    if (!obActive(state)) return err('onboarding.inactive');
+    if (!state.onboarding.examPassed) return err('onboarding.examNeeded');
+    const notes = []; state.onboarding.active = false; state.onboarding.finishedWeek = state.onboarding.week;
+    state.player.energy = 80; state.budget = newBudget();
+    drawInbox(state, notes); note(notes, 'onboarding.done', { name: state.player.name });
+    if (opts && opts.storage) save(state, opts.storage, opts.slot || 1);
+    return { ok: true, notes };
+  }
+  function onboardingTick(state, opts) {
+    const notes = []; const ob = state.onboarding; const weeks = obWeeks();
+    if (ob.week < weeks) { ob.week++; note(notes, 'onboarding.weekStarted', { week: ob.week, weeks }); } else note(notes, 'onboarding.examWaiting', {});
+    state.budget = newBudget(); state.player.energy = 80;
+    if (opts && opts.storage) save(state, opts.storage, opts.slot || 1);
+    return { notes, week: state.week, season: state.season, onboarding: ob.week, energyDelta: 0 };
+  }
   function tick(state, opts) {
     opts = opts || {}; const notes = [];
+    if (obActive(state)) return onboardingTick(state, opts);
     if (state.ended) return { notes: [note(null, state.ended.key)], week: state.week, season: state.season, ended: state.ended };
     const budget = state.budget; const cl = cal();
     const seasonEnded = state.week >= WEEKS;
@@ -1488,7 +1533,7 @@
   const MM = {
     VERSION, WEEKS, SKILLS, CRAFT, PROCESS, PARTNER, PHASES, LADDER, FOLLOWUP_LADDER, RUBRIC_W, CAPS, TIER_CEIL, TRUST0, HOURS, DSL, calendar: cal,
     loadContent, content, scenario: scenarioById, moment: momentById, personDef, clientDef, firmDef, matchTypeDef, lessonDef, frameworkDef, scaleDef, tagDef, drillSkills,
-    newGame, tick, draw: drawInbox, drawOne, openScenario, roomView: (state, inboxId) => { const i = inboxItem(state, inboxId); const s = i ? scenarioById(i.scenarioId) : null; return i && s ? roomView(state, i, s) : null; },
+    newGame, tick, onboardingView, completeUnit, askQuestion, finishOnboarding, draw: drawInbox, drawOne, openScenario, roomView: (state, inboxId) => { const i = inboxItem(state, inboxId); const s = i ? scenarioById(i.scenarioId) : null; return i && s ? roomView(state, i, s) : null; },
     buyInfo, chooseFraming, choose, choosePremortem, submitMemo, answerFollowup, setLearned, markRead, gateStatus, infoCost,
     scheduleMatch, placeMatches, startMatch, setApproach, matchView, playMoment, matchBreak, resolveMatch, computePrep,
     applyEffect, outcome, score, mastery, scheduler, skillNote, band, bandKey, integrityKey, tierKey, tierCeiling, patterns, metrics, exportJournal,

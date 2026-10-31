@@ -13,7 +13,7 @@
 | `prototypes/campaign-2022-twists.html` | תפניות בקמפיין 2022 | https://claude.ai/artifact/V86vEvwiPZqn2sRspDnFsx |
 | `prototypes/after-the-ballot.html` | אחרי הקלפי | https://claude.ai/artifact/3EZ6SJA9PSMX3vJds1GFYX |
 | `prototypes/new-negotiation-meeting.html` | פגישת מו״מ חדשה | https://claude.ai/artifact/9rKgJXJAN7JcD8KEsr58sZ |
-| `marketing-manager/index.html` | **מרקטינג מנג'ר: הדרך לשותפות** (משחק קריירה בסגנון Football Manager לאנליסט ביקורת פנימית, ציות וסיכונים; גרסה ראשונה, דרגה 1) | נבנה ב-Claude Code מתוך `marketing-manager/src` ו-`marketing-manager/content` |
+| `marketing-manager/index.html` | **מרקטינג מנג'ר: הדרך לשותפות** (משחק קריירה בסגנון Football Manager לאנליסט ביקורת פנימית, ציות וסיכונים; גרסה ראשונה, דרגה 1) | https://claude.ai/artifact/DxPSXENYn3VbiLhixFLBVC |
 | `design/` | כיווני עיצוב (סבב 1 וסבב 2) | https://claude.ai/artifact/6KXWFtGneq7X1mojFG9WFL |
 
 כל קובץ הוא דף HTML עצמאי: פותחים אותו ישירות בדפדפן.

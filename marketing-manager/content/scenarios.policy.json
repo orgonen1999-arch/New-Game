@@ -4,60 +4,242 @@
     "family": "procedure-writing",
     "bank": "decision",
     "journal": "full",
-    "tier": [1],
+    "tier": [
+      1
+    ],
     "difficulty": 1,
     "domain": "policy",
-    "sector": ["*"],
-    "engType": ["policy-writing"],
+    "sector": [
+      "*"
+    ],
+    "engType": [
+      "policy-writing"
+    ],
     "phase": "*",
-    "skills": [{ "id": "writing", "w": 0.35 }, { "id": "client", "w": 0.35 }, { "id": "framing", "w": 0.3 }],
-    "frameworks": ["COSO 2013", "מודל שלושת הקווים", "decision-process"],
+    "skills": [
+      {
+        "id": "writing",
+        "w": 0.35
+      },
+      {
+        "id": "client",
+        "w": 0.35
+      },
+      {
+        "id": "framing",
+        "w": 0.3
+      }
+    ],
+    "frameworks": [
+      "COSO 2013",
+      "מודל שלושת הקווים",
+      "decision-process"
+    ],
     "cooldown": 30,
-    "requires": { "flags": [], "notFlags": ["policy_scope_decided"], "minTrust": {}, "season": null },
+    "requires": {
+      "flags": [],
+      "notFlags": [
+        "policy_scope_decided"
+      ],
+      "minTrust": {},
+      "season": null
+    },
     "rightEscalation": "inform",
     "followupWeeks": 4,
     "lesson": "scope-management",
     "title": "«נוהל אחד לכל דבר»",
     "body": "אתם כותבים ל{client} נוהל מתנות ואירוח. בפגישת האפיון {contact} {contact:מוציא|מוציאה} רשימה: \"בואו נכניס גם ניגודי עניינים, קבלת תרומות, שימוש ברכב, רשתות חברתיות והתנהגות מול ספקים. נוהל אחד לכל דבר, שאף אחד לא יגיד שזה לא מכוסה.\" ההתקשרות היא 8 שבועות ו-60 שעות, ושלושה שבועות כבר מתוכננים לניסוח. {manager} {manager:נמצא|נמצאת} אצל לקוח אחר עד סוף השבוע.",
-    "attachments": [{ "label": "הרשימה של {contact}", "text": "1. מתנות ואירוח 2. ניגודי עניינים 3. תרומות ומענקים 4. רכב ונסיעות 5. רשתות חברתיות 6. יחסים עם ספקים. \"אם אפשר, גם תלונות עובדים.\"" }],
+    "attachments": [
+      {
+        "label": "הרשימה של {contact}",
+        "text": "1. מתנות ואירוח 2. ניגודי עניינים 3. תרומות ומענקים 4. רכב ונסיעות 5. רשתות חברתיות 6. יחסים עם ספקים. \"אם אפשר, גם תלונות עובדים.\""
+      }
+    ],
     "hint": "נוהל שמכסה הכול הוא נוהל שאף אחד לא מבצע. השאלה הראשונה: איזה תהליך אחד הנוהל צריך להפעיל, ומי יבצע אותו.",
     "pushback": "{contact} {contact:מוסיף|מוסיפה}: \"בחברה הקודמת שלי זה היה נוהל אחד של 40 עמודים ואף אחד לא התלונן.\"",
     "framings": [
-      { "id": "f1", "text": "איזה תהליך אחד הנוהל צריך לגרום למישהו לבצע, ומה כבר מכוסה במסמכים קיימים?", "quality": 3 },
-      { "id": "f2", "text": "איך דוחסים שבעה נושאים לשלושה שבועות ניסוח?", "quality": 1 },
-      { "id": "f3", "text": "{contact} {contact:מנסה|מנסה} לגלגל עלינו עבודה של שלושה נהלים במחיר אחד.", "quality": 1 },
-      { "id": "f4", "text": "אין כאן שאלה: הלקוח רוצה נוהל רחב, נוהל רחב הוא נוהל טוב.", "quality": 0 }
+      {
+        "id": "f1",
+        "text": "איזה תהליך אחד הנוהל צריך לגרום למישהו לבצע, ומה כבר מכוסה במסמכים קיימים?",
+        "quality": 3
+      },
+      {
+        "id": "f2",
+        "text": "איך דוחסים שבעה נושאים לשלושה שבועות ניסוח?",
+        "quality": 1
+      },
+      {
+        "id": "f3",
+        "text": "{contact} {contact:מנסה|מנסה} לגלגל עלינו עבודה של שלושה נהלים במחיר אחד.",
+        "quality": 1
+      },
+      {
+        "id": "f4",
+        "text": "אין כאן שאלה: הלקוח רוצה נוהל רחב, נוהל רחב הוא נוהל טוב.",
+        "quality": 0
+      }
     ],
     "info": [
-      { "id": "scope", "kind": "decisive", "hours": 1, "label": "לקרוא שוב את הצעת העבודה שנחתמה", "reveal": "ההיקף שנחתם: \"נוהל מתנות ואירוח, כולל טופס דיווח ורישום מתנות\". 60 שעות. שינוי היקף דורש אישור בכתב של שני הצדדים.", "sets": "read_scope" },
-      { "id": "existing", "kind": "decisive", "hours": 2, "label": "לבקש מ{contact} את כל הנהלים הקיימים בנושאים שברשימה", "reveal": "יש נוהל ניגודי עניינים מ-2016 של הלשכה המשפטית, נוהל רכש מעודכן, ואין כלום על תרומות ורשתות חברתיות. שניים מהנושאים כבר מכוסים.", "sets": "mapped_existing" },
-      { "id": "norm", "kind": "decisive", "hours": 1, "label": "לשאול את {manager:מנהל|מנהלת} ההתקשרות בהודעה קצרה מה נהוג במשרד", "reveal": "\"הרחבת היקף זו הזמנת שינוי, בכתב, עם שעות. {תציע|תציעי} מבנה ותשלח לי. אל {תבטיח|תבטיחי} כלום בפגישה.\"", "sets": "asked_manager" },
-      { "id": "gossip", "kind": "noise", "hours": 1, "label": "לשאול את תום איך הוא היה מתמודד", "reveal": "\"{תכתוב|תכתבי} הכול, תשים כותרות, הלקוח ספר עמודים ולא בקרות.\"" },
-      { "id": "olddraft", "kind": "trap", "hours": 4, "label": "לקרוא את הטיוטה הישנה של 40 העמודים ש{contact} {contact:שלח|שלחה}", "reveal": "ארבעים עמודים, שמונה הגדרות של \"מתנה\", אף טופס. ארבע שעות הלכו, ולא למדתם דבר שלא ידעתם.", "effect": { "energy": -2 } }
+      {
+        "id": "scope",
+        "kind": "decisive",
+        "hours": 1,
+        "label": "לקרוא שוב את הצעת העבודה שנחתמה",
+        "reveal": "ההיקף שנחתם: \"נוהל מתנות ואירוח, כולל טופס דיווח ורישום מתנות\". 60 שעות. שינוי היקף דורש אישור בכתב של שני הצדדים.",
+        "sets": "read_scope"
+      },
+      {
+        "id": "existing",
+        "kind": "decisive",
+        "hours": 2,
+        "label": "לבקש מ{contact} את כל הנהלים הקיימים בנושאים שברשימה",
+        "reveal": "יש נוהל ניגודי עניינים מ-2016 של הלשכה המשפטית, נוהל רכש מעודכן, ואין כלום על תרומות ורשתות חברתיות. שניים מהנושאים כבר מכוסים.",
+        "sets": "mapped_existing"
+      },
+      {
+        "id": "norm",
+        "kind": "decisive",
+        "hours": 1,
+        "label": "לשאול את {manager:מנהל|מנהלת} ההתקשרות בהודעה קצרה מה נהוג במשרד",
+        "reveal": "\"הרחבת היקף זו הזמנת שינוי, בכתב, עם שעות. {תציע|תציעי} מבנה ותשלח לי. אל {תבטיח|תבטיחי} כלום בפגישה.\"",
+        "sets": "asked_manager"
+      },
+      {
+        "id": "gossip",
+        "kind": "noise",
+        "hours": 1,
+        "label": "לשאול את תום איך הוא היה מתמודד",
+        "reveal": "\"{תכתוב|תכתבי} הכול, תשים כותרות, הלקוח ספר עמודים ולא בקרות.\""
+      },
+      {
+        "id": "olddraft",
+        "kind": "trap",
+        "hours": 4,
+        "label": "לקרוא את הטיוטה הישנה של 40 העמודים ש{contact} {contact:שלח|שלחה}",
+        "reveal": "ארבעים עמודים, שמונה הגדרות של \"מתנה\", אף טופס. ארבע שעות הלכו, ולא למדתם דבר שלא ידעתם.",
+        "effect": {
+          "energy": -2
+        }
+      }
     ],
     "failureModes": [
-      { "id": "m1", "text": "הנוהל יהפוך למסמך של 40 עמודים שאף יחידה לא תבצע.", "signal": "בסבב ההערות אף בעל תהליך לא מגיב על הפרק שלו", "forOptions": ["a"] },
-      { "id": "m2", "text": "{contact} {contact:יחווה|תחווה} את זה כסירוב ויתלונן ל{manager:מנהל|מנהלת} ההתקשרות.", "signal": "מייל מ{contact} ל{manager} שאנחנו \"לא גמישים\"", "forOptions": ["b", "c"] },
-      { "id": "m3", "text": "הזמנת השינוי לא תיחתם ונעשה את העבודה הנוספת בחינם.", "signal": "עברו שבועיים ואין חתימה על הזמנת השינוי", "forOptions": ["c", "d"] },
-      { "id": "m4", "text": "השבוע שיוקדש למיפוי יחסר בסוף, והנוסח הסופי יאחר.", "signal": "שבוע הניסוח הראשון מתחיל בלי שום טיוטה", "forOptions": ["e"] }
+      {
+        "id": "m1",
+        "text": "הנוהל יהפוך למסמך של 40 עמודים שאף יחידה לא תבצע.",
+        "signal": "בסבב ההערות אף בעל תהליך לא מגיב על הפרק שלו",
+        "forOptions": [
+          "a"
+        ]
+      },
+      {
+        "id": "m2",
+        "text": "{contact} {contact:יחווה|תחווה} את זה כסירוב ויתלונן ל{manager:מנהל|מנהלת} ההתקשרות.",
+        "signal": "מייל מ{contact} ל{manager} שאנחנו \"לא גמישים\"",
+        "forOptions": [
+          "b",
+          "c"
+        ]
+      },
+      {
+        "id": "m3",
+        "text": "הזמנת השינוי לא תיחתם ונעשה את העבודה הנוספת בחינם.",
+        "signal": "עברו שבועיים ואין חתימה על הזמנת השינוי",
+        "forOptions": [
+          "c",
+          "d"
+        ]
+      },
+      {
+        "id": "m4",
+        "text": "השבוע שיוקדש למיפוי יחסר בסוף, והנוסח הסופי יאחר.",
+        "signal": "שבוע הניסוח הראשון מתחיל בלי שום טיוטה",
+        "forOptions": [
+          "e"
+        ]
+      }
     ],
     "rationales": [
-      { "id": "r1", "text": "לקוח מרוצה בפגישה שווה יותר מהיקף מדויק על הנייר.", "fits": ["a"] },
-      { "id": "r2", "text": "נוהל מוגדר לפי תהליך אחד ובעלים אחד; הרחבה היא החלטה כתובה עם שעות, לא טובה.", "fits": ["c", "e"] },
-      { "id": "r3", "text": "היקף הוא החלטה של {manager:מנהל|מנהלת} ההתקשרות, לא שלי.", "fits": ["b", "d"] }
+      {
+        "id": "r1",
+        "text": "לקוח מרוצה בפגישה שווה יותר מהיקף מדויק על הנייר.",
+        "fits": [
+          "a"
+        ]
+      },
+      {
+        "id": "r2",
+        "text": "נוהל מוגדר לפי תהליך אחד ובעלים אחד; הרחבה היא החלטה כתובה עם שעות, לא טובה.",
+        "fits": [
+          "c",
+          "e"
+        ]
+      },
+      {
+        "id": "r3",
+        "text": "היקף הוא החלטה של {manager:מנהל|מנהלת} ההתקשרות, לא שלי.",
+        "fits": [
+          "b",
+          "d"
+        ]
+      }
     ],
     "options": [
       {
-        "id": "a", "label": "להסכים: \"נכניס הכול\", ולהתחיל לכתוב", "quality": 0,
-        "tags": ["client-pleasing"], "biasTags": ["social-pressure", "planning-fallacy"],
-        "reversible": false, "escalation": "none",
-        "immediate": { "energy": -2, "eng.quality": -5, "eng.work": 1, "trust.contact": 6, "flag.policy_scope_decided": 1 },
-        "result": { "pGood": 0.35,
-          "good": { "text": "הפגישה מסתיימת בחיוכים. {contact} {contact:שולח|שולחת} מייל תודה ל{manager}.", "effect": { "confidence": 2 } },
-          "bad": { "text": "באותו ערב {אתה מגלה|את מגלה} שאין לך מושג מי בעל התהליך של תרומות. ואין למי לשאול.", "effect": { "energy": -2 } } },
+        "id": "a",
+        "label": "להסכים: \"נכניס הכול\", ולהתחיל לכתוב",
+        "quality": 0,
+        "tags": [
+          "client-pleasing"
+        ],
+        "biasTags": [
+          "social-pressure",
+          "planning-fallacy"
+        ],
+        "reversible": false,
+        "escalation": "none",
+        "immediate": {
+          "energy": -2,
+          "eng.quality": -5,
+          "eng.work": 1,
+          "trust.contact": 6,
+          "flag.policy_scope_decided": 1
+        },
+        "result": {
+          "pGood": 0.35,
+          "good": {
+            "text": "הפגישה מסתיימת בחיוכים. {contact} {contact:שולח|שולחת} מייל תודה ל{manager}.",
+            "effect": {
+              "confidence": 2
+            }
+          },
+          "bad": {
+            "text": "באותו ערב {אתה מגלה|את מגלה} שאין לך מושג מי בעל התהליך של תרומות. ואין למי לשאול.",
+            "effect": {
+              "energy": -2
+            }
+          }
+        },
         "delayed": [
-          { "after": 4, "prob": 0.7, "failureMode": "m1", "text": "הטיוטה הגיעה ל-38 עמודים. בסבב ההערות הלשכה המשפטית כותבת שפרק ניגודי העניינים סותר את הנוהל שלהם מ-2016.", "effect": { "eng.quality": -8, "eng.deadline": 0, "confidence": -4 } },
-          { "after": 6, "prob": 0.5, "text": "{manager} {manager:רואה|רואה} את דוח השעות: 90 שעות על תיק של 60. \"מי אישר את זה?\"", "effect": { "trust.manager": -6, "confidence": -3 } }
+          {
+            "after": 4,
+            "prob": 0.7,
+            "failureMode": "m1",
+            "text": "הטיוטה הגיעה ל-38 עמודים. בסבב ההערות הלשכה המשפטית כותבת שפרק ניגודי העניינים סותר את הנוהל שלהם מ-2016.",
+            "effect": {
+              "eng.quality": -8,
+              "eng.deadline": 0,
+              "confidence": -4
+            }
+          },
+          {
+            "after": 6,
+            "prob": 0.5,
+            "text": "{manager} {manager:רואה|רואה} את דוח השעות: 90 שעות על תיק של 60. \"מי אישר את זה?\"",
+            "effect": {
+              "trust.manager": -6,
+              "confidence": -3
+            }
+          }
         ],
         "feedback": {
           "why": "היקף הוא הבקרה הראשונה על איכות הנוהל. לפי COSO 2013 בקרה צריכה בעלים ותהליך מוגדר; שבעה נושאים בלי בעלים הם מסמך, לא בקרה. וההתקשרות נחתמה על 60 שעות: הסכמה בעל-פה להרחבה היא הזמנת שינוי בלי חתימה.",
@@ -67,15 +249,45 @@
         }
       },
       {
-        "id": "b", "label": "להשיב שזה לא בהיקף שנחתם, ולהיצמד לנוהל מתנות בלבד", "quality": 1,
-        "tags": ["independence"], "biasTags": ["status-quo"],
-        "reversible": true, "escalation": "none",
-        "immediate": { "energy": -1, "trust.contact": -6, "flag.policy_scope_decided": 1 },
-        "result": { "pGood": 0.45,
-          "good": { "text": "{contact} {contact:מקבל|מקבלת} את זה בשקט. הנוהל נשאר ממוקד.", "effect": {} },
-          "bad": { "text": "\"אז בשביל מה אנחנו משלמים?\" הפגישה מסתיימת קר. {contact} {contact:מבקש|מבקשת} לדבר עם {manager}.", "effect": { "confidence": -2 } } },
+        "id": "b",
+        "label": "להשיב שזה לא בהיקף שנחתם, ולהיצמד לנוהל מתנות בלבד",
+        "quality": 1,
+        "tags": [
+          "independence"
+        ],
+        "biasTags": [
+          "status-quo"
+        ],
+        "reversible": true,
+        "escalation": "none",
+        "immediate": {
+          "energy": -1,
+          "trust.contact": -6,
+          "flag.policy_scope_decided": 1
+        },
+        "result": {
+          "pGood": 0.45,
+          "good": {
+            "text": "{contact} {contact:מקבל|מקבלת} את זה בשקט. הנוהל נשאר ממוקד.",
+            "effect": {}
+          },
+          "bad": {
+            "text": "\"אז בשביל מה אנחנו משלמים?\" הפגישה מסתיימת קר. {contact} {contact:מבקש|מבקשת} לדבר עם {manager}.",
+            "effect": {
+              "confidence": -2
+            }
+          }
+        },
         "delayed": [
-          { "after": 3, "prob": 0.5, "failureMode": "m2", "text": "{manager} {manager:מקבל|מקבלת} מייל מ{contact}: \"הצוות שלכם לא גמיש\". {manager:הוא שואל|היא שואלת} למה לא {הצעת|הצעת} חלופה.", "effect": { "trust.manager": -3 } }
+          {
+            "after": 3,
+            "prob": 0.5,
+            "failureMode": "m2",
+            "text": "{manager} {manager:מקבל|מקבלת} מייל מ{contact}: \"הצוות שלכם לא גמיש\". {manager:הוא שואל|היא שואלת} למה לא {הצעת|הצעת} חלופה.",
+            "effect": {
+              "trust.manager": -3
+            }
+          }
         ],
         "feedback": {
           "why": "ההיקף נכון, הדרך לא. \"לא בהיקף\" בלי חלופה הופך שאלה מקצועית לעימות מסחרי. ניהול היקף פירושו להגיד מה בפנים, מה בחוץ ומה אפשר להוסיף ובאיזה מחיר, לא רק \"לא\".",
@@ -85,16 +297,53 @@
         }
       },
       {
-        "id": "c", "label": "להציע מבנה: נוהל מתנות ממוקד, הפניה לנהלים הקיימים, והזמנת שינוי כתובה לשאר", "quality": 3,
-        "needsInfo": ["read_scope", "mapped_existing"],
-        "tags": ["documentation", "initiative"], "biasTags": [],
-        "reversible": true, "escalation": "inform",
-        "immediate": { "energy": -2, "eng.quality": 7, "trust.contact": 2, "trust.manager": 3, "flag.policy_scope_decided": 1 },
-        "result": { "pGood": 0.75,
-          "good": { "text": "{contact} {contact:מסתכל|מסתכלת} על המפה של הנהלים הקיימים: \"לא ידעתי שיש לנו נוהל ניגודי עניינים.\" מסכימים: מתנות ואירוח עכשיו, תרומות בהזמנת שינוי.", "effect": { "rep": 2, "trust.contact": 3 } },
-          "bad": { "text": "{contact} {contact:מהנהן|מהנהנת}, אבל למחרת {contact:שולח|שולחת}: \"המנכ\"ל רוצה את הכול בנוהל אחד.\" המבנה שלכם עומד, הוויכוח עובר למעלה.", "effect": { "trust.contact": -2 } } },
+        "id": "c",
+        "label": "להציע מבנה: נוהל מתנות ממוקד, הפניה לנהלים הקיימים, והזמנת שינוי כתובה לשאר",
+        "quality": 3,
+        "needsInfo": [
+          "read_scope",
+          "mapped_existing"
+        ],
+        "tags": [
+          "documentation",
+          "initiative"
+        ],
+        "biasTags": [],
+        "reversible": true,
+        "escalation": "inform",
+        "immediate": {
+          "energy": -2,
+          "eng.quality": 7,
+          "trust.contact": 2,
+          "trust.manager": 3,
+          "flag.policy_scope_decided": 1
+        },
+        "result": {
+          "pGood": 0.75,
+          "good": {
+            "text": "{contact} {contact:מסתכל|מסתכלת} על המפה של הנהלים הקיימים: \"לא ידעתי שיש לנו נוהל ניגודי עניינים.\" מסכימים: מתנות ואירוח עכשיו, תרומות בהזמנת שינוי.",
+            "effect": {
+              "rep": 2,
+              "trust.contact": 3
+            }
+          },
+          "bad": {
+            "text": "{contact} {contact:מהנהן|מהנהנת}, אבל למחרת {contact:שולח|שולחת}: \"המנכ\"ל רוצה את הכול בנוהל אחד.\" המבנה שלכם עומד, הוויכוח עובר למעלה.",
+            "effect": {
+              "trust.contact": -2
+            }
+          }
+        },
         "delayed": [
-          { "after": 4, "prob": 0.4, "failureMode": "m3", "text": "הזמנת השינוי על נוהל התרומות עדיין לא חתומה, ו{contact} {contact:שואל|שואלת} מתי מתחילים אותה.", "effect": { "eng.work": -1 } }
+          {
+            "after": 4,
+            "prob": 0.4,
+            "failureMode": "m3",
+            "text": "הזמנת השינוי על נוהל התרומות עדיין לא חתומה, ו{contact} {contact:שואל|שואלת} מתי מתחילים אותה.",
+            "effect": {
+              "eng.work": -1
+            }
+          }
         ],
         "feedback": {
           "why": "זה ניהול היקף: תהליך אחד, בעלים אחד, הפניה למה שקיים במקום שכפול, והרחבה בכתב עם שעות. מודל שלושת הקווים מזכיר שנוהל הוא כלי של הקו הראשון; הוא צריך להיות קצר מספיק כדי שהקו הראשון יבצע אותו. ו{manager} {manager:מקבל|מקבלת} עדכון, לא שאלה.",
@@ -104,15 +353,45 @@
         }
       },
       {
-        "id": "d", "label": "להעלות ל{manager:מנהל|מנהלת} ההתקשרות ולבקש שיחליט מה ההיקף", "quality": 1,
-        "tags": ["escalate"], "biasTags": ["responsibility-transfer"],
-        "reversible": true, "escalation": "escalate",
-        "immediate": { "trust.manager": -2, "flag.policy_scope_decided": 1 },
-        "result": { "pGood": 0.5,
-          "good": { "text": "{manager} עונה אחרי יומיים: \"מתנות בלבד. {תציע|תציעי} הזמנת שינוי לשאר. בפעם הבאה {תבוא|תבואי} עם הצעה.\"", "effect": {} },
-          "bad": { "text": "{manager} בשטח עד סוף השבוע. {contact} {contact:מתקשר|מתקשרת} פעמיים לשאול מה סוכם.", "effect": { "eng.work": -1, "trust.contact": -3 } } },
+        "id": "d",
+        "label": "להעלות ל{manager:מנהל|מנהלת} ההתקשרות ולבקש שיחליט מה ההיקף",
+        "quality": 1,
+        "tags": [
+          "escalate"
+        ],
+        "biasTags": [
+          "responsibility-transfer"
+        ],
+        "reversible": true,
+        "escalation": "escalate",
+        "immediate": {
+          "trust.manager": -2,
+          "flag.policy_scope_decided": 1
+        },
+        "result": {
+          "pGood": 0.5,
+          "good": {
+            "text": "{manager} עונה אחרי יומיים: \"מתנות בלבד. {תציע|תציעי} הזמנת שינוי לשאר. בפעם הבאה {תבוא|תבואי} עם הצעה.\"",
+            "effect": {}
+          },
+          "bad": {
+            "text": "{manager} בשטח עד סוף השבוע. {contact} {contact:מתקשר|מתקשרת} פעמיים לשאול מה סוכם.",
+            "effect": {
+              "eng.work": -1,
+              "trust.contact": -3
+            }
+          }
+        },
         "delayed": [
-          { "after": 4, "prob": 0.35, "failureMode": "m3", "text": "{manager} {manager:שכח|שכחה} לשלוח את הזמנת השינוי. {contact} {contact:מניח|מניחה} שהכול בפנים.", "effect": { "eng.quality": -4 } }
+          {
+            "after": 4,
+            "prob": 0.35,
+            "failureMode": "m3",
+            "text": "{manager} {manager:שכח|שכחה} לשלוח את הזמנת השינוי. {contact} {contact:מניח|מניחה} שהכול בפנים.",
+            "effect": {
+              "eng.quality": -4
+            }
+          }
         ],
         "feedback": {
           "why": "היקף הוא אכן החלטה של {manager:מנהל|מנהלת} ההתקשרות, אבל העלאה בלי הצעה מעבירה עבודה למעלה ומשאירה את הלקוח בלי תשובה. הסלמה נכונה כאן היא עדכון עם מבנה מוצע, לא שאלה פתוחה.",
@@ -122,15 +401,51 @@
         }
       },
       {
-        "id": "e", "label": "לדחות בשבוע: למפות את כל הנהלים הקיימים ולחזור עם תשובה", "quality": 2,
-        "tags": ["defer", "documentation"], "biasTags": ["risk-aversion"],
-        "reversible": true, "escalation": "none",
-        "immediate": { "energy": -1, "eng.work": -1, "eng.quality": 2, "flag.policy_scope_decided": 1 },
-        "result": { "pGood": 0.6,
-          "good": { "text": "המיפוי מגלה שני נהלים קיימים ונושא אחד שבאמת חסר. יש לכם תשובה טובה, שבוע מאוחר יותר.", "effect": { "trust.contact": 2 } },
-          "bad": { "text": "{contact} {contact:שלח|שלחה} בינתיים את הרשימה למנכ\"ל כ\"סיכום פגישה\". עכשיו ההיקף הרחב כבר כתוב במייל של הלקוח.", "effect": { "trust.contact": -2, "eng.quality": -3 } } },
+        "id": "e",
+        "label": "לדחות בשבוע: למפות את כל הנהלים הקיימים ולחזור עם תשובה",
+        "quality": 2,
+        "tags": [
+          "defer",
+          "documentation"
+        ],
+        "biasTags": [
+          "risk-aversion"
+        ],
+        "reversible": true,
+        "escalation": "none",
+        "immediate": {
+          "energy": -1,
+          "eng.work": -1,
+          "eng.quality": 2,
+          "flag.policy_scope_decided": 1
+        },
+        "result": {
+          "pGood": 0.6,
+          "good": {
+            "text": "המיפוי מגלה שני נהלים קיימים ונושא אחד שבאמת חסר. יש לכם תשובה טובה, שבוע מאוחר יותר.",
+            "effect": {
+              "trust.contact": 2
+            }
+          },
+          "bad": {
+            "text": "{contact} {contact:שלח|שלחה} בינתיים את הרשימה למנכ\"ל כ\"סיכום פגישה\". עכשיו ההיקף הרחב כבר כתוב במייל של הלקוח.",
+            "effect": {
+              "trust.contact": -2,
+              "eng.quality": -3
+            }
+          }
+        },
         "delayed": [
-          { "after": 3, "prob": 0.4, "failureMode": "m4", "text": "שבוע הניסוח מתחיל בלי טיוטה. {manager} {manager:שואל|שואלת} איפה הנוהל.", "effect": { "eng.work": -1, "trust.manager": -2 } }
+          {
+            "after": 3,
+            "prob": 0.4,
+            "failureMode": "m4",
+            "text": "שבוע הניסוח מתחיל בלי טיוטה. {manager} {manager:שואל|שואלת} איפה הנוהל.",
+            "effect": {
+              "eng.work": -1,
+              "trust.manager": -2
+            }
+          }
         ],
         "feedback": {
           "why": "לאסוף לפני שמחליטים הוא אינסטינקט נכון, אבל כאן המידע המכריע זמין בשעה (הצעת העבודה) ובשעתיים (נהלים קיימים). שבוע שלם הוא דחייה של שיחה לא נעימה, ובינתיים הלקוח כותב את ההיקף בעצמו.",
@@ -146,60 +461,234 @@
     "family": "procedure-writing",
     "bank": "decision",
     "journal": "full",
-    "tier": [1],
+    "tier": [
+      1
+    ],
     "difficulty": 2,
     "domain": "policy",
-    "sector": ["ministry"],
-    "engType": ["policy-writing"],
+    "sector": [
+      "ministry"
+    ],
+    "engType": [
+      "policy-writing"
+    ],
     "phase": "planning",
-    "skills": [{ "id": "client", "w": 0.35 }, { "id": "writing", "w": 0.3 }, { "id": "escalation", "w": 0.35 }],
-    "frameworks": ["COSO 2013", "מודל שלושת הקווים", "חוק שירות הציבור (מתנות)"],
+    "skills": [
+      {
+        "id": "client",
+        "w": 0.35
+      },
+      {
+        "id": "writing",
+        "w": 0.3
+      },
+      {
+        "id": "escalation",
+        "w": 0.35
+      }
+    ],
+    "frameworks": [
+      "COSO 2013",
+      "מודל שלושת הקווים",
+      "חוק שירות הציבור (מתנות)"
+    ],
     "cooldown": 30,
-    "requires": { "flags": [], "notFlags": ["ministry_owner_decided"], "minTrust": {}, "season": null },
+    "requires": {
+      "flags": [],
+      "notFlags": [
+        "ministry_owner_decided"
+      ],
+      "minTrust": {},
+      "season": null
+    },
     "rightEscalation": "inform",
     "followupWeeks": 4,
     "lesson": "procedure-writing",
     "scale": "docStatus",
     "title": "«נוהל לכולם, בעלים לאף אחד»",
     "body": "{client} הזמין נוהל מתנות ואירוח לפי חוק שירות הציבור (מתנות). בפגישת האפיון {contact} {contact:אומר|אומרת}: \"הנוהל חל על כל עובדי המשרד, אז הבעלים הוא כולם. {תכתוב|תכתבי} 'הנהלת המשרד' בשדה הבעלים ונתקדם.\" הלשכה המשפטית אומרת שזה לא שלה, משאבי אנוש אומרים שזה \"נושא של ביקורת\", והמבקר הפנימי מזכיר שהוא קו שלישי ולא יכול להיות בעלים של נוהל שהוא יבקר. סטטוס המסמך: טיוטה. בעוד שלושה שבועות הניסוח צריך להתחיל.",
-    "attachments": [{ "label": "שדה הבעלים בתבנית הנוהל", "text": "בעל הנוהל: ________. אחראי יישום: ________. מועד עדכון: ________. מאשר: מנכ\"ל." }],
+    "attachments": [
+      {
+        "label": "שדה הבעלים בתבנית הנוהל",
+        "text": "בעל הנוהל: ________. אחראי יישום: ________. מועד עדכון: ________. מאשר: מנכ\"ל."
+      }
+    ],
     "hint": "בעל נוהל הוא מי שאפשר לשאול אותו בעוד שנה \"למה זה לא בוצע\" ולקבל תשובה. \"הנהלת המשרד\" אינה כתובת.",
     "pushback": "{contact} {contact:מוסיף|מוסיפה}: \"במשרד השכן כתבו 'כלל העובדים' וזה עבר אצל מבקר המדינה.\"",
     "framings": [
-      { "id": "f1", "text": "מי במשרד מחזיק בפועל את תהליך הדיווח על מתנות היום, גם אם אין לו תואר?", "quality": 3 },
-      { "id": "f2", "text": "איזה שם לכתוב בשדה כדי שהמסמך יעבור לסטטוס הבא?", "quality": 1 },
-      { "id": "f3", "text": "למה כולם מתחמקים, ומה זה אומר על התרבות במשרד?", "quality": 1 },
-      { "id": "f4", "text": "נוהל רוחבי באמת שייך לכולם; אין פה בעיה.", "quality": 0 }
+      {
+        "id": "f1",
+        "text": "מי במשרד מחזיק בפועל את תהליך הדיווח על מתנות היום, גם אם אין לו תואר?",
+        "quality": 3
+      },
+      {
+        "id": "f2",
+        "text": "איזה שם לכתוב בשדה כדי שהמסמך יעבור לסטטוס הבא?",
+        "quality": 1
+      },
+      {
+        "id": "f3",
+        "text": "למה כולם מתחמקים, ומה זה אומר על התרבות במשרד?",
+        "quality": 1
+      },
+      {
+        "id": "f4",
+        "text": "נוהל רוחבי באמת שייך לכולם; אין פה בעיה.",
+        "quality": 0
+      }
     ],
     "info": [
-      { "id": "today", "kind": "decisive", "hours": 2, "label": "לשאול שלושה אנשים ביחידות שונות למי הם מדווחים היום על מתנה שקיבלו", "reveal": "שניים אומרים \"למנהלת האגף למינהל\". אחד אומר \"לאף אחד, יש טופס ישן באינטרה-נט\". הטופס מגיע לאגף המינהל. יש בעלים בפועל, רק בלי תואר.", "sets": "found_defacto_owner" },
-      { "id": "legal", "kind": "decisive", "hours": 1, "label": "לקרוא מה אומר חוק שירות הציבור (מתנות) על חובת הדיווח במשרד", "reveal": "החוק מטיל את חובת הדיווח על העובד ומחייב את הגוף לקבוע למי מדווחים. כלומר הנוהל חייב לנקוב בגורם מקבל, לא ב\"הנהלה\".", "sets": "read_gifts_law" },
-      { "id": "norm", "kind": "decisive", "hours": 1, "label": "לשאול את {manager:מנהל|מנהלת} ההתקשרות מה המשרד עושה כשאין בעלים", "reveal": "\"לא ממשיכים לניסוח בלי בעלים בשם. זה הסעיף הראשון שמבקר המדינה בודק. אם צריך, {תביא|תביאי} את זה למנכ\"ל דרך {contact}, לא ישירות.\"", "sets": "asked_manager" },
-      { "id": "gossip", "kind": "noise", "hours": 1, "label": "לשאול את תום מה הוא היה כותב בשדה", "reveal": "\"'הנהלת המשרד'. מי יבדוק? העיקר שהמסמך יזוז.\"" },
-      { "id": "neighbour", "kind": "trap", "hours": 3, "label": "להשיג את נוהל המתנות של המשרד השכן ש{contact} {contact:הזכיר|הזכירה}", "reveal": "בנוהל השכן כתוב \"כלל העובדים\". שלוש שעות, ומסתבר שמבקר המדינה כן העיר על זה, בדוח שלא פורסם.", "effect": { "energy": -2 } }
+      {
+        "id": "today",
+        "kind": "decisive",
+        "hours": 2,
+        "label": "לשאול שלושה אנשים ביחידות שונות למי הם מדווחים היום על מתנה שקיבלו",
+        "reveal": "שניים אומרים \"למנהלת האגף למינהל\". אחד אומר \"לאף אחד, יש טופס ישן באינטרה-נט\". הטופס מגיע לאגף המינהל. יש בעלים בפועל, רק בלי תואר.",
+        "sets": "found_defacto_owner"
+      },
+      {
+        "id": "legal",
+        "kind": "decisive",
+        "hours": 1,
+        "label": "לקרוא מה אומר חוק שירות הציבור (מתנות) על חובת הדיווח במשרד",
+        "reveal": "החוק מטיל את חובת הדיווח על העובד ומחייב את הגוף לקבוע למי מדווחים. כלומר הנוהל חייב לנקוב בגורם מקבל, לא ב\"הנהלה\".",
+        "sets": "read_gifts_law"
+      },
+      {
+        "id": "norm",
+        "kind": "decisive",
+        "hours": 1,
+        "label": "לשאול את {manager:מנהל|מנהלת} ההתקשרות מה המשרד עושה כשאין בעלים",
+        "reveal": "\"לא ממשיכים לניסוח בלי בעלים בשם. זה הסעיף הראשון שמבקר המדינה בודק. אם צריך, {תביא|תביאי} את זה למנכ\"ל דרך {contact}, לא ישירות.\"",
+        "sets": "asked_manager"
+      },
+      {
+        "id": "gossip",
+        "kind": "noise",
+        "hours": 1,
+        "label": "לשאול את תום מה הוא היה כותב בשדה",
+        "reveal": "\"'הנהלת המשרד'. מי יבדוק? העיקר שהמסמך יזוז.\""
+      },
+      {
+        "id": "neighbour",
+        "kind": "trap",
+        "hours": 3,
+        "label": "להשיג את נוהל המתנות של המשרד השכן ש{contact} {contact:הזכיר|הזכירה}",
+        "reveal": "בנוהל השכן כתוב «כלל העובדים» בשדה הבעלים. שלוש שעות, ולמדתם רק איך נראה הניסוח שאתם מנסים לא לכתוב.",
+        "effect": {
+          "energy": -2
+        }
+      }
     ],
     "failureModes": [
-      { "id": "m1", "text": "הנוהל יאושר עם \"הנהלת המשרד\" ואף אחד לא יעדכן אותו או ידווח לפיו.", "signal": "אפס טופסי דיווח על מתנות שלושה חודשים אחרי האישור", "forOptions": ["a"] },
-      { "id": "m2", "text": "מנהלת האגף למינהל תסרב להיות בעלים כי לא שאלו אותה.", "signal": "הערה בסבב ההערות: \"לא סוכם איתי שאני הבעלים\"", "forOptions": ["c"] },
-      { "id": "m3", "text": "העניין יגיע למנכ\"ל כעימות ו{contact} {contact:ייפגע|תיפגע} שעקפו {contact:אותו|אותה}.", "signal": "{contact} {contact:מפסיק|מפסיקה} לענות על מיילים", "forOptions": ["d"] },
-      { "id": "m4", "text": "הניסוח יידחה בשבועות עד שימצאו בעלים, והתיק יאחר.", "signal": "סטטוס המסמך נשאר טיוטה גם בשבוע הניסוח השני", "forOptions": ["b", "e"] }
+      {
+        "id": "m1",
+        "text": "הנוהל יאושר עם \"הנהלת המשרד\" ואף אחד לא יעדכן אותו או ידווח לפיו.",
+        "signal": "אפס טופסי דיווח על מתנות שלושה חודשים אחרי האישור",
+        "forOptions": [
+          "a"
+        ]
+      },
+      {
+        "id": "m2",
+        "text": "מנהלת האגף למינהל תסרב להיות בעלים כי לא שאלו אותה.",
+        "signal": "הערה בסבב ההערות: \"לא סוכם איתי שאני הבעלים\"",
+        "forOptions": [
+          "c"
+        ]
+      },
+      {
+        "id": "m3",
+        "text": "העניין יגיע למנכ\"ל כעימות ו{contact} {contact:ייפגע|תיפגע} שעקפו {contact:אותו|אותה}.",
+        "signal": "{contact} {contact:מפסיק|מפסיקה} לענות על מיילים",
+        "forOptions": [
+          "d"
+        ]
+      },
+      {
+        "id": "m4",
+        "text": "הניסוח יידחה בשבועות עד שימצאו בעלים, והתיק יאחר.",
+        "signal": "סטטוס המסמך נשאר טיוטה גם בשבוע הניסוח השני",
+        "forOptions": [
+          "b",
+          "e"
+        ]
+      }
     ],
     "rationales": [
-      { "id": "r1", "text": "העיקר שהמסמך מתקדם; בעלים אפשר לתקן בגרסה הבאה.", "fits": ["a"] },
-      { "id": "r2", "text": "בעלים הוא כתובת בשם; הנוהל מתעד מי מחזיק את התהליך בפועל ומקבל את הסכמתו.", "fits": ["c"] },
-      { "id": "r3", "text": "מינוי בעלים הוא סמכות של המנכ\"ל, ולכן זה צריך לעלות למעלה.", "fits": ["b", "d", "e"] }
+      {
+        "id": "r1",
+        "text": "העיקר שהמסמך מתקדם; בעלים אפשר לתקן בגרסה הבאה.",
+        "fits": [
+          "a"
+        ]
+      },
+      {
+        "id": "r2",
+        "text": "בעלים הוא כתובת בשם; הנוהל מתעד מי מחזיק את התהליך בפועל ומקבל את הסכמתו.",
+        "fits": [
+          "c"
+        ]
+      },
+      {
+        "id": "r3",
+        "text": "מינוי בעלים הוא סמכות של המנכ\"ל, ולכן זה צריך לעלות למעלה.",
+        "fits": [
+          "b",
+          "d",
+          "e"
+        ]
+      }
     ],
     "options": [
       {
-        "id": "a", "label": "לכתוב \"הנהלת המשרד\" כבעלים ולהעביר את המסמך לסבב הערות", "quality": 0,
-        "tags": ["client-pleasing", "shortcut"], "biasTags": ["social-pressure", "status-quo"],
-        "reversible": false, "escalation": "none",
-        "immediate": { "energy": -1, "eng.quality": -6, "eng.work": 1, "trust.contact": 5, "flag.ministry_owner_decided": 1 },
-        "result": { "pGood": 0.4,
-          "good": { "text": "המסמך עובר לסטטוס \"בסבב הערות\". {contact} {contact:מרוצה|מרוצה}: \"סוף סוף משהו זז.\"", "effect": { "confidence": 2 } },
-          "bad": { "text": "המבקר הפנימי של המשרד מחזיר את הטיוטה עם הערה אחת: \"בעלים: מי?\"", "effect": { "trust.contact": -2 } } },
+        "id": "a",
+        "label": "לכתוב \"הנהלת המשרד\" כבעלים ולהעביר את המסמך לסבב הערות",
+        "quality": 0,
+        "tags": [
+          "client-pleasing",
+          "shortcut"
+        ],
+        "biasTags": [
+          "social-pressure",
+          "status-quo"
+        ],
+        "reversible": false,
+        "escalation": "none",
+        "immediate": {
+          "energy": -1,
+          "eng.quality": -6,
+          "eng.work": 1,
+          "trust.contact": 5,
+          "flag.ministry_owner_decided": 1
+        },
+        "result": {
+          "pGood": 0.4,
+          "good": {
+            "text": "המסמך עובר לסטטוס \"בסבב הערות\". {contact} {contact:מרוצה|מרוצה}: \"סוף סוף משהו זז.\"",
+            "effect": {
+              "confidence": 2
+            }
+          },
+          "bad": {
+            "text": "המבקר הפנימי של המשרד מחזיר את הטיוטה עם הערה אחת: \"בעלים: מי?\"",
+            "effect": {
+              "trust.contact": -2
+            }
+          }
+        },
         "delayed": [
-          { "after": 8, "prob": 0.6, "failureMode": "m1", "text": "הנוהל אושר. שלושה חודשים אחרי, אפס דיווחים על מתנות. בביקורת מבקר המדינה שואלים מי אחראי ליישום, ואף אחד לא עונה. שמכם על הנוהל.", "effect": { "eng.quality": -10, "rep": -4, "confidence": -4 } }
+          {
+            "after": 8,
+            "prob": 0.6,
+            "failureMode": "m1",
+            "text": "הנוהל אושר. שלושה חודשים אחרי, אפס דיווחים על מתנות. בביקורת מבקר המדינה שואלים מי אחראי ליישום, ואף אחד לא עונה. שמכם על הנוהל.",
+            "effect": {
+              "eng.quality": -10,
+              "rep": -4,
+              "confidence": -4
+            }
+          }
         ],
         "feedback": {
           "why": "נוהל בלי בעלים בשם הוא מסמך בלי בקרה. COSO 2013 דורש שלכל בקרה יהיה מי שאחראי לביצועה ולעדכונה; חוק שירות הציבור (מתנות) מחייב גורם מקבל דיווח מוגדר. \"הנהלת המשרד\" היא לא כתובת שאפשר לשאול אותה בעוד שנה.",
@@ -209,15 +698,48 @@
         }
       },
       {
-        "id": "b", "label": "לעצור את האפיון עד שהמשרד ימנה בעלים, ולהודיע ל{contact} שבלי זה לא מתקדמים", "quality": 1,
-        "tags": ["independence"], "biasTags": ["procedure-bias"],
-        "reversible": true, "escalation": "none",
-        "immediate": { "energy": -1, "eng.work": -1, "trust.contact": -5, "flag.ministry_owner_decided": 1 },
-        "result": { "pGood": 0.4,
-          "good": { "text": "{contact} {contact:נאנח|נאנחת} ו{contact:מביא|מביאה} שם תוך שבוע.", "effect": {} },
-          "bad": { "text": "המשרד נכנס לדיון פנימי של חודש על \"מי הבעלים\". בינתיים אתם לא מחייבים שעות.", "effect": { "eng.work": -1, "confidence": -2 } } },
+        "id": "b",
+        "label": "לעצור את האפיון עד שהמשרד ימנה בעלים, ולהודיע ל{contact} שבלי זה לא מתקדמים",
+        "quality": 1,
+        "tags": [
+          "independence"
+        ],
+        "biasTags": [
+          "procedure-bias"
+        ],
+        "reversible": true,
+        "escalation": "none",
+        "immediate": {
+          "energy": -1,
+          "eng.work": -1,
+          "trust.contact": -5,
+          "flag.ministry_owner_decided": 1
+        },
+        "result": {
+          "pGood": 0.4,
+          "good": {
+            "text": "{contact} {contact:נאנח|נאנחת} ו{contact:מביא|מביאה} שם תוך שבוע.",
+            "effect": {}
+          },
+          "bad": {
+            "text": "המשרד נכנס לדיון פנימי של חודש על \"מי הבעלים\". בינתיים אתם לא מחייבים שעות.",
+            "effect": {
+              "eng.work": -1,
+              "confidence": -2
+            }
+          }
+        },
         "delayed": [
-          { "after": 4, "prob": 0.5, "failureMode": "m4", "text": "שבוע הניסוח השני, והמסמך עדיין טיוטה בלי בעלים. {manager} {manager:שואל|שואלת} למה לא {הצעת|הצעת} שם.", "effect": { "eng.deadline": 0, "trust.manager": -3 } }
+          {
+            "after": 4,
+            "prob": 0.5,
+            "failureMode": "m4",
+            "text": "שבוע הניסוח השני, והמסמך עדיין טיוטה בלי בעלים. {manager} {manager:שואל|שואלת} למה לא {הצעת|הצעת} שם.",
+            "effect": {
+              "eng.deadline": 0,
+              "trust.manager": -3
+            }
+          }
         ],
         "feedback": {
           "why": "העיקרון נכון: בלי בעלים לא כותבים. אבל לעצור ולחכות שהלקוח יפתור לבד בעיה שהוא כבר חודשים לא פותר הוא לא ייעוץ. התפקיד שלכם הוא להביא את המועמד, לא לחכות לו.",
@@ -227,16 +749,53 @@
         }
       },
       {
-        "id": "c", "label": "להציע את מנהלת האגף למינהל כבעלים בשם, לנמק בחוק, ולבקש מ{contact} להביא את זה למנכ\"ל", "quality": 3,
-        "needsInfo": ["found_defacto_owner", "read_gifts_law"],
-        "tags": ["initiative", "documentation"], "biasTags": [],
-        "reversible": true, "escalation": "inform",
-        "immediate": { "energy": -2, "eng.quality": 8, "trust.contact": 2, "trust.manager": 3, "flag.ministry_owner_decided": 1 },
-        "result": { "pGood": 0.75,
-          "good": { "text": "מנהלת האגף למינהל: \"זה ממילא אצלי, לפחות שיהיה כתוב.\" {contact} {contact:מעביר|מעבירה} למנכ\"ל; השדה מתמלא, המסמך עובר לסבב הערות עם כתובת.", "effect": { "rep": 2, "trust.contact": 3 } },
-          "bad": { "text": "מנהלת האגף למינהל מבקשת קודם \"תקן ועוזר\". השם נכון, אבל ההסכמה תיקח עוד סבב.", "effect": { "eng.work": -1 } } },
+        "id": "c",
+        "label": "להציע את מנהלת האגף למינהל כבעלים בשם, לנמק בחוק, ולבקש מ{contact} להביא את זה למנכ\"ל",
+        "quality": 3,
+        "needsInfo": [
+          "found_defacto_owner",
+          "read_gifts_law"
+        ],
+        "tags": [
+          "initiative",
+          "documentation"
+        ],
+        "biasTags": [],
+        "reversible": true,
+        "escalation": "inform",
+        "immediate": {
+          "energy": -2,
+          "eng.quality": 8,
+          "trust.contact": 2,
+          "trust.manager": 3,
+          "flag.ministry_owner_decided": 1
+        },
+        "result": {
+          "pGood": 0.75,
+          "good": {
+            "text": "מנהלת האגף למינהל: \"זה ממילא אצלי, לפחות שיהיה כתוב.\" {contact} {contact:מעביר|מעבירה} למנכ\"ל; השדה מתמלא, המסמך עובר לסבב הערות עם כתובת.",
+            "effect": {
+              "rep": 2,
+              "trust.contact": 3
+            }
+          },
+          "bad": {
+            "text": "מנהלת האגף למינהל מבקשת קודם \"תקן ועוזר\". השם נכון, אבל ההסכמה תיקח עוד סבב.",
+            "effect": {
+              "eng.work": -1
+            }
+          }
+        },
         "delayed": [
-          { "after": 4, "prob": 0.35, "failureMode": "m2", "text": "בסבב ההערות מנהלת האגף למינהל כותבת: \"לא סוכם איתי סופית שאני הבעלים.\" שיחה אחת פותרת, אבל היא לוקחת שבוע.", "effect": { "eng.work": -1 } }
+          {
+            "after": 4,
+            "prob": 0.35,
+            "failureMode": "m2",
+            "text": "בסבב ההערות מנהלת האגף למינהל כותבת: \"לא סוכם איתי סופית שאני הבעלים.\" שיחה אחת פותרת, אבל היא לוקחת שבוע.",
+            "effect": {
+              "eng.work": -1
+            }
+          }
         ],
         "feedback": {
           "why": "זה הסטנדרט: בעלים הוא מי שמחזיק את התהליך בפועל, בשם, עם הסכמה, ועם נימוק מהחוק (חוק שירות הציבור מחייב גורם מקבל דיווח). מודל שלושת הקווים מסביר למה לא המבקר: הקו השלישי לא יכול להיות בעלים של מה שהוא מבקר. הפנייה למנכ\"ל עוברת דרך {contact}, כך ש{contact:הוא|היא} לא {contact:נעקף|נעקפת}, ו{manager} {manager:מקבל|מקבלת} עדכון.",
@@ -246,15 +805,49 @@
         }
       },
       {
-        "id": "d", "label": "לפנות ישירות למנכ\"ל המשרד ולבקש שימנה בעלים", "quality": 1,
-        "tags": ["escalate", "political"], "biasTags": ["authority", "overconfidence"],
-        "reversible": false, "escalation": "escalate",
-        "immediate": { "energy": -1, "trust.contact": -8, "trust.manager": -3, "flag.ministry_owner_decided": 1 },
-        "result": { "pGood": 0.4,
-          "good": { "text": "המנכ\"ל עונה בשורה: \"מנהלת האגף למינהל.\" הבעיה נפתרה, ה{contact:איש|אשת} קשר שלכם נפגע.", "effect": {} },
-          "bad": { "text": "המנכ\"ל מעביר את המייל ל{contact} עם השאלה \"למה זה מגיע אליי ישירות?\" {contact} {contact:מתקשר|מתקשרת} ל{manager}.", "effect": { "confidence": -3 } } },
+        "id": "d",
+        "label": "לפנות ישירות למנכ\"ל המשרד ולבקש שימנה בעלים",
+        "quality": 1,
+        "tags": [
+          "escalate",
+          "political"
+        ],
+        "biasTags": [
+          "authority",
+          "overconfidence"
+        ],
+        "reversible": false,
+        "escalation": "escalate",
+        "immediate": {
+          "energy": -1,
+          "trust.contact": -8,
+          "trust.manager": -3,
+          "flag.ministry_owner_decided": 1
+        },
+        "result": {
+          "pGood": 0.4,
+          "good": {
+            "text": "המנכ\"ל עונה בשורה: \"מנהלת האגף למינהל.\" הבעיה נפתרה, ה{contact:איש|אשת} קשר שלכם נפגע.",
+            "effect": {}
+          },
+          "bad": {
+            "text": "המנכ\"ל מעביר את המייל ל{contact} עם השאלה \"למה זה מגיע אליי ישירות?\" {contact} {contact:מתקשר|מתקשרת} ל{manager}.",
+            "effect": {
+              "confidence": -3
+            }
+          }
+        },
         "delayed": [
-          { "after": 3, "prob": 0.55, "failureMode": "m3", "text": "{contact} {contact:מפסיק|מפסיקה} לענות על מיילים. כל בקשת חומר עוברת עכשיו דרך {manager}.", "effect": { "eng.work": -1, "eng.quality": -3 } }
+          {
+            "after": 3,
+            "prob": 0.55,
+            "failureMode": "m3",
+            "text": "{contact} {contact:מפסיק|מפסיקה} לענות על מיילים. כל בקשת חומר עוברת עכשיו דרך {manager}.",
+            "effect": {
+              "eng.work": -1,
+              "eng.quality": -3
+            }
+          }
         ],
         "feedback": {
           "why": "הסלמה למנכ\"ל היא בלתי הפיכה ביחסים: עקפתם את {contact:איש|אשת} הקשר שהביא את התיק. הבעיה עצמה פתירה בדרג של {contact} עם שם ונימוק. הסלמה נכונה עוברת דרך הדרגים, והיא כלי למקרה שהשם נדחה, לא לפני שהוצע.",
@@ -264,15 +857,49 @@
         }
       },
       {
-        "id": "e", "label": "לדחות בשבוע ולבקש מ{contact} לכנס את כל ראשי האגפים לדיון על הבעלות", "quality": 2,
-        "tags": ["defer"], "biasTags": ["risk-aversion"],
-        "reversible": true, "escalation": "none",
-        "immediate": { "energy": -1, "eng.work": -1, "eng.quality": 2, "flag.ministry_owner_decided": 1 },
-        "result": { "pGood": 0.5,
-          "good": { "text": "הדיון מתכנס אחרי שבועיים. כשהכול על השולחן, מנהלת האגף למינהל מסכימה. איבדתם שבועיים, השגתם בעלים.", "effect": { "trust.contact": 2 } },
-          "bad": { "text": "הדיון נדחה פעמיים. בפעם השלישית מגיעים שלושה מתוך שבעה ואף אחד לא מוסמך להחליט.", "effect": { "eng.work": -1, "confidence": -2 } } },
+        "id": "e",
+        "label": "לדחות בשבוע ולבקש מ{contact} לכנס את כל ראשי האגפים לדיון על הבעלות",
+        "quality": 2,
+        "tags": [
+          "defer"
+        ],
+        "biasTags": [
+          "risk-aversion"
+        ],
+        "reversible": true,
+        "escalation": "none",
+        "immediate": {
+          "energy": -1,
+          "eng.work": -1,
+          "eng.quality": 2,
+          "flag.ministry_owner_decided": 1
+        },
+        "result": {
+          "pGood": 0.5,
+          "good": {
+            "text": "הדיון מתכנס אחרי שבועיים. כשהכול על השולחן, מנהלת האגף למינהל מסכימה. איבדתם שבועיים, השגתם בעלים.",
+            "effect": {
+              "trust.contact": 2
+            }
+          },
+          "bad": {
+            "text": "הדיון נדחה פעמיים. בפעם השלישית מגיעים שלושה מתוך שבעה ואף אחד לא מוסמך להחליט.",
+            "effect": {
+              "eng.work": -1,
+              "confidence": -2
+            }
+          }
+        },
         "delayed": [
-          { "after": 4, "prob": 0.45, "failureMode": "m4", "text": "סטטוס המסמך: טיוטה, גם בשבוע הניסוח השני. {manager} {manager:מבקש|מבקשת} להתחיל לכתוב \"בלי קשר\".", "effect": { "trust.manager": -2 } }
+          {
+            "after": 4,
+            "prob": 0.45,
+            "failureMode": "m4",
+            "text": "סטטוס המסמך: טיוטה, גם בשבוע הניסוח השני. {manager} {manager:מבקש|מבקשת} להתחיל לכתוב \"בלי קשר\".",
+            "effect": {
+              "trust.manager": -2
+            }
+          }
         ],
         "feedback": {
           "why": "דיון רוחבי הוא דרך לגיטימית להשיג בעלות, אבל דיון של שבעה ראשי אגפים על \"מי לוקח\" מסתיים לרוב ב\"כולם\". בלי מועמד ונימוק מוכנים מראש, הדחייה רק מעבירה את הבעיה לשבוע הבא.",
@@ -288,60 +915,234 @@
     "family": "procedure-writing",
     "bank": "decision",
     "journal": "full",
-    "tier": [1],
+    "tier": [
+      1
+    ],
     "difficulty": 2,
     "domain": "policy",
-    "sector": ["*"],
-    "engType": ["policy-writing"],
+    "sector": [
+      "*"
+    ],
+    "engType": [
+      "policy-writing"
+    ],
     "phase": "findings",
-    "skills": [{ "id": "writing", "w": 0.4 }, { "id": "client", "w": 0.3 }, { "id": "memo", "w": 0.3 }],
-    "frameworks": ["COSO 2013", "GIAS 2024", "decision-process"],
+    "skills": [
+      {
+        "id": "writing",
+        "w": 0.4
+      },
+      {
+        "id": "client",
+        "w": 0.3
+      },
+      {
+        "id": "memo",
+        "w": 0.3
+      }
+    ],
+    "frameworks": [
+      "COSO 2013",
+      "GIAS 2024",
+      "decision-process"
+    ],
     "cooldown": 30,
-    "requires": { "flags": [], "notFlags": ["policy_versions_decided"], "minTrust": {}, "season": null },
+    "requires": {
+      "flags": [],
+      "notFlags": [
+        "policy_versions_decided"
+      ],
+      "minTrust": {},
+      "season": null
+    },
     "rightEscalation": "inform",
     "followupWeeks": 2,
     "lesson": "procedure-writing",
     "scale": "docStatus",
     "title": "שלוש גרסאות, חתימה אחת",
     "body": "סבב ההערות על הנוהל ב{client} נגמר, לכאורה. בתיבה שלכם: \"נוהל_סופי.docx\" מ{contact}, \"נוהל_סופי_מתוקן.docx\" מהלשכה המשפטית, ו\"נוהל סופי 2\" ממשאבי אנוש. בשלושתן שינויים שונים, ובאף אחת אין מספר גרסה. {contact} {contact:כותב|כותבת}: \"המנכ\"ל חותם מחר בבוקר, {תשלח|תשלחי} לי את הסופית עד הערב.\" בנוהל אין סעיף שאומר מי מאשר, מי מעדכן ומתי בודקים אותו שוב. סטטוס: בסבב הערות.",
-    "attachments": [{ "label": "השוואה מהירה בין הגרסאות", "text": "גרסת {contact}: סף דיווח 300 ש\"ח. גרסת הלשכה המשפטית: 200 ש\"ח, בהתאם לחוק. גרסת משאבי אנוש: הסף נמחק, \"לפי שיקול דעת המנהל\"." }],
+    "attachments": [
+      {
+        "label": "השוואה מהירה בין הגרסאות",
+        "text": "גרסת {contact}: סף דיווח 300 ש\"ח. גרסת הלשכה המשפטית: 200 ש\"ח, בהתאם לחוק. גרסת משאבי אנוש: הסף נמחק, \"לפי שיקול דעת המנהל\"."
+      }
+    ],
     "hint": "נוהל שאין בו מי מאשר ומתי מעדכנים מתיישן ביום שנחתם. ומסמך בלי מספר גרסה הוא שלושה מסמכים.",
     "pushback": "{contact} {contact:מוסיף|מוסיפה}: \"{תאחד|תאחדי} משהו סביר, המנכ\"ל לא יקרא את זה ממילא.\"",
     "framings": [
-      { "id": "f1", "text": "איזו גרסה אחת, עם איזה סף, ומי מאשר אותה ואת העדכונים הבאים לה?", "quality": 3 },
-      { "id": "f2", "text": "איך לאחד שלושה קבצים עד הערב?", "quality": 1 },
-      { "id": "f3", "text": "מי מהשלושה מנסה להשתלט על הנוהל?", "quality": 1 },
-      { "id": "f4", "text": "המנכ\"ל חותם מחר; מה שחתום הוא מה שנכון.", "quality": 0 }
+      {
+        "id": "f1",
+        "text": "איזו גרסה אחת, עם איזה סף, ומי מאשר אותה ואת העדכונים הבאים לה?",
+        "quality": 3
+      },
+      {
+        "id": "f2",
+        "text": "איך לאחד שלושה קבצים עד הערב?",
+        "quality": 1
+      },
+      {
+        "id": "f3",
+        "text": "מי מהשלושה מנסה להשתלט על הנוהל?",
+        "quality": 1
+      },
+      {
+        "id": "f4",
+        "text": "המנכ\"ל חותם מחר; מה שחתום הוא מה שנכון.",
+        "quality": 0
+      }
     ],
     "info": [
-      { "id": "diff", "kind": "decisive", "hours": 2, "label": "להשוות את שלוש הגרסאות שורה-שורה ולרשום כל הבדל", "reveal": "שלושה הבדלים מהותיים: סף הדיווח (300 / 200 / נמחק), מי מקבל את הדיווח, והאם מנהל ישיר רשאי לאשר מתנה בעצמו. השאר ניסוח.", "sets": "compared_versions" },
-      { "id": "law", "kind": "decisive", "hours": 1, "label": "לבדוק מה הסף שהדין קובע לדיווח על מתנה", "reveal": "הדין קובע סף דיווח ומסגרת למתנות בעלות סמלית. גרסת הלשכה המשפטית היא היחידה שעומדת בו. סף \"לפי שיקול דעת\" אינו סף.", "sets": "checked_threshold" },
-      { "id": "norm", "kind": "decisive", "hours": 1, "label": "לשאול את {manager:מנהל|מנהלת} ההתקשרות איך המשרד מנהל גרסאות של נוהל", "reveal": "\"גרסה אחת, מספר גרסה, טבלת שינויים בעמוד הראשון, וסעיף 'אישור ועדכון' בגוף הנוהל. בלי זה אנחנו לא מעבירים לחתימה. {תשלח|תשלחי} לי מה {החלטת|החלטת}.\"", "sets": "asked_manager" },
-      { "id": "gossip", "kind": "noise", "hours": 1, "label": "לשאול את תום איזו גרסה היה שולח", "reveal": "\"של {contact}, {contact:הוא|היא} הלקוח. השאר יתלוננו ויעברו הלאה.\"" },
-      { "id": "history", "kind": "trap", "hours": 3, "label": "לחפש בארכיון המייל מי שלח מה ומתי כדי לקבוע מי צודק", "reveal": "שלוש שעות של שרשורים. מסתבר שכולם ערכו במקביל את אותו קובץ. אין \"גרסה נכונה\" כרונולוגית, רק תוכן.", "effect": { "energy": -2 } }
+      {
+        "id": "diff",
+        "kind": "decisive",
+        "hours": 2,
+        "label": "להשוות את שלוש הגרסאות שורה-שורה ולרשום כל הבדל",
+        "reveal": "שלושה הבדלים מהותיים: סף הדיווח (300 / 200 / נמחק), מי מקבל את הדיווח, והאם מנהל ישיר רשאי לאשר מתנה בעצמו. השאר ניסוח.",
+        "sets": "compared_versions"
+      },
+      {
+        "id": "law",
+        "kind": "decisive",
+        "hours": 1,
+        "label": "לבדוק מה הסף שהדין קובע לדיווח על מתנה",
+        "reveal": "הדין קובע סף דיווח ומסגרת למתנות בעלות סמלית. גרסת הלשכה המשפטית היא היחידה שעומדת בו. סף \"לפי שיקול דעת\" אינו סף.",
+        "sets": "checked_threshold"
+      },
+      {
+        "id": "norm",
+        "kind": "decisive",
+        "hours": 1,
+        "label": "לשאול את {manager:מנהל|מנהלת} ההתקשרות איך המשרד מנהל גרסאות של נוהל",
+        "reveal": "\"גרסה אחת, מספר גרסה, טבלת שינויים בעמוד הראשון, וסעיף 'אישור ועדכון' בגוף הנוהל. בלי זה אנחנו לא מעבירים לחתימה. {תשלח|תשלחי} לי מה {החלטת|החלטת}.\"",
+        "sets": "asked_manager"
+      },
+      {
+        "id": "gossip",
+        "kind": "noise",
+        "hours": 1,
+        "label": "לשאול את תום איזו גרסה היה שולח",
+        "reveal": "\"של {contact}, {contact:הוא|היא} הלקוח. השאר יתלוננו ויעברו הלאה.\""
+      },
+      {
+        "id": "history",
+        "kind": "trap",
+        "hours": 3,
+        "label": "לחפש בארכיון המייל מי שלח מה ומתי כדי לקבוע מי צודק",
+        "reveal": "שלוש שעות של שרשורים. מסתבר שכולם ערכו במקביל את אותו קובץ. אין \"גרסה נכונה\" כרונולוגית, רק תוכן.",
+        "effect": {
+          "energy": -2
+        }
+      }
     ],
     "failureModes": [
-      { "id": "m1", "text": "ייחתם נוהל עם סף לא חוקי, ונצטרך לתקן אחרי החתימה.", "signal": "הערה מהלשכה המשפטית אחרי החתימה על סף הדיווח", "forOptions": ["a"] },
-      { "id": "m2", "text": "החתימה תידחה ו{contact} {contact:יאשים|תאשים} אותנו בעיכוב.", "signal": "מייל מ{contact} ל{manager} על \"עיכוב מצד הצוות\"", "forOptions": ["c", "e"] },
-      { "id": "m3", "text": "הנוהל ייחתם נכון, אבל בלי סעיף אישור ועדכון, ובעוד שנה יהיו שוב שלוש גרסאות.", "signal": "בקשה לעדכן את הנוהל מגיעה בלי שידוע מי מאשר", "forOptions": ["b"] },
-      { "id": "m4", "text": "{manager} {manager:יחליט|תחליט} לבד ויבחר גרסה בלי לדעת על הסף החוקי.", "signal": "הגרסה שנשלחה לחתימה אינה זו שהלשכה המשפטית תיקנה", "forOptions": ["d"] }
+      {
+        "id": "m1",
+        "text": "ייחתם נוהל עם סף לא חוקי, ונצטרך לתקן אחרי החתימה.",
+        "signal": "הערה מהלשכה המשפטית אחרי החתימה על סף הדיווח",
+        "forOptions": [
+          "a"
+        ]
+      },
+      {
+        "id": "m2",
+        "text": "החתימה תידחה ו{contact} {contact:יאשים|תאשים} אותנו בעיכוב.",
+        "signal": "מייל מ{contact} ל{manager} על \"עיכוב מצד הצוות\"",
+        "forOptions": [
+          "c",
+          "e"
+        ]
+      },
+      {
+        "id": "m3",
+        "text": "הנוהל ייחתם נכון, אבל בלי סעיף אישור ועדכון, ובעוד שנה יהיו שוב שלוש גרסאות.",
+        "signal": "בקשה לעדכן את הנוהל מגיעה בלי שידוע מי מאשר",
+        "forOptions": [
+          "b"
+        ]
+      },
+      {
+        "id": "m4",
+        "text": "{manager} {manager:יחליט|תחליט} לבד ויבחר גרסה בלי לדעת על הסף החוקי.",
+        "signal": "הגרסה שנשלחה לחתימה אינה זו שהלשכה המשפטית תיקנה",
+        "forOptions": [
+          "d"
+        ]
+      }
     ],
     "rationales": [
-      { "id": "r1", "text": "הלקוח ביקש סופית עד הערב; עמידה בזמן חשובה מהניסוח.", "fits": ["a"] },
-      { "id": "r2", "text": "נוהל הוא גרסה אחת ממוספרת עם סף שעומד בדין וסעיף שאומר מי מאשר ומתי מעדכנים.", "fits": ["b", "c"] },
-      { "id": "r3", "text": "מחלוקת בין שלוש יחידות של הלקוח היא לא שלי להכריע.", "fits": ["d", "e"] }
+      {
+        "id": "r1",
+        "text": "הלקוח ביקש סופית עד הערב; עמידה בזמן חשובה מהניסוח.",
+        "fits": [
+          "a"
+        ]
+      },
+      {
+        "id": "r2",
+        "text": "נוהל הוא גרסה אחת ממוספרת עם סף שעומד בדין וסעיף שאומר מי מאשר ומתי מעדכנים.",
+        "fits": [
+          "b",
+          "c"
+        ]
+      },
+      {
+        "id": "r3",
+        "text": "מחלוקת בין שלוש יחידות של הלקוח היא לא שלי להכריע.",
+        "fits": [
+          "d",
+          "e"
+        ]
+      }
     ],
     "options": [
       {
-        "id": "a", "label": "לשלוח את גרסת {contact} כפי שהיא, היא הלקוח", "quality": 0,
-        "tags": ["client-pleasing", "shortcut"], "biasTags": ["authority", "social-pressure"],
-        "reversible": false, "escalation": "none",
-        "immediate": { "energy": -1, "eng.quality": -7, "eng.work": 1, "trust.contact": 5, "flag.policy_versions_decided": 1 },
-        "result": { "pGood": 0.35,
-          "good": { "text": "המנכ\"ל חותם. סטטוס: מאושר. {contact} {contact:שולח|שולחת} \"תודה על המהירות\".", "effect": { "confidence": 2 } },
-          "bad": { "text": "הלשכה המשפטית רואה את החתימה ושואלת למה הסף שלה נעלם. {contact} {contact:מפנה|מפנה} אותם אליכם.", "effect": { "trust.contact": -3 } } },
+        "id": "a",
+        "label": "לשלוח את גרסת {contact} כפי שהיא, היא הלקוח",
+        "quality": 0,
+        "tags": [
+          "client-pleasing",
+          "shortcut"
+        ],
+        "biasTags": [
+          "authority",
+          "social-pressure"
+        ],
+        "reversible": false,
+        "escalation": "none",
+        "immediate": {
+          "energy": -1,
+          "eng.quality": -7,
+          "eng.work": 1,
+          "trust.contact": 5,
+          "flag.policy_versions_decided": 1
+        },
+        "result": {
+          "pGood": 0.35,
+          "good": {
+            "text": "המנכ\"ל חותם. סטטוס: מאושר. {contact} {contact:שולח|שולחת} \"תודה על המהירות\".",
+            "effect": {
+              "confidence": 2
+            }
+          },
+          "bad": {
+            "text": "הלשכה המשפטית רואה את החתימה ושואלת למה הסף שלה נעלם. {contact} {contact:מפנה|מפנה} אותם אליכם.",
+            "effect": {
+              "trust.contact": -3
+            }
+          }
+        },
         "delayed": [
-          { "after": 2, "prob": 0.65, "failureMode": "m1", "text": "הלשכה המשפטית דורשת תיקון של נוהל חתום: הסף שנקבע אינו תואם את הדין. גרסה 2 תוך חודש מהחתימה, עם השם שלכם על גרסה 1.", "effect": { "eng.quality": -8, "rep": -3, "confidence": -3 } }
+          {
+            "after": 2,
+            "prob": 0.65,
+            "failureMode": "m1",
+            "text": "הלשכה המשפטית דורשת תיקון של נוהל חתום: הסף שנקבע אינו תואם את הדין. גרסה 2 תוך חודש מהחתימה, עם השם שלכם על גרסה 1.",
+            "effect": {
+              "eng.quality": -8,
+              "rep": -3,
+              "confidence": -3
+            }
+          }
         ],
         "feedback": {
           "why": "\"הלקוח\" הוא הארגון, לא {contact:איש|אשת} הקשר. נוהל עם סף שאינו עומד בדין הוא ממצא עתידי, חתום. ו-COSO 2013 מצפה שלבקרה יהיה מנגנון עדכון; שלחתם לחתימה מסמך שאין בו מי מאשר ומתי בודקים.",
@@ -351,16 +1152,52 @@
         }
       },
       {
-        "id": "b", "label": "לאחד לגרסה אחת עם הסף החוקי, למספר אותה, ולשלוח לחתימה הערב", "quality": 2,
-        "needsInfo": ["compared_versions", "checked_threshold"],
-        "tags": ["documentation"], "biasTags": ["planning-fallacy"],
-        "reversible": true, "escalation": "none",
-        "immediate": { "energy": -2, "eng.quality": 5, "eng.work": 1, "flag.policy_versions_decided": 1 },
-        "result": { "pGood": 0.6,
-          "good": { "text": "גרסה 1.0 נשלחת עם טבלת שינויים. המנכ\"ל חותם. הסף נכון.", "effect": { "trust.contact": 2 } },
-          "bad": { "text": "משאבי אנוש רואים שהסף \"שלהם\" נמחק ומבקשים לעכב את החתימה. לא הסברתם להם למה.", "effect": { "eng.work": -1 } } },
+        "id": "b",
+        "label": "לאחד לגרסה אחת עם הסף החוקי, למספר אותה, ולשלוח לחתימה הערב",
+        "quality": 2,
+        "needsInfo": [
+          "compared_versions",
+          "checked_threshold"
+        ],
+        "tags": [
+          "documentation"
+        ],
+        "biasTags": [
+          "planning-fallacy"
+        ],
+        "reversible": true,
+        "escalation": "none",
+        "immediate": {
+          "energy": -2,
+          "eng.quality": 5,
+          "eng.work": 1,
+          "flag.policy_versions_decided": 1
+        },
+        "result": {
+          "pGood": 0.6,
+          "good": {
+            "text": "גרסה 1.0 נשלחת עם טבלת שינויים. המנכ\"ל חותם. הסף נכון.",
+            "effect": {
+              "trust.contact": 2
+            }
+          },
+          "bad": {
+            "text": "משאבי אנוש רואים שהסף \"שלהם\" נמחק ומבקשים לעכב את החתימה. לא הסברתם להם למה.",
+            "effect": {
+              "eng.work": -1
+            }
+          }
+        },
         "delayed": [
-          { "after": 8, "prob": 0.5, "failureMode": "m3", "text": "בקשה לעדכן את הנוהל מגיעה מ{contact}. אין בנוהל סעיף שאומר מי מאשר עדכון, ושוב יש שתי גרסאות במקביל.", "effect": { "eng.quality": -3 } }
+          {
+            "after": 8,
+            "prob": 0.5,
+            "failureMode": "m3",
+            "text": "בקשה לעדכן את הנוהל מגיעה מ{contact}. אין בנוהל סעיף שאומר מי מאשר עדכון, ושוב יש שתי גרסאות במקביל.",
+            "effect": {
+              "eng.quality": -3
+            }
+          }
         ],
         "feedback": {
           "why": "התוכן נכון: גרסה אחת, סף חוקי, מספר גרסה. חסר הדבר שמונע את המקרה הבא: סעיף \"אישור ועדכון\" בגוף הנוהל (מי מאשר, מי רשאי ליזום שינוי, מועד סקירה). בלי זה תיקנתם את הסימפטום.",
@@ -370,16 +1207,53 @@
         }
       },
       {
-        "id": "c", "label": "גרסה 1.0 ממוספרת עם הסף החוקי וסעיף אישור ועדכון; לבקש מ{contact} יום נוסף ולעדכן את {manager}", "quality": 3,
-        "needsInfo": ["compared_versions", "checked_threshold"],
-        "tags": ["documentation", "initiative"], "biasTags": [],
-        "reversible": true, "escalation": "inform",
-        "immediate": { "energy": -2, "eng.quality": 8, "trust.manager": 3, "trust.contact": -2, "flag.policy_versions_decided": 1 },
-        "result": { "pGood": 0.75,
-          "good": { "text": "{contact} {contact:מתלונן|מתלוננת} על היום הנוסף, אבל כש{contact:הוא רואה|היא רואה} את טבלת השינויים {contact:הוא מבין|היא מבינה} למה. גרסה 1.0 נחתמת יומיים אחרי. סטטוס: מאושר.", "effect": { "rep": 2, "trust.contact": 3 } },
-          "bad": { "text": "המנכ\"ל נסע לשבוע. החתימה נדחית, ו{contact} {contact:מזכיר|מזכירה} לכם שהיה אפשר לחתום אתמול.", "effect": { "trust.contact": -2 } } },
+        "id": "c",
+        "label": "גרסה 1.0 ממוספרת עם הסף החוקי וסעיף אישור ועדכון; לבקש מ{contact} יום נוסף ולעדכן את {manager}",
+        "quality": 3,
+        "needsInfo": [
+          "compared_versions",
+          "checked_threshold"
+        ],
+        "tags": [
+          "documentation",
+          "initiative"
+        ],
+        "biasTags": [],
+        "reversible": true,
+        "escalation": "inform",
+        "immediate": {
+          "energy": -2,
+          "eng.quality": 8,
+          "trust.manager": 3,
+          "trust.contact": -2,
+          "flag.policy_versions_decided": 1
+        },
+        "result": {
+          "pGood": 0.75,
+          "good": {
+            "text": "{contact} {contact:מתלונן|מתלוננת} על היום הנוסף, אבל כש{contact:הוא רואה|היא רואה} את טבלת השינויים {contact:הוא מבין|היא מבינה} למה. גרסה 1.0 נחתמת יומיים אחרי. סטטוס: מאושר.",
+            "effect": {
+              "rep": 2,
+              "trust.contact": 3
+            }
+          },
+          "bad": {
+            "text": "המנכ\"ל נסע לשבוע. החתימה נדחית, ו{contact} {contact:מזכיר|מזכירה} לכם שהיה אפשר לחתום אתמול.",
+            "effect": {
+              "trust.contact": -2
+            }
+          }
+        },
         "delayed": [
-          { "after": 2, "prob": 0.3, "failureMode": "m2", "text": "{contact} {contact:כותב|כותבת} ל{manager} על \"עיכוב מצד הצוות\". {manager} עונה שהעיכוב מנע נוהל לא חוקי. השיחה נגמרת שם.", "effect": { "trust.manager": 2 } }
+          {
+            "after": 2,
+            "prob": 0.3,
+            "failureMode": "m2",
+            "text": "{contact} {contact:כותב|כותבת} ל{manager} על \"עיכוב מצד הצוות\". {manager} עונה שהעיכוב מנע נוהל לא חוקי. השיחה נגמרת שם.",
+            "effect": {
+              "trust.manager": 2
+            }
+          }
         ],
         "feedback": {
           "why": "זה הסטנדרט: גרסה אחת ממוספרת, תוכן שעומד בדין, וסעיף שאומר מי מאשר, מי מעדכן ומתי סוקרים. יום אחד של עיכוב מול חתימה על מסמך שגוי הוא עסקה טובה, ו{manager} {manager:יודע|יודעת} לפני ש{contact} {contact:מתקשר|מתקשרת}. GIAS 2024 מזכיר שתיעוד טוב הוא כזה שאדם שלישי יכול לשחזר ממנו מה הוחלט ולמה: טבלת השינויים היא בדיוק זה.",
@@ -389,15 +1263,47 @@
         }
       },
       {
-        "id": "d", "label": "לשלוח את שלוש הגרסאות ל{manager:מנהל|מנהלת} ההתקשרות ולבקש שיבחר", "quality": 1,
-        "tags": ["escalate", "delegate"], "biasTags": ["responsibility-transfer"],
-        "reversible": true, "escalation": "escalate",
-        "immediate": { "trust.manager": -3, "flag.policy_versions_decided": 1 },
-        "result": { "pGood": 0.45,
-          "good": { "text": "{manager} {manager:חוזר|חוזרת} בעשר בלילה: \"גרסת הלשכה המשפטית, {תמספר|תמספרי}, {תוסיף|תוסיפי} סעיף אישור. למה אני עושה את זה?\"", "effect": {} },
-          "bad": { "text": "{manager} לא {manager:פנוי|פנויה} הערב. הבוקר מגיע בלי גרסה סופית, והמנכ\"ל חותם על מה ש{contact} {contact:הביא|הביאה}.", "effect": { "eng.quality": -5, "confidence": -2 } } },
+        "id": "d",
+        "label": "לשלוח את שלוש הגרסאות ל{manager:מנהל|מנהלת} ההתקשרות ולבקש שיבחר",
+        "quality": 1,
+        "tags": [
+          "escalate",
+          "delegate"
+        ],
+        "biasTags": [
+          "responsibility-transfer"
+        ],
+        "reversible": true,
+        "escalation": "escalate",
+        "immediate": {
+          "trust.manager": -3,
+          "flag.policy_versions_decided": 1
+        },
+        "result": {
+          "pGood": 0.45,
+          "good": {
+            "text": "{manager} {manager:חוזר|חוזרת} בעשר בלילה: \"גרסת הלשכה המשפטית, {תמספר|תמספרי}, {תוסיף|תוסיפי} סעיף אישור. למה אני עושה את זה?\"",
+            "effect": {}
+          },
+          "bad": {
+            "text": "{manager} לא {manager:פנוי|פנויה} הערב. הבוקר מגיע בלי גרסה סופית, והמנכ\"ל חותם על מה ש{contact} {contact:הביא|הביאה}.",
+            "effect": {
+              "eng.quality": -5,
+              "confidence": -2
+            }
+          }
+        },
         "delayed": [
-          { "after": 2, "prob": 0.4, "failureMode": "m4", "text": "{manager} {manager:בחר|בחרה} מהר את גרסת {contact}. הלשכה המשפטית מגלה שהסף שלה נעלם ושואלת מי אישר.", "effect": { "eng.quality": -4, "trust.manager": -2 } }
+          {
+            "after": 2,
+            "prob": 0.4,
+            "failureMode": "m4",
+            "text": "{manager} {manager:בחר|בחרה} מהר את גרסת {contact}. הלשכה המשפטית מגלה שהסף שלה נעלם ושואלת מי אישר.",
+            "effect": {
+              "eng.quality": -4,
+              "trust.manager": -2
+            }
+          }
         ],
         "feedback": {
           "why": "ההכרעה בין הגרסאות היא עבודה מקצועית שלכם: השוואה, בדיקת הדין, גרסה אחת. {manager:מנהל|מנהלת} ההתקשרות צריך לקבל את התוצאה ואת ההמלצה, לא שלושה קבצים בעשר בלילה.",
@@ -407,15 +1313,48 @@
         }
       },
       {
-        "id": "e", "label": "לדחות את החתימה בשבוע ולכנס את שלוש היחידות לסבב הערות נוסף", "quality": 1,
-        "tags": ["defer"], "biasTags": ["risk-aversion", "procedure-bias"],
-        "reversible": true, "escalation": "none",
-        "immediate": { "energy": -1, "eng.work": -1, "trust.contact": -5, "flag.policy_versions_decided": 1 },
-        "result": { "pGood": 0.4,
-          "good": { "text": "הסבב הנוסף מתכנס ומסכים על הסף החוקי. שבוע הלך, הנוהל נכון.", "effect": {} },
-          "bad": { "text": "בסבב הנוסף משאבי אנוש פותחים מחדש גם את פרק ההגדרות. עכשיו יש חמש גרסאות.", "effect": { "eng.work": -1, "confidence": -2 } } },
+        "id": "e",
+        "label": "לדחות את החתימה בשבוע ולכנס את שלוש היחידות לסבב הערות נוסף",
+        "quality": 1,
+        "tags": [
+          "defer"
+        ],
+        "biasTags": [
+          "risk-aversion",
+          "procedure-bias"
+        ],
+        "reversible": true,
+        "escalation": "none",
+        "immediate": {
+          "energy": -1,
+          "eng.work": -1,
+          "trust.contact": -5,
+          "flag.policy_versions_decided": 1
+        },
+        "result": {
+          "pGood": 0.4,
+          "good": {
+            "text": "הסבב הנוסף מתכנס ומסכים על הסף החוקי. שבוע הלך, הנוהל נכון.",
+            "effect": {}
+          },
+          "bad": {
+            "text": "בסבב הנוסף משאבי אנוש פותחים מחדש גם את פרק ההגדרות. עכשיו יש חמש גרסאות.",
+            "effect": {
+              "eng.work": -1,
+              "confidence": -2
+            }
+          }
+        },
         "delayed": [
-          { "after": 2, "prob": 0.55, "failureMode": "m2", "text": "{contact} {contact:כותב|כותבת} ל{manager} שהצוות \"פתח מחדש נוהל שכבר נסגר\". {manager} {manager:שואל|שואלת} למה לא {איחדת|איחדת} בעצמך.", "effect": { "trust.manager": -3 } }
+          {
+            "after": 2,
+            "prob": 0.55,
+            "failureMode": "m2",
+            "text": "{contact} {contact:כותב|כותבת} ל{manager} שהצוות \"פתח מחדש נוהל שכבר נסגר\". {manager} {manager:שואל|שואלת} למה לא {איחדת|איחדת} בעצמך.",
+            "effect": {
+              "trust.manager": -3
+            }
+          }
         ],
         "feedback": {
           "why": "סבב הערות נוסף הוא התשובה לשאלה פתוחה. כאן השאלה סגורה: הדין קובע את הסף, וההבדלים האחרים הם ניסוח. סבב שלם במקום הכרעה מקצועית ושלוש שורות הסבר הוא דחייה בתחפושת של תהליך.",
@@ -431,60 +1370,234 @@
     "family": "procedure-writing",
     "bank": "decision",
     "journal": "full",
-    "tier": [1],
+    "tier": [
+      1
+    ],
     "difficulty": 2,
     "domain": "policy",
-    "sector": ["*"],
-    "engType": ["policy-writing"],
+    "sector": [
+      "*"
+    ],
+    "engType": [
+      "policy-writing"
+    ],
     "phase": "fieldwork",
-    "skills": [{ "id": "controls", "w": 0.35 }, { "id": "writing", "w": 0.3 }, { "id": "interview", "w": 0.35 }],
-    "frameworks": ["COSO 2013", "GIAS 2024", "מודל שלושת הקווים"],
+    "skills": [
+      {
+        "id": "controls",
+        "w": 0.35
+      },
+      {
+        "id": "writing",
+        "w": 0.3
+      },
+      {
+        "id": "interview",
+        "w": 0.35
+      }
+    ],
+    "frameworks": [
+      "COSO 2013",
+      "GIAS 2024",
+      "מודל שלושת הקווים"
+    ],
     "cooldown": 30,
-    "requires": { "flags": [], "notFlags": ["policy_paper_controls_decided"], "minTrust": {}, "season": null },
+    "requires": {
+      "flags": [],
+      "notFlags": [
+        "policy_paper_controls_decided"
+      ],
+      "minTrust": {},
+      "season": null
+    },
     "rightEscalation": "inform",
     "followupWeeks": 4,
     "lesson": "design-vs-operating",
     "scale": "docStatus",
     "title": "הבקרה שקיימת רק על הנייר",
     "body": "שבוע הניסוח השני של הנוהל ב{client}. {contact} {contact:שלח|שלחה} לכם \"מה שעובד אצלנו היום, רק {תכתוב|תכתבי} את זה יפה\": אישור כפול על כל הוצאה מעל 5,000 ש\"ח, רישום במערכת לפני התשלום, ובדיקה רבעונית של היחידה. בביקור ביחידה {אתה רואה|את רואה} משהו אחר: הרכזת מאשרת לבד, המנהל חותם בסוף החודש על ערימה, והבדיקה הרבעונית \"הייתה פעם\". הנוהל שלכם, בסטטוס טיוטה, עומד לתאר בקרות שאף אחד לא מבצע.",
-    "attachments": [{ "label": "מהתצפית ביחידה", "text": "14:10, הרכזת: \"אני מאשרת, הוא חותם בסוף החודש, ככה כבר שנתיים. הבדיקה הרבעונית? מאז שדנה עזבה אין.\"" }],
+    "attachments": [
+      {
+        "label": "מהתצפית ביחידה",
+        "text": "14:10, הרכזת: \"אני מאשרת, הוא חותם בסוף החודש, ככה כבר שנתיים. הבדיקה הרבעונית? מאז שדנה עזבה אין.\""
+      }
+    ],
     "hint": "נוהל שמתאר בקרה שלא מתבצעת לא יוצר בקרה; הוא יוצר ממצא עתידי. כותבים את מה שיתבצע, או משנים את מה שמתבצע, אבל לא מעמידים פנים.",
     "pushback": "{contact} {contact:מוסיף|מוסיפה}: \"הנוהל הוא מה שאמור להיות. מה שקורה בפועל זה עניין של ביקורת, לא של הנוהל.\"",
     "framings": [
-      { "id": "f1", "text": "איזו בקרה היחידה באמת מסוגלת לבצע, ומה צריך להשתנות כדי שהנוהל יתאר אותה?", "quality": 3 },
-      { "id": "f2", "text": "איך לכתוב את הסעיף כך שגם {contact} וגם הרכזת ירגישו בנוח?", "quality": 1 },
-      { "id": "f3", "text": "האם לדווח על היחידה שלא מבצעת את הבקרה?", "quality": 1 },
-      { "id": "f4", "text": "{contact} {contact:יודע|יודעת} מה אמור להיות; תפקידנו לכתוב, לא לבדוק.", "quality": 0 }
+      {
+        "id": "f1",
+        "text": "איזו בקרה היחידה באמת מסוגלת לבצע, ומה צריך להשתנות כדי שהנוהל יתאר אותה?",
+        "quality": 3
+      },
+      {
+        "id": "f2",
+        "text": "איך לכתוב את הסעיף כך שגם {contact} וגם הרכזת ירגישו בנוח?",
+        "quality": 1
+      },
+      {
+        "id": "f3",
+        "text": "האם לדווח על היחידה שלא מבצעת את הבקרה?",
+        "quality": 1
+      },
+      {
+        "id": "f4",
+        "text": "{contact} {contact:יודע|יודעת} מה אמור להיות; תפקידנו לכתוב, לא לבדוק.",
+        "quality": 0
+      }
     ],
     "info": [
-      { "id": "why", "kind": "decisive", "hours": 2, "label": "לשבת עם הרכזת ולשאול למה האישור הכפול נשבר", "reveal": "\"המנהל בשטח שלושה ימים בשבוע, והמערכת לא מאפשרת אישור מהנייד. אם אחכה לו, הספקים לא יקבלו כסף.\" הבקרה לא נשברה מרשלנות; היא תוכננה למבנה שלא קיים.", "sets": "asked_unit" },
-      { "id": "system", "kind": "decisive", "hours": 2, "label": "לבדוק במערכת מה באמת נרשם לפני התשלום", "reveal": "ב-60 התשלומים האחרונים: 58 נרשמו אחרי התשלום. המערכת מאפשרת לרשום בדיעבד. הבקרה \"רישום לפני תשלום\" לא קיימת בתכנון המערכת.", "sets": "checked_system" },
-      { "id": "norm", "kind": "decisive", "hours": 1, "label": "לשאול את {manager:מנהל|מנהלת} ההתקשרות מה כותבים כשהמציאות שונה מהנוהל", "reveal": "\"כותבים בקרה שאפשר לבצע, ומתעדים את הפער במכתב ללקוח. נוהל שמתאר פנטזיה הוא הממצא הראשון של הביקורת הבאה. {תעדכן|תעדכני} אותי מה {החלטת|החלטת}.\"", "sets": "asked_manager" },
-      { "id": "gossip", "kind": "noise", "hours": 1, "label": "לשאול את תום", "reveal": "\"{תכתוב|תכתבי} מה שהלקוח רוצה. אתם כותבים נוהל, לא מבקרים אותו.\"" },
-      { "id": "oldaudit", "kind": "trap", "hours": 3, "label": "לחפש את דוח הביקורת הקודם של היחידה", "reveal": "דוח מלפני ארבע שנים, שמונים עמודים, היחידה אז הייתה בנויה אחרת. שלוש שעות, אפס רלוונטיות.", "effect": { "energy": -2 } }
+      {
+        "id": "why",
+        "kind": "decisive",
+        "hours": 2,
+        "label": "לשבת עם הרכזת ולשאול למה האישור הכפול נשבר",
+        "reveal": "\"המנהל בשטח שלושה ימים בשבוע, והמערכת לא מאפשרת אישור מהנייד. אם אחכה לו, הספקים לא יקבלו כסף.\" הבקרה לא נשברה מרשלנות; היא תוכננה למבנה שלא קיים.",
+        "sets": "asked_unit"
+      },
+      {
+        "id": "system",
+        "kind": "decisive",
+        "hours": 2,
+        "label": "לבדוק במערכת מה באמת נרשם לפני התשלום",
+        "reveal": "ב-60 התשלומים האחרונים: 58 נרשמו אחרי התשלום. המערכת מאפשרת לרשום בדיעבד. הבקרה \"רישום לפני תשלום\" לא קיימת בתכנון המערכת.",
+        "sets": "checked_system"
+      },
+      {
+        "id": "norm",
+        "kind": "decisive",
+        "hours": 1,
+        "label": "לשאול את {manager:מנהל|מנהלת} ההתקשרות מה כותבים כשהמציאות שונה מהנוהל",
+        "reveal": "\"כותבים בקרה שאפשר לבצע, ומתעדים את הפער במכתב ללקוח. נוהל שמתאר פנטזיה הוא הממצא הראשון של הביקורת הבאה. {תעדכן|תעדכני} אותי מה {החלטת|החלטת}.\"",
+        "sets": "asked_manager"
+      },
+      {
+        "id": "gossip",
+        "kind": "noise",
+        "hours": 1,
+        "label": "לשאול את תום",
+        "reveal": "\"{תכתוב|תכתבי} מה שהלקוח רוצה. אתם כותבים נוהל, לא מבקרים אותו.\""
+      },
+      {
+        "id": "oldaudit",
+        "kind": "trap",
+        "hours": 3,
+        "label": "לחפש את דוח הביקורת הקודם של היחידה",
+        "reveal": "דוח מלפני ארבע שנים, שמונים עמודים, היחידה אז הייתה בנויה אחרת. שלוש שעות, אפס רלוונטיות.",
+        "effect": {
+          "energy": -2
+        }
+      }
     ],
     "failureModes": [
-      { "id": "m1", "text": "הנוהל ייחתם עם בקרות שאיש לא מבצע, והביקורת הבאה תמצא פער בין הנוהל למציאות עם השם שלנו עליו.", "signal": "ממצא \"חוסר עמידה בנוהל\" על הסעיף שכתבנו", "forOptions": ["a"] },
-      { "id": "m2", "text": "{contact} {contact:יתנגד|תתנגד} לבקרה \"מוחלשת\" ויחזיר את הניסוח המקורי בסבב ההערות.", "signal": "הערה של {contact}: \"להחזיר אישור כפול\"", "forOptions": ["b", "c"] },
-      { "id": "m3", "text": "היחידה תרגיש שהלשנו עליה ותפסיק לשתף פעולה.", "signal": "הרכזת מפנה אותנו \"למנהל\" על כל שאלה", "forOptions": ["c", "d"] },
-      { "id": "m4", "text": "שבוע הניסוח יאבד בוויכוח על המציאות במקום בכתיבה.", "signal": "סוף השבוע בלי טיוטת פרק הבקרות", "forOptions": ["e"] }
+      {
+        "id": "m1",
+        "text": "הנוהל ייחתם עם בקרות שאיש לא מבצע, והביקורת הבאה תמצא פער בין הנוהל למציאות עם השם שלנו עליו.",
+        "signal": "ממצא \"חוסר עמידה בנוהל\" על הסעיף שכתבנו",
+        "forOptions": [
+          "a"
+        ]
+      },
+      {
+        "id": "m2",
+        "text": "{contact} {contact:יתנגד|תתנגד} לבקרה \"מוחלשת\" ויחזיר את הניסוח המקורי בסבב ההערות.",
+        "signal": "הערה של {contact}: \"להחזיר אישור כפול\"",
+        "forOptions": [
+          "b",
+          "c"
+        ]
+      },
+      {
+        "id": "m3",
+        "text": "היחידה תרגיש שהלשנו עליה ותפסיק לשתף פעולה.",
+        "signal": "הרכזת מפנה אותנו \"למנהל\" על כל שאלה",
+        "forOptions": [
+          "c",
+          "d"
+        ]
+      },
+      {
+        "id": "m4",
+        "text": "שבוע הניסוח יאבד בוויכוח על המציאות במקום בכתיבה.",
+        "signal": "סוף השבוע בלי טיוטת פרק הבקרות",
+        "forOptions": [
+          "e"
+        ]
+      }
     ],
     "rationales": [
-      { "id": "r1", "text": "הנוהל מגדיר את הרצוי; יישום הוא אחריות הלקוח.", "fits": ["a"] },
-      { "id": "r2", "text": "בקרה היא מה שמתבצע; הנוהל צריך לתאר בקרה ברת-ביצוע, והפער מתועד ללקוח.", "fits": ["b", "c"] },
-      { "id": "r3", "text": "פער בין נוהל למציאות הוא עניין להנהלת הלקוח ול{manager:מנהל|מנהלת} ההתקשרות, לא לניסוח.", "fits": ["d", "e"] }
+      {
+        "id": "r1",
+        "text": "הנוהל מגדיר את הרצוי; יישום הוא אחריות הלקוח.",
+        "fits": [
+          "a"
+        ]
+      },
+      {
+        "id": "r2",
+        "text": "בקרה היא מה שמתבצע; הנוהל צריך לתאר בקרה ברת-ביצוע, והפער מתועד ללקוח.",
+        "fits": [
+          "b",
+          "c"
+        ]
+      },
+      {
+        "id": "r3",
+        "text": "פער בין נוהל למציאות הוא עניין להנהלת הלקוח ול{manager:מנהל|מנהלת} ההתקשרות, לא לניסוח.",
+        "fits": [
+          "d",
+          "e"
+        ]
+      }
     ],
     "options": [
       {
-        "id": "a", "label": "לכתוב את הבקרות כפי ש{contact} {contact:תיאר|תיארה}: אישור כפול, רישום מראש, בדיקה רבעונית", "quality": 0,
-        "tags": ["client-pleasing"], "biasTags": ["authority", "confirmation"],
-        "reversible": false, "escalation": "none",
-        "immediate": { "energy": -1, "eng.quality": -6, "eng.work": 1, "trust.contact": 5, "flag.policy_paper_controls_decided": 1 },
-        "result": { "pGood": 0.4,
-          "good": { "text": "הפרק נכתב מהר. {contact} {contact:מרוצה|מרוצה}: \"בדיוק ככה.\" הטיוטה עוברת לסבב הערות.", "effect": { "confidence": 2 } },
-          "bad": { "text": "הרכזת קוראת את הטיוטה ושואלת אתכם ישירות: \"ראיתם איך זה עובד פה. למה כתבתם את זה?\"", "effect": { "integrity": -3 } } },
+        "id": "a",
+        "label": "לכתוב את הבקרות כפי ש{contact} {contact:תיאר|תיארה}: אישור כפול, רישום מראש, בדיקה רבעונית",
+        "quality": 0,
+        "tags": [
+          "client-pleasing"
+        ],
+        "biasTags": [
+          "authority",
+          "confirmation"
+        ],
+        "reversible": false,
+        "escalation": "none",
+        "immediate": {
+          "energy": -1,
+          "eng.quality": -6,
+          "eng.work": 1,
+          "trust.contact": 5,
+          "flag.policy_paper_controls_decided": 1
+        },
+        "result": {
+          "pGood": 0.4,
+          "good": {
+            "text": "הפרק נכתב מהר. {contact} {contact:מרוצה|מרוצה}: \"בדיוק ככה.\" הטיוטה עוברת לסבב הערות.",
+            "effect": {
+              "confidence": 2
+            }
+          },
+          "bad": {
+            "text": "הרכזת קוראת את הטיוטה ושואלת אתכם ישירות: \"ראיתם איך זה עובד פה. למה כתבתם את זה?\"",
+            "effect": {
+              "integrity": -3
+            }
+          }
+        },
         "delayed": [
-          { "after": 8, "prob": 0.6, "failureMode": "m1", "text": "הביקורת הפנימית של {client} בודקת את היחידה לפי הנוהל החדש: שלוש בקרות, אפס מתבצעות. הממצא מצטט את הנוהל שלכם, בסטטוס מאושר, כקריטריון.", "effect": { "eng.quality": -10, "rep": -4, "integrity": -4 } }
+          {
+            "after": 8,
+            "prob": 0.6,
+            "failureMode": "m1",
+            "text": "הביקורת הפנימית של {client} בודקת את היחידה לפי הנוהל החדש: שלוש בקרות, אפס מתבצעות. הממצא מצטט את הנוהל שלכם, בסטטוס מאושר, כקריטריון.",
+            "effect": {
+              "eng.quality": -10,
+              "rep": -4,
+              "integrity": -4
+            }
+          }
         ],
         "feedback": {
           "why": "COSO 2013 מבחין בין תכנון בקרה לתפעול שלה; נוהל שמתאר בקרה שאינה מתופעלת הוא תכנון בלי תפעול, והביקורת הבאה תשתמש בו כקריטריון נגד היחידה. {ראית|ראית} את הפער ו{כתבת|כתבת} אחרת: זה כבר לא רק איכות, זה יושרה מקצועית (GIAS 2024, אובייקטיביות).",
@@ -494,16 +1607,51 @@
         }
       },
       {
-        "id": "b", "label": "לכתוב את הבקרה כפי שהיא מתבצעת בפועל: אישור יחיד, חתימת מנהל חודשית, בלי בדיקה רבעונית", "quality": 1,
+        "id": "b",
+        "label": "לכתוב את הבקרה כפי שהיא מתבצעת בפועל: אישור יחיד, חתימת מנהל חודשית, בלי בדיקה רבעונית",
+        "quality": 1,
         "needsInfo": "asked_unit",
-        "tags": ["documentation", "scope-cut"], "biasTags": ["status-quo"],
-        "reversible": true, "escalation": "none",
-        "immediate": { "energy": -1, "eng.quality": 1, "eng.work": 1, "flag.policy_paper_controls_decided": 1 },
-        "result": { "pGood": 0.5,
-          "good": { "text": "הנוהל מתאר את המציאות. הרכזת מרוצה; לפחות עכשיו זה כתוב.", "effect": { "trust.contact": -1 } },
-          "bad": { "text": "{contact} {contact:קורא|קוראת} את הפרק: \"כתבתם נוהל שמאפשר לרכזת לשלם 50 אלף לבד. אתם רציניים?\"", "effect": { "trust.contact": -5 } } },
+        "tags": [
+          "documentation",
+          "scope-cut"
+        ],
+        "biasTags": [
+          "status-quo"
+        ],
+        "reversible": true,
+        "escalation": "none",
+        "immediate": {
+          "energy": -1,
+          "eng.quality": 1,
+          "eng.work": 1,
+          "flag.policy_paper_controls_decided": 1
+        },
+        "result": {
+          "pGood": 0.5,
+          "good": {
+            "text": "הנוהל מתאר את המציאות. הרכזת מרוצה; לפחות עכשיו זה כתוב.",
+            "effect": {
+              "trust.contact": -1
+            }
+          },
+          "bad": {
+            "text": "{contact} {contact:קורא|קוראת} את הפרק: \"כתבתם נוהל שמאפשר לרכזת לשלם 50 אלף לבד. אתם רציניים?\"",
+            "effect": {
+              "trust.contact": -5
+            }
+          }
+        },
         "delayed": [
-          { "after": 4, "prob": 0.55, "failureMode": "m2", "text": "בסבב ההערות {contact} {contact:מחזיר|מחזירה} את האישור הכפול בלי לשנות דבר ביחידה. חזרתם לנקודת ההתחלה, שבועיים מאוחר יותר.", "effect": { "eng.work": -1, "eng.quality": -3 } }
+          {
+            "after": 4,
+            "prob": 0.55,
+            "failureMode": "m2",
+            "text": "בסבב ההערות {contact} {contact:מחזיר|מחזירה} את האישור הכפול בלי לשנות דבר ביחידה. חזרתם לנקודת ההתחלה, שבועיים מאוחר יותר.",
+            "effect": {
+              "eng.work": -1,
+              "eng.quality": -3
+            }
+          }
         ],
         "feedback": {
           "why": "לתאר את המציאות עדיף על לתאר פנטזיה, אבל המציאות כאן היא בקרה שלא עונה על הסיכון: אישור יחיד על הוצאות גדולות. נוהל הוא גם הזדמנות לתכנן בקרה שאפשר לבצע ועונה על הסיכון, למשל אישור שני דיגיטלי או סף מדורג. ויתרתם על הסיכון במקום לתכנן מחדש.",
@@ -513,17 +1661,62 @@
         }
       },
       {
-        "id": "c", "label": "לתכנן בקרה ברת-ביצוע שעונה על הסיכון, לתעד ל{contact} את הפער שנצפה, ולעדכן את {manager}", "quality": 3,
-        "needsInfo": ["asked_unit", "checked_system"],
-        "tags": ["documentation", "initiative"], "biasTags": [],
-        "reversible": true, "escalation": "inform",
-        "immediate": { "energy": -2, "eng.quality": 8, "trust.contact": -2, "trust.manager": 3, "flag.policy_paper_controls_decided": 1 },
-        "result": { "pGood": 0.7,
-          "good": { "text": "{contact} {contact:מופתע|מופתעת} מהממצא על 58 מתוך 60, אבל ההצעה (אישור שני מהנייד, סף מדורג, בדיקה חצי-שנתית עם בעלים) מתקבלת. הפרק נכתב על בקרה שתתבצע.", "effect": { "rep": 2, "trust.contact": 4 } },
-          "bad": { "text": "{contact} {contact:לוקח|לוקחת} את מכתב הפער אישית: \"באתם לכתוב נוהל, לא לבקר אותי.\" הפרק נכון, האווירה פחות.", "effect": { "trust.contact": -3 } } },
+        "id": "c",
+        "label": "לתכנן בקרה ברת-ביצוע שעונה על הסיכון, לתעד ל{contact} את הפער שנצפה, ולעדכן את {manager}",
+        "quality": 3,
+        "needsInfo": [
+          "asked_unit",
+          "checked_system"
+        ],
+        "tags": [
+          "documentation",
+          "initiative"
+        ],
+        "biasTags": [],
+        "reversible": true,
+        "escalation": "inform",
+        "immediate": {
+          "energy": -2,
+          "eng.quality": 8,
+          "trust.contact": -2,
+          "trust.manager": 3,
+          "flag.policy_paper_controls_decided": 1
+        },
+        "result": {
+          "pGood": 0.7,
+          "good": {
+            "text": "{contact} {contact:מופתע|מופתעת} מהממצא על 58 מתוך 60, אבל ההצעה (אישור שני מהנייד, סף מדורג, בדיקה חצי-שנתית עם בעלים) מתקבלת. הפרק נכתב על בקרה שתתבצע.",
+            "effect": {
+              "rep": 2,
+              "trust.contact": 4
+            }
+          },
+          "bad": {
+            "text": "{contact} {contact:לוקח|לוקחת} את מכתב הפער אישית: \"באתם לכתוב נוהל, לא לבקר אותי.\" הפרק נכון, האווירה פחות.",
+            "effect": {
+              "trust.contact": -3
+            }
+          }
+        },
         "delayed": [
-          { "after": 4, "prob": 0.35, "failureMode": "m2", "text": "בסבב ההערות {contact} {contact:מנסה|מנסה} להחזיר את הניסוח המקורי. מכתב הפער שכתבתם הוא מה שעוצר את זה.", "effect": { "trust.manager": 2 } },
-          { "after": 6, "prob": 0.25, "failureMode": "m3", "text": "הרכזת שמעה שהתצפית שלכם הגיעה ל{contact} בכתב. היא עדיין עונה, קצר יותר.", "effect": { "trust.contact": -1 } }
+          {
+            "after": 4,
+            "prob": 0.35,
+            "failureMode": "m2",
+            "text": "בסבב ההערות {contact} {contact:מנסה|מנסה} להחזיר את הניסוח המקורי. מכתב הפער שכתבתם הוא מה שעוצר את זה.",
+            "effect": {
+              "trust.manager": 2
+            }
+          },
+          {
+            "after": 6,
+            "prob": 0.25,
+            "failureMode": "m3",
+            "text": "הרכזת שמעה שהתצפית שלכם הגיעה ל{contact} בכתב. היא עדיין עונה, קצר יותר.",
+            "effect": {
+              "trust.contact": -1
+            }
+          }
         ],
         "feedback": {
           "why": "זה מה שנוהל אמור לעשות: לתכנן בקרה שעונה על הסיכון ושהיחידה מסוגלת לתפעל (COSO 2013: תכנון ותפעול הם שני דברים שחייבים להיפגש). הפער מתועד ללקוח בכתב, כך שההחלטה לשנות או לא היא שלו, מתועדת, ולא שלכם בשתיקה. {manager} {manager:מעודכן|מעודכנת}, לא {manager:נשאל|נשאלת}.",
@@ -533,15 +1726,45 @@
         }
       },
       {
-        "id": "d", "label": "לדווח ל{manager:מנהל|מנהלת} ההתקשרות שהיחידה לא מבצעת את הבקרות ולבקש הנחיה", "quality": 1,
-        "tags": ["escalate"], "biasTags": ["responsibility-transfer"],
-        "reversible": true, "escalation": "escalate",
-        "immediate": { "trust.manager": -2, "flag.policy_paper_controls_decided": 1 },
-        "result": { "pGood": 0.5,
-          "good": { "text": "{manager}: \"זה לא ביקורת, זה נוהל. {תכתוב|תכתבי} בקרה שאפשר לבצע ו{תתעד|תתעדי} את הפער. למה אני צריך להגיד לך את זה?\"", "effect": {} },
-          "bad": { "text": "{manager} {manager:מתקשר|מתקשרת} ישירות ל{contact} על \"בעיית ציות ביחידה\". {contact} {contact:מגיע|מגיעה} לפגישה הבאה עם היועץ המשפטי.", "effect": { "trust.contact": -5, "eng.work": -1 } } },
+        "id": "d",
+        "label": "לדווח ל{manager:מנהל|מנהלת} ההתקשרות שהיחידה לא מבצעת את הבקרות ולבקש הנחיה",
+        "quality": 1,
+        "tags": [
+          "escalate"
+        ],
+        "biasTags": [
+          "responsibility-transfer"
+        ],
+        "reversible": true,
+        "escalation": "escalate",
+        "immediate": {
+          "trust.manager": -2,
+          "flag.policy_paper_controls_decided": 1
+        },
+        "result": {
+          "pGood": 0.5,
+          "good": {
+            "text": "{manager}: \"זה לא ביקורת, זה נוהל. {תכתוב|תכתבי} בקרה שאפשר לבצע ו{תתעד|תתעדי} את הפער. למה אני צריך להגיד לך את זה?\"",
+            "effect": {}
+          },
+          "bad": {
+            "text": "{manager} {manager:מתקשר|מתקשרת} ישירות ל{contact} על \"בעיית ציות ביחידה\". {contact} {contact:מגיע|מגיעה} לפגישה הבאה עם היועץ המשפטי.",
+            "effect": {
+              "trust.contact": -5,
+              "eng.work": -1
+            }
+          }
+        },
         "delayed": [
-          { "after": 3, "prob": 0.4, "failureMode": "m3", "text": "היחידה שמעה ש\"הועלה למעלה\" שהם לא מבצעים בקרות. הרכזת מפנה כל שאלה \"למנהל\".", "effect": { "eng.work": -1 } }
+          {
+            "after": 3,
+            "prob": 0.4,
+            "failureMode": "m3",
+            "text": "היחידה שמעה ש\"הועלה למעלה\" שהם לא מבצעים בקרות. הרכזת מפנה כל שאלה \"למנהל\".",
+            "effect": {
+              "eng.work": -1
+            }
+          }
         ],
         "feedback": {
           "why": "הפער הוא מידע שאתם צריכים כדי לכתוב נוהל טוב, לא תקרית שצריך לדווח. העלאה בלי הצעה הופכת שאלה של ניסוח לאירוע ציות, ו{manager} אולי {manager:יטפל|תטפל} בו בצורה שתשרוף את הגישה שלכם ליחידה.",
@@ -551,15 +1774,47 @@
         }
       },
       {
-        "id": "e", "label": "לדחות את כתיבת הפרק בשבוע עד שהיחידה תתחיל לבצע את הבקרות כפי שתוארו", "quality": 1,
-        "tags": ["defer"], "biasTags": ["planning-fallacy", "procedure-bias"],
-        "reversible": true, "escalation": "none",
-        "immediate": { "energy": -1, "eng.work": -1, "flag.policy_paper_controls_decided": 1 },
-        "result": { "pGood": 0.3,
-          "good": { "text": "{contact} {contact:מורה|מורה} ליחידה לחזור לאישור כפול. שבוע אחד זה מחזיק; אחר-כך המנהל שוב בשטח.", "effect": {} },
-          "bad": { "text": "שום דבר לא השתנה ביחידה. הפרק לא נכתב, והשבוע נגמר.", "effect": { "eng.work": -1, "confidence": -2 } } },
+        "id": "e",
+        "label": "לדחות את כתיבת הפרק בשבוע עד שהיחידה תתחיל לבצע את הבקרות כפי שתוארו",
+        "quality": 1,
+        "tags": [
+          "defer"
+        ],
+        "biasTags": [
+          "planning-fallacy",
+          "procedure-bias"
+        ],
+        "reversible": true,
+        "escalation": "none",
+        "immediate": {
+          "energy": -1,
+          "eng.work": -1,
+          "flag.policy_paper_controls_decided": 1
+        },
+        "result": {
+          "pGood": 0.3,
+          "good": {
+            "text": "{contact} {contact:מורה|מורה} ליחידה לחזור לאישור כפול. שבוע אחד זה מחזיק; אחר-כך המנהל שוב בשטח.",
+            "effect": {}
+          },
+          "bad": {
+            "text": "שום דבר לא השתנה ביחידה. הפרק לא נכתב, והשבוע נגמר.",
+            "effect": {
+              "eng.work": -1,
+              "confidence": -2
+            }
+          }
+        },
         "delayed": [
-          { "after": 3, "prob": 0.5, "failureMode": "m4", "text": "{manager} {manager:שואל|שואלת} למה פרק הבקרות עדיין ריק. \"חיכיתי שהיחידה תשתנה\" לא נשמע טוב בקול רם.", "effect": { "trust.manager": -3 } }
+          {
+            "after": 3,
+            "prob": 0.5,
+            "failureMode": "m4",
+            "text": "{manager} {manager:שואל|שואלת} למה פרק הבקרות עדיין ריק. \"חיכיתי שהיחידה תשתנה\" לא נשמע טוב בקול רם.",
+            "effect": {
+              "trust.manager": -3
+            }
+          }
         ],
         "feedback": {
           "why": "היחידה לא תשנה בשבוע התנהגות של שנתיים כי נוהל עומד להיכתב, ובוודאי לא כשהסיבה מבנית (מנהל בשטח, מערכת בלי אישור מהנייד). הדחייה מניחה שהמציאות תתאים את עצמה לנייר. זה קורה הפוך.",

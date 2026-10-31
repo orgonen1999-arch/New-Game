@@ -311,6 +311,7 @@ function itemInfo(st, item) {
   else if (type === 'offer') { const f = CT.firm(item.firmId); subject = tp('offers.role', { title: tp('tier.' + S.tier(st) + '.title'), firm: f ? f.name : item.firmId || '' }); }
   else subject = sc ? txp(sc.title, ctx) : item.title ? txp(item.title, ctx) : tp('inbox.type.' + type);
   if (sc && sc.sender && !senderId) senderId = sc.sender;
+  if (!senderId && (type === 'decision' || type === 'moment')) { const e = S.eng(st, item.engId); senderId = e ? (e.contactId || e.managerId) : null; }
   if (senderId && !CT.person(senderId)) { const byRole = CT.personByRole(senderId); if (byRole) senderId = byRole.id; else if (senderId !== 'system') senderId = (ctx.params && ctx.params[senderId]) ? senderId : 'system'; }
   const name = senderId && senderId !== 'system' ? personName(senderId, ctx) : tp('inbox.system');
   subject = subject.length > 110 ? subject.slice(0, 108) + '…' : subject;
@@ -559,7 +560,9 @@ function openMatch(item) {
   if (!has('matchView')) { toast('ui.soon'); return; }
   const v = call('matchView', state, item.matchId); if (!v || v.threw) { toast('toast.staleContent'); return; }
   ui.engId = v.engId; ui.ctxCache = null;
-  openSheet({ kind: 'match', inboxId: item.id, matchId: item.matchId, view: v, phase: v.played ? 'result' : v.started ? 'moment' : 'prep', line: 0, last: null, summary: null });
+  const sh = { kind: 'match', inboxId: item.id, matchId: item.matchId, view: v, phase: v.played ? 'result' : v.started ? 'moment' : 'prep', line: 0, last: null, summary: null };
+  if (sh.phase === 'moment') matchSettle(sh);
+  openSheet(sh);
 }
 function refreshMatch(sh) { const v = call('matchView', state, sh.matchId); if (v && !v.threw) sh.view = v; }
 function fitDots(type, k, v) { const mt = CT.matchType(type); const val = mt && mt.fit && mt.fit[k] ? (mt.fit[k][v] ?? 0) : 0; return '<span class="fit-dots" aria-label="' + val + '/3">' + [1, 2, 3].map(i => '<i class="' + (i <= val ? 'on' : '') + '"></i>').join('') + '</span>'; }
@@ -576,7 +579,7 @@ function sheetMatch(sh) {
       '<div class="card mt"><h3 class="mb">' + t('match.approach') + '</h3>' + togglesHTML(sh, 'match-toggle') + '</div>';
     footer = '<span class="grow xs faint">' + t('match.energyCost') + '</span><button type="button" class="btn btn-primary" data-act="match-start">' + t('match.play') + '</button>';
   } else if (sh.phase === 'moment') {
-    const mo = v.moment; const lines = mo ? mo.ticker || [] : []; const shown = lines.slice(0, sh.line + 1); const all = sh.line >= lines.length - 1; const last = sh.last; noClose = true;
+    const mo = v.moment; const lines = mo ? mo.ticker || [] : []; const shown = lines.slice(0, sh.line + 1); const all = sh.line >= lines.length - 1; const last = sh.last; noClose = !!(mo || last);
     body = '<div class="moment"><span class="stamp">' + t('match.moment', { i: Math.min(v.index + (last ? 0 : 1), v.total), n: v.total }) + '</span>' + head +
       (last ? '<div class="card mt"><h3 class="mb">' + tx(last.title, ctx) + '</h3><div class="result-text ' + (last.result && last.result.good ? 'good' : 'bad') + '">' + (last.result && last.result.text ? tx(last.result.text, ctx) : t(last.result && last.result.good ? 'room.result.good' : 'room.result.bad')) + '</div>' + (last.feedback && (last.feedback.rule || last.feedback.why) ? '<div class="fb rule mt"><b>' + t('room.feedback.rule') + '</b>' + tx(last.feedback.rule || last.feedback.why, ctx) + '</div>' : '') + deltaPills(last.entry && last.entry.applied, ctx) + '</div>' :
         mo ? '<div class="ticker mt">' + shown.map(l => '<div class="ticker-line ' + (mo.hostility || 'neutral') + '">' + tx(l, ctx) + '</div>').join('') + '</div>' + (all ? '<div class="card mt"><div class="row small muted mb">' + pill(t('match.hostility.' + (mo.hostility || 'neutral')), mo.hostility === 'hostile' ? 'pill-danger' : mo.hostility === 'friendly' ? 'pill-ok' : '') + '</div><h3 class="mb">' + tx(mo.title, ctx) + '</h3><div class="body-text small">' + tx(mo.body, ctx) + '</div>' + (mo.colleagueHint ? '<div class="hint">' + t('match.colleagueHint', { name: personName(S.match(state, sh.matchId)?.colleagueId, ctx), hint: txp(mo.colleagueHint, ctx) }) + '</div>' : '') + '<div class="mt">' + optionsHTML(mo.options || [], ctx, null) + '</div></div>' : '') : soon()) + '</div>';
@@ -600,10 +603,19 @@ function matchChoose(sh, optId) {
   sh.last = Object.assign({ title: (sh.view.moment || {}).title }, r); sh.pendingBreak = !!r.breakNow; sh.pendingSummary = r.done ? r.summary : null; if (r.done && r.summary) { const it = S.item(state, sh.inboxId); if (it) it.done = true; }
   autosave(); sh.resetScroll = true; renderSheet();
 }
+function matchSettle(sh) {
+  /* A match with no current moment (nothing drawn, or already done) goes straight to the result sheet. */
+  if (sh.last || (sh.view && sh.view.moment)) return false;
+  const m = S.match(state, sh.matchId);
+  if (m && !m.played && has('resolveMatch')) { const r = call('resolveMatch', state, sh.matchId); if (okRes(r)) sh.summary = r; }
+  if (!sh.summary && m && m.played) sh.summary = { ratings: m.ratings, findings: (S.eng(state, m.engId) || {}).findings || [] };
+  const it = S.item(state, sh.inboxId); if (it) it.done = true;
+  sh.phase = 'result'; sh.resetScroll = true; autosave(); return true;
+}
 function matchNext(sh) {
   sh.last = null; sh.line = 0;
   if (sh.pendingSummary) { sh.summary = sh.pendingSummary; sh.phase = 'result'; }
-  else { refreshMatch(sh); sh.phase = sh.pendingBreak ? 'break' : 'moment'; }
+  else { refreshMatch(sh); sh.phase = sh.pendingBreak ? 'break' : 'moment'; if (!sh.pendingBreak) matchSettle(sh); }
   sh.pendingBreak = false; sh.resetScroll = true; renderSheet(); render();
 }
 
@@ -759,12 +771,12 @@ const actions = {
   'room-followup': (el) => { ui.sheet.followup = Number(el.dataset.w); renderSheet(); },
   'room-submit': () => { const room = ui.sheet; const r = call('submitMemo', state, room.inboxId, { rationaleId: room.rationaleId, followupWeeks: room.followup, note: room.note || '' }); if (!okRes(r)) { errToast(r); return; } roomFinish(room, r); },
   'match-toggle': (el) => { const sh = ui.sheet; const ap = Object.assign({}, sh.view.approach || state.player.approach); ap[el.dataset.k] = el.dataset.v; if (has('setApproach')) call('setApproach', state, ap); refreshMatch(sh); renderSheet(); },
-  'match-start': () => { const sh = ui.sheet; const r = call('startMatch', state, sh.matchId); if (!okRes(r)) { errToast(r); return; } sh.view = r; sh.phase = 'moment'; sh.line = 0; sh.resetScroll = true; autosave(); renderSheet(); },
+  'match-start': () => { const sh = ui.sheet; const r = call('startMatch', state, sh.matchId); if (!okRes(r)) { errToast(r); return; } sh.view = r; sh.phase = 'moment'; sh.line = 0; sh.resetScroll = true; matchSettle(sh); autosave(); renderSheet(); render(); },
   'match-tick': () => { ui.sheet.line++; renderSheet(); const b = root.querySelector('.sheet-body'); if (b) b.scrollTop = b.scrollHeight; },
   'match-next': () => matchNext(ui.sheet),
   'match-break-toggle': (el) => { const sh = ui.sheet; const r = call('matchBreak', state, sh.matchId, { toggle: el.dataset.k, value: el.dataset.v }); if (!okRes(r)) { errToast(r); return; } sh.view = r; toast('match.break.changed', { prep: r.prep, fit: r.fit }); sh.phase = 'moment'; sh.resetScroll = true; renderSheet(); },
   'match-break-colleague': (el) => { const sh = ui.sheet; const r = call('matchBreak', state, sh.matchId, { colleague: el.dataset.id }); if (!okRes(r)) { errToast(r); return; } sh.view = r; sh.phase = 'moment'; sh.resetScroll = true; renderSheet(); },
-  'match-resume': () => { const sh = ui.sheet; refreshMatch(sh); sh.phase = 'moment'; sh.resetScroll = true; renderSheet(); },
+  'match-resume': () => { const sh = ui.sheet; refreshMatch(sh); sh.phase = 'moment'; matchSettle(sh); sh.resetScroll = true; renderSheet(); },
   'followup-answer': (el) => { const sh = ui.sheet; const r = call('answerFollowup', state, sh.item.id, el.dataset.a === '1'); if (!okRes(r)) { errToast(r); return; } sh.result = Object.assign({ answer: el.dataset.a === '1' }, r); autosave(); renderSheet(); render(); },
   'offer-accept': (el) => { const item = S.item(state, el.dataset.id); if (item) openSheet({ kind: 'offer', item }); },
   'offer-accept-yes': (el) => { ui.sheet = null; const r = call('acceptOffer', state, el.dataset.id); if (!okRes(r)) { errToast(r); render(); return; } ui.ctxCache = null; if (r.note) pushToast(tm(r.note)); autosave(); go('dash'); },

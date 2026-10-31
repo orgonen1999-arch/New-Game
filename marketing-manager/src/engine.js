@@ -59,7 +59,8 @@
   const mean = a => a.length ? a.reduce((s, v) => s + v, 0) / a.length : 0;
   const deep = x => JSON.parse(JSON.stringify(x));
   // Content banks may be arrays or objects keyed by id; always read them as arrays.
-  const asArray = x => Array.isArray(x) ? x : (x && typeof x === 'object') ? Object.keys(x).map(k => (x[k] && typeof x[k] === 'object' && !Array.isArray(x[k])) ? Object.assign({ id: k }, x[k]) : x[k]) : [];
+  // Content banks may be arrays or objects keyed by id (every value a plain object); anything else is not a list bank.
+  const asArray = x => Array.isArray(x) ? x : (x && typeof x === 'object' && Object.keys(x).length && Object.values(x).every(v => v && typeof v === 'object' && !Array.isArray(v))) ? Object.keys(x).map(k => Object.assign({ id: k }, x[k])) : [];
   // Tag match: empty or "*" means wildcard.
   const mt = (val, want) => { const l = listOf(val); return l.length === 0 || l.includes('*') || l.includes(want); };
   const isWild = s => mt(s.phase, '__none__') && mt(s.sector, '__none__');
@@ -76,7 +77,7 @@
   // ───────────────────────── content ─────────────────────────
   let C = emptyContent();
   const IDX = { scenarios: new Map(), moments: new Map(), events: new Map(), people: new Map(), clients: new Map(), firms: new Map() };
-  function emptyContent() { return { scenarios: [], moments: [], events: [], matchTypes: [], firms: [], clients: [], cast: [], stakeholders: [], seasons: [], deliverables: [], drills: [], lessons: [], awards: [], ratingScales: {}, baseRates: [], tags: {}, strings: {}, calendar: null }; }
+  function emptyContent() { return { scenarios: [], moments: [], events: [], matchTypes: [], firms: [], clients: [], cast: [], stakeholders: [], seasons: [], deliverables: [], drills: [], lessons: { frameworks: [], lessons: [] }, awards: [], ratingScales: { byEngType: {}, scales: [] }, baseRates: [], tags: { tags: [], biases: [] }, strings: {}, calendar: null }; }
   // Load the bundler's object (keyed by file stem); merges scenarios.* into one array; throws on duplicate ids.
   function loadContent(raw) {
     const c = emptyContent(); raw = raw || {};
@@ -89,7 +90,11 @@
     c.scenarios = scen.filter(s => s.bank !== 'moment' && s.bank !== 'event');
     c.moments = asArray(c.moments).concat(scen.filter(s => s.bank === 'moment'));
     c.events = asArray(c.events).concat(scen.filter(s => s.bank === 'event'));
-    for (const k of ['matchTypes', 'firms', 'clients', 'cast', 'stakeholders', 'seasons', 'deliverables', 'drills', 'lessons', 'awards', 'baseRates']) c[k] = asArray(c[k]);
+    for (const k of ['matchTypes', 'firms', 'clients', 'cast', 'stakeholders', 'seasons', 'deliverables', 'drills', 'awards', 'baseRates']) c[k] = asArray(c[k]);
+    // lessons.json is { frameworks: [...], lessons: [...] }; a bare array is also accepted and wrapped
+    c.lessons = Array.isArray(c.lessons) ? { frameworks: [], lessons: c.lessons } : (c.lessons && typeof c.lessons === 'object') ? { frameworks: asArray(c.lessons.frameworks), lessons: asArray(c.lessons.lessons) } : { frameworks: [], lessons: [] };
+    c.tags = (c.tags && typeof c.tags === 'object' && !Array.isArray(c.tags)) ? c.tags : { tags: asArray(c.tags), biases: [] };
+    c.ratingScales = (c.ratingScales && typeof c.ratingScales === 'object' && !Array.isArray(c.ratingScales)) ? c.ratingScales : { byEngType: {}, scales: asArray(c.ratingScales) };
     if (!c.matchTypes.length) c.matchTypes = deep(DEFAULT_MATCH_TYPES);
     c.strings = (c.strings && typeof c.strings === 'object') ? c.strings : {};
     c.calendar = (c.calendar && typeof c.calendar === 'object') ? c.calendar : null;
@@ -111,6 +116,10 @@
   const clientDef = id => IDX.clients.get(id) || null;
   const firmDef = id => IDX.firms.get(id) || null;
   const matchTypeDef = id => byId(C.matchTypes, id) || byId(DEFAULT_MATCH_TYPES, id) || { id, moments: 3, fit: {} };
+  const lessonDef = id => byId(C.lessons.lessons, id);
+  const frameworkDef = id => byId(C.lessons.frameworks, id);
+  const scaleDef = id => byId(asArray(C.ratingScales.scales), id);
+  const tagDef = id => byId(asArray(C.tags.tags), id) || byId(asArray(C.tags.biases), id);
   const cal = () => Object.assign({}, CAL, C.calendar || {});
   // Highest content tier that is <= the player's tier (else the overall max); used by the draw's tier-relax rung.
   function highestContentTier(tier) { let best = 0, max = 0; for (const s of C.scenarios) for (const t of listOf(s.tier)) { if (t > max) max = t; if (t <= tier && t > best) best = t; } return best || max || tier; }
@@ -1023,23 +1032,28 @@
 
   // ───────────────────────── drills, deliverables ─────────────────────────
   // A learning block: pick a 5-item drill for the skill; the UI calls runDrill with the answers.
+  // Skills tagged on a drill as [{id,w}] (or plain ids / a single `skill`), with weights.
+  function drillSkills(d) { const out = []; if (d.skill) out.push({ id: d.skill, w: 1 }); for (const x of listOf(d.skills)) { if (typeof x === 'string') out.push({ id: x, w: 1 }); else if (x && x.id) out.push({ id: x.id, w: num(x.w, 1) }); } return out; }
+  const optQuality = o => typeof o === 'object' && o ? (o.quality != null ? clamp(num(o.quality), 0, 3) : (o.correct ? 3 : 0)) : 0;
   function startDrill(state, skillId) {
-    const pool = C.drills.filter(d => d && (d.skill === skillId || listOf(d.skills).includes(skillId)));
+    const pool = C.drills.filter(d => d && drillSkills(d).some(x => x.id === skillId) && tierOk(d, state.player.tier));
     if (!pool.length) return null;
     const d = pick(state, pool); const items = listOf(d.items).slice(0, 5);
     state.player.pendingDrill = { id: d.id, skillId, items: items.length };
-    return { id: d.id, skillId, title: d.title || null, items: items.map((it, i) => ({ index: i, q: it.q || it.question || '', options: listOf(it.options).map((o, j) => ({ index: j, text: typeof o === 'string' ? o : o.text })) })) };
+    return { id: d.id, skillId, title: d.title || null, items: items.map((it, i) => ({ index: i, q: it.q || it.question || '', options: listOf(it.options).map((o, j) => ({ index: j, t: typeof o === 'string' ? o : (o.t || o.text || '') })) })) };
   }
-  // Score a drill (answers = option indexes); mastery update at half strength, obs +0.5.
+  // Score a drill (answers = option indexes): an answer is correct when its option has the item's top quality; the
+  // skill score is the mean quality/3 (partial credit). Mastery update at half strength (obs +0.5) for every tagged skill.
   function runDrill(state, drillId, answers) {
     const d = byId(C.drills, drillId); if (!d) return err('drill.none');
-    const items = listOf(d.items).slice(0, 5); const skillId = d.skill || listOf(d.skills)[0];
-    let correct = 0; const detail = items.map((it, i) => { const a = listOf(answers)[i]; const opts = listOf(it.options); const ok = opts.some((o, j) => j === a && (typeof o === 'object' ? !!o.correct : j === num(it.answer))); if (ok) correct++; return { index: i, correct: ok, explain: it.explain || null }; });
-    const sc = items.length ? Math.round(correct / items.length * 100) : 0;
-    const delta = skillId && state.player.skills[skillId] ? mastery(state, skillId, sc, { drill: true, difficulty: 1 }) : 0;
-    if (skillId) scheduler(state, skillId, sc);
+    const items = listOf(d.items).slice(0, 5); const skills = drillSkills(d);
+    let correct = 0, qsum = 0;
+    const detail = items.map((it, i) => { const a = num(listOf(answers)[i], -1); const opts = listOf(it.options); const top = Math.max.apply(null, opts.map(optQuality).concat([0])); const q = opts[a] ? optQuality(opts[a]) : 0; const ok = !!opts[a] && q === top && top > 0; if (ok) correct++; qsum += q / 3; return { index: i, chosen: opts[a] ? a : null, quality: q, correct: ok, best: opts.findIndex(o => optQuality(o) === top), why: it.why || it.explain || null }; });
+    const sc = items.length ? Math.round(qsum / items.length * 100) : 0;
+    const deltas = {}; for (const x of skills) if (state.player.skills[x.id]) { deltas[x.id] = mastery(state, x.id, sc, { drill: true, difficulty: 1, w: x.w }); scheduler(state, x.id, sc); }
+    const skillId = (state.player.pendingDrill && state.player.pendingDrill.id === d.id && state.player.pendingDrill.skillId) || (skills[0] || {}).id || null;
     state.player.pendingDrill = null;
-    return { ok: true, score: sc, correct, total: items.length, delta, detail, skillId };
+    return { ok: true, score: sc, correct, total: items.length, delta: skillId ? (deltas[skillId] || 0) : 0, deltas, detail, skillId, skills: skills.map(x => x.id) };
   }
   const kendallTau = (a, b) => { const pos = {}; b.forEach((id, i) => pos[id] = i); let c = 0, d = 0; for (let i = 0; i < a.length; i++) for (let j = i + 1; j < a.length; j++) { const x = pos[a[i]], y = pos[a[j]], ok = x != null && y != null; if (!ok) continue; if (x < y) c++; else if (x > y) d++; } const n = a.length; const tot = n * (n - 1) / 2; return tot ? (c - d) / tot : 1; };
   const SLOT_PTS = [0, 5, 10, 20]; // choice quality 0..3 → points (§10: best 20, slot-confused 10, vague 5, wrong 0)
@@ -1226,7 +1240,8 @@
     const closed = engs.filter(e => e.phase === 'closed');
     return { meanQ: Math.round(mean(engs.map(e => e.quality))), meanP: Math.round(mean(es.map(e => e.P))), confidence: state.player.confidence, rep: state.player.rep, onTime: closed.length ? Math.round(100 * closed.filter(e => e.onTime).length / closed.length) : 0, findings: engs.reduce((s, e) => s + e.findings.length, 0) };
   }
-  function objectives(state) { const m = objectiveMetrics(state); return listOf(firmOf(state).boardObjectives).map(o => ({ metric: o.metric, target: num(o.target), hebrew: o.hebrew || null, value: m[o.metric] != null ? m[o.metric] : 0, met: m[o.metric] != null && m[o.metric] >= num(o.target) })); }
+  // Board objectives; a target <= 1 is a fraction of a percentage metric (onTime 0.9 → 90%).
+  function objectives(state) { const m = objectiveMetrics(state); return listOf(firmOf(state).boardObjectives).map(o => { const target = num(o.target) <= 1 ? Math.round(num(o.target) * 100) : num(o.target); return { metric: o.metric, target, hebrew: o.hebrew || null, value: m[o.metric] != null ? m[o.metric] : 0, met: m[o.metric] != null && m[o.metric] >= target }; }); }
   // Awards at week 48; each is { key, season, params, journalId? }.
   function computeAwards(state, seasonScore) {
     const es = state.journal.filter(e => e.season === state.season && e.kind !== 'moment'); const out = []; const pl = state.player;
@@ -1442,7 +1457,7 @@
   // ───────────────────────── public API ─────────────────────────
   const MM = {
     VERSION, WEEKS, SKILLS, CRAFT, PROCESS, PARTNER, PHASES, LADDER, FOLLOWUP_LADDER, RUBRIC_W, CAPS, TIER_CEIL, TRUST0, HOURS, DSL, calendar: cal,
-    loadContent, content, scenario: scenarioById, moment: momentById, personDef, clientDef, firmDef, matchTypeDef,
+    loadContent, content, scenario: scenarioById, moment: momentById, personDef, clientDef, firmDef, matchTypeDef, lessonDef, frameworkDef, scaleDef, tagDef, drillSkills,
     newGame, tick, draw: drawInbox, drawOne, openScenario, roomView: (state, inboxId) => { const i = inboxItem(state, inboxId); const s = i ? scenarioById(i.scenarioId) : null; return i && s ? roomView(state, i, s) : null; },
     buyInfo, chooseFraming, choose, choosePremortem, submitMemo, answerFollowup, setLearned, markRead, gateStatus, infoCost,
     scheduleMatch, placeMatches, startMatch, setApproach, matchView, playMoment, matchBreak, resolveMatch, computePrep,

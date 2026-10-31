@@ -108,7 +108,10 @@ function fixture(over) {
         { id: 'criteria', label: 'k', choices: [{ t: 'wrong', quality: 0, why: 'w0' }, { t: 'best', quality: 3, why: 'w3' }] }] }] },
       { id: 'practice-x', title: 'p', tier: 1, kind: 'practice', practice: true, passThreshold: null, engType: ['policy-writing'], parts: [{ id: 's', kind: 'slots', weight: 100, slots: [{ id: 'a', choices: [{ t: 'x', quality: 3, why: 'w' }] }] }] }
     ],
-    drills: [{ id: 'd-testing', skill: 'testing', items: [1, 2, 3, 4, 5].map(i => ({ q: 'q' + i, options: [{ text: 'a', correct: true }, { text: 'b' }] })) }],
+    drills: [{ id: 'd-testing', title: 'd', skills: [{ id: 'testing', w: 0.7 }, { id: 'evidence', w: 0.3 }], tier: [1, 2], hours: 4, items: [1, 2, 3, 4, 5].map(i => ({ q: 'q' + i, options: [{ t: 'best', quality: 3 }, { t: 'mid', quality: 1 }, { t: 'wrong', quality: 0 }, { t: 'ok', quality: 2 }], why: 'why' + i })) }],
+    lessons: { frameworks: [{ id: 'gias-2024', he: 'GIAS', source: 's' }], lessons: [{ id: 'sampling-population', title: 'l', tier: 1, frameworks: ['gias-2024'], skills: ['testing'], body: 'b' }] },
+    tags: { tags: [{ id: 'shortcut', he: 'x' }], biases: [{ id: 'anchoring', he: 'y' }] },
+    ratingScales: { byEngType: { isox: 'icfr' }, scales: [{ id: 'icfr', pills: [{ id: 'deficiency', level: 1 }] }] },
     baseRates: [{ id: 'attr-25-1-90', n: 25, dev: 1, conf: 90, upper: 15, source: 's' }]
   }
   return Object.assign(c, over || {})
@@ -281,7 +284,7 @@ test('spendBlock: hours are hard, work adds units (+1 with contact trust ≥ 60)
   assert.equal(MM.spendBlock(st, 'work', { engId: 'nope' }).error.key, 'budget.needsEngagement')
   st.world.contacts.anat.trust = 60; assert.equal(MM.spendBlock(st, 'work', { engId: eng.id }).units, 2)
   const l = MM.spendBlock(st, 'learn', { skillId: 'testing' }); assert.equal(l.drill.id, 'd-testing'); assert.equal(l.drill.items.length, 5)
-  const dr = MM.runDrill(st, 'd-testing', [0, 0, 0, 0, 1]); assert.equal(dr.score, 80); assert.equal(st.player.skills.testing.obs, 0.5)
+  const dr = MM.runDrill(st, 'd-testing', [0, 0, 0, 0, 1]); assert.equal(dr.score, 87); assert.equal(dr.correct, 4); assert.equal(st.player.skills.testing.obs, 0.5) // 4×3/3 + 1/3 over 5 → 86.7
   const n = MM.spendBlock(st, 'network', { personId: 'uri' }); assert.equal(n.gain, 4.5); assert.equal(st.budget.hours, 16)
   MM.spendBlock(st, 'rest'); assert.equal(st.budget.hours, 8); MM.spendBlock(st, 'scout'); assert.equal(st.budget.hours, 4); assert.equal(MM.spendBlock(st, 'work', { engId: eng.id }).error.key, 'budget.notEnough')
 })
@@ -471,6 +474,39 @@ test('sim harness plays seasons through the public API on the fixture', () => {
     assert.equal(r.results.length, 2); assert.ok(r.results[0].energy.length >= 90); assert.ok(r.summary.energyMean > 0)
     if (policy === 'best') assert.ok(r.summary.meanP >= 80, 'best policy mean P ' + r.summary.meanP)
   }
+})
+
+test('drills: matched by skills[].id, top-quality option counts as correct, partial credit quality/3, every tagged skill updated', () => {
+  load(); const st = game(); MM.tick(st)
+  assert.equal(MM.startDrill(st, 'evidence').id, 'd-testing'); assert.equal(MM.startDrill(st, 'risk'), null)
+  const d = MM.startDrill(st, 'testing'); assert.equal(d.items[0].options[0].t, 'best'); assert.equal(d.items[0].options[0].quality, undefined)
+  const r = MM.runDrill(st, 'd-testing', [0, 3, 1, 2, 9]) // 3 + 2 + 1 + 0 + 0 of 15
+  assert.equal(r.score, 40); assert.equal(r.correct, 1); assert.deepEqual(r.detail.map(x => x.correct), [true, false, false, false, false]); assert.equal(r.detail[1].best, 0); assert.equal(r.detail[1].why, 'why2'); assert.equal(r.detail[4].chosen, null)
+  assert.deepEqual(r.skills, ['testing', 'evidence']); assert.equal(st.player.skills.evidence.obs, 0.5); assert.equal(r.skillId, 'testing'); assert.equal(typeof r.deltas.evidence, 'number')
+  assert.equal(MM.runDrill(st, 'nope', []).error.key, 'drill.none')
+})
+
+test('object-shaped banks (lessons, tags, ratingScales) stay objects; id-keyed banks become arrays; lesson/framework helpers', () => {
+  load(); const c = MM.content()
+  assert.deepEqual(Object.keys(c.lessons), ['frameworks', 'lessons']); assert.equal(c.lessons.lessons.length, 1); assert.equal(c.lessons.frameworks.length, 1)
+  assert.equal(MM.lessonDef('sampling-population').title, 'l'); assert.equal(MM.frameworkDef('gias-2024').he, 'GIAS'); assert.equal(MM.lessonDef('nope'), null)
+  assert.deepEqual(Object.keys(c.tags), ['tags', 'biases']); assert.equal(MM.tagDef('anchoring').he, 'y')
+  assert.deepEqual(Object.keys(c.ratingScales), ['byEngType', 'scales']); assert.equal(MM.scaleDef('icfr').pills.length, 1); assert.equal(MM.scaleFor('isox'), 'icfr')
+  MM.loadContent({ firms: { ofek: { name: 'o' }, segev: { name: 's' } }, lessons: [{ id: 'x' }] })
+  assert.equal(MM.content().firms.length, 2); assert.equal(MM.firmDef('segev').name, 's'); assert.equal(MM.lessonDef('x').id, 'x'); assert.deepEqual(MM.content().lessons.frameworks, [])
+  MM.loadContent({}); assert.deepEqual(MM.content().lessons, { frameworks: [], lessons: [] }); assert.deepEqual(MM.content().tags, { tags: [], biases: [] })
+  load()
+})
+
+test('board objectives: a target <= 1 is a fraction of the percentage metric (onTime 0.9 → 90)', () => {
+  load(); const st = game(); MM.tick(st)
+  const firm = MM.firmDef('ofek'); const saved = firm.boardObjectives
+  firm.boardObjectives = [{ metric: 'onTime', target: 0.8 }, { metric: 'meanQ', target: 60 }]
+  try {
+    for (const e of st.engagements) { e.phase = 'closed'; e.onTime = true }
+    let o = MM.objectives(st); assert.equal(o[0].target, 80); assert.equal(o[0].value, 100); assert.equal(o[0].met, true); assert.equal(o[1].met, false)
+    st.engagements[0].onTime = false; o = MM.objectives(st); assert.equal(o[0].value, 50); assert.equal(o[0].met, false)
+  } finally { firm.boardObjectives = saved }
 })
 
 test('no literal Hebrew and no closing script tag in engine.js', async () => {
